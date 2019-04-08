@@ -3,10 +3,10 @@
 Python Practical Template
 Keegan Crankshaw
 Readjust this Docstring as follows:
-Names: <names>
-Student Number: <studnum>
-Prac: <Prac Num>
-Date: <dd/mm/yyyy>
+Names: Jadon Wolffs
+Student Number: WLFJAD001
+Prac: 1
+Date: dd/07/2019
 """
 
 # import Relevant Librares
@@ -29,3 +29,6 @@ if __name__ == "__main__":
         GPIO.cleanup()
     except:
         print("Some other error occurred")
+
+# GPIO.add_event_detect(BTN_B, GPIO.RISING, method_on_interrupt)
+# GPIO.add_event_detect(BTN_PIN, GPIO.FALLING, callback=callback_method(),bouncetime=300)
