@@ -15,7 +15,15 @@ import time
 
 # Logic that you write
 def main():
-    time.sleep(.1);
+    #status = False         
+    GPIO.setmode(GPIO.BOARD)         
+    GPIO.setup(40, GPIO.OUT)         
+    GPIO.setup(5, GPIO.IN)         
+    GPIO.add_event_detect(5, GPIO.RISING, bouncetime=300)         
+    GPIO.add_event_callback(5,buttonEventHandler)         
+    GPIO.output(40,GPIO.LOW)
+    while True:
+        pass
 
 # handle the button event
 def buttonEventHandler (pin):
@@ -35,23 +43,17 @@ def buttonEventHandler (pin):
 if __name__ == "__main__":
     # Make sure the GPIO is stopped correctly
     try:
-        #global status
         status = False
-        GPIO.setmode(GPIO.BOARD)
-        GPIO.setup(40, GPIO.OUT)
-        GPIO.setup(5, GPIO.IN)
-        GPIO.add_event_detect(5, GPIO.RISING, bouncetime=300)
-        GPIO.add_event_callback(5,buttonEventHandler)
-        GPIO.output(40,GPIO.LOW)
         while True:
             main()
     except KeyboardInterrupt:
         print("Exiting gracefully")
         # Turn off your GPIOs here
         GPIO.cleanup()
-    #except:
-        #print("Some other error occurred")
-    GPIO.cleanup()
+    except:
+        print("Some other error occurred")
+        print(e.message)
+        GPIO.cleanup()
 
 # GPIO.add_event_detect(BTN_B, GPIO.RISING, method_on_interrupt)
 # GPIO.add_event_detect(BTN_PIN, GPIO.FALLING, callback=callback_method(),bouncetime=300)
