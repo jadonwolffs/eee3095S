@@ -18,17 +18,23 @@ def main():
     #status = False         
     GPIO.setmode(GPIO.BOARD)         
     GPIO.setup(40, GPIO.OUT)         
-    GPIO.setup(5, GPIO.IN)         
-    GPIO.add_event_detect(5, GPIO.RISING, bouncetime=300)         
-    GPIO.add_event_callback(5,buttonEventHandler)         
+    
+    GPIO.setup(5, GPIO.IN) #PB1        
+    GPIO.add_event_detect(5, GPIO.RISING, bouncetime=300)     
+    GPIO.add_event_callback(5,buttonOneHandler)
+    
+    GPIO.setup(3, GPIO.IN) #PB2
+    GPIO.add_event_detect(3, GPIO.RISING, bouncetime=300)         
+    GPIO.add_event_callback(3,buttonTwoHandler)
+    
     GPIO.output(40,GPIO.LOW)
     while True:
         pass
 
 # handle the button event
-def buttonEventHandler (pin):
+def buttonOneHandler (pin):
     global status
-    print ("handling button event")
+    print ("handling button1 event")
 
     # turn the green LED off
     if status:
@@ -37,6 +43,19 @@ def buttonEventHandler (pin):
     # turn the green LED on
     else:
         GPIO.output(40,GPIO.HIGH)
+        status = True
+
+def buttonTwoHandler (pin):     
+    global status     
+    print ("handling button2 event")      
+    
+    # turn the green LED off     
+    if status:         
+        GPIO.output(40,GPIO.LOW)         
+        status = False     
+    # turn the green LED on     
+    else:         
+        GPIO.output(40,GPIO.HIGH)         
         status = True
 
 # Only run the functions if 
@@ -50,7 +69,7 @@ if __name__ == "__main__":
         print("Exiting gracefully")
         # Turn off your GPIOs here
         GPIO.cleanup()
-    except:
+    except e:
         print("Some other error occurred")
         print(e.message)
         GPIO.cleanup()
