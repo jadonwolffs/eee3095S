@@ -17,7 +17,9 @@ import time
 def main():
     #status = False         
     GPIO.setmode(GPIO.BOARD)         
-    GPIO.setup(40, GPIO.OUT)         
+    GPIO.setup(40, GPIO.OUT)
+    GPIO.setup(38, GPIO.OUT)
+    GPIO.setup(36, GPIO.OUT)
     
     GPIO.setup(5, GPIO.IN) #PB1        
     GPIO.add_event_detect(5, GPIO.RISING, bouncetime=300)     
@@ -34,20 +36,28 @@ def main():
 # handle the button event
 def buttonOneHandler (pin):
     global status
-    print ("handling button1 event")
+    global count
+    count=count+1
+    print ("handling button1 event ",count)
 
     # turn the green LED off
     if status:
         GPIO.output(40,GPIO.LOW)
+        GPIO.output(38,GPIO.LOW)
+        GPIO.output(36,GPIO.LOW)
         status = False
     # turn the green LED on
     else:
         GPIO.output(40,GPIO.HIGH)
+        GPIO.output(38,GPIO.HIGH)
+        GPIO.output(36,GPIO.HIGH)
         status = True
 
 def buttonTwoHandler (pin):     
-    global status     
-    print ("handling button2 event")      
+    global status
+    global count
+    count=count-1
+    print ("handling button2 event ", count)      
     
     # turn the green LED off     
     if status:         
@@ -63,6 +73,7 @@ if __name__ == "__main__":
     # Make sure the GPIO is stopped correctly
     try:
         status = False
+        count = 0
         while True:
             main()
     except KeyboardInterrupt:
