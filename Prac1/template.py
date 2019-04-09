@@ -13,9 +13,7 @@ Date: 20/07/2019
 import RPi.GPIO as GPIO
 import time
 
-# Logic that you write
-def main():
-    #status = False         
+def main():         
     GPIO.setmode(GPIO.BOARD)         
     GPIO.setup(40, GPIO.OUT)
     GPIO.setup(38, GPIO.OUT)
@@ -40,22 +38,9 @@ def buttonOneHandler (pin):
     count=count+1
     if count==8:   
         count = 0
-    #bincount=(bin(count)).format(3)
     bincount = '{0:03b}'.format(count)
     print ("handling button1 event ","count ",count,"bincount ", bincount)
-
-    # turn the green LED off
-    #if status:
-    #    GPIO.output(40,GPIO.LOW)
-    #    GPIO.output(38,GPIO.LOW)
-    #    GPIO.output(36,GPIO.LOW)
-    #    status = False
-    # turn the green LED on
-    #else:
-    #    GPIO.output(40,GPIO.HIGH)
-    #    GPIO.output(38,GPIO.HIGH)
-    #    GPIO.output(36,GPIO.HIGH)
-    #    status = True
+    update_leds()
 
 def buttonTwoHandler (pin):     
     global status
@@ -63,35 +48,37 @@ def buttonTwoHandler (pin):
     count=count-1
     if count==-1:
         count = 7
-    #bincount=(bin(count)[2:]).format(3)
     bincount = '{0:03b}'.format(count)
     print ("handling button2 event ","count ",count,"bincount ", bincount)      
-    
-    # turn the green LED off     
-    #if status:         
-    #    GPIO.output(40,GPIO.LOW)         
-    #    status = False     
-    # turn the green LED on     
-    #else:         
-    #    GPIO.output(40,GPIO.HIGH)         
-    #    status = True
+    update_leds()
+
+def update_leds():
+    global bincount
+    bincount = '{0:03b}'.format(count)
+    if bincount[0:-2]=='1':         
+        GPIO.output(40,GPIO.HIGH)     
+    else:         
+        GPIO.output(40,GPIO.LOW)
+    if bincount[1:-1]=='1':         
+        GPIO.output(38,GPIO.HIGH)     
+    else:         
+        GPIO.output(38,GPIO.LOW)
+    if bincount[2:3]=='1':      
+        GPIO.output(36,GPIO.HIGH)
+    else:
+        GPIO.output(36,GPIO.LOW)
 
 # Only run the functions if 
 if __name__ == "__main__":
-    # Make sure the GPIO is stopped correctly
     try:
         status = False
         count = 0
         while True:
             main()
     except KeyboardInterrupt:
-        print("Exiting gracefully")
-        # Turn off your GPIOs here
+        print("Exiting gracefully on interrupt")
         GPIO.cleanup()
     except e:
         print("Some other error occurred")
         print(e.message)
         GPIO.cleanup()
-
-# GPIO.add_event_detect(BTN_B, GPIO.RISING, method_on_interrupt)
-# GPIO.add_event_detect(BTN_PIN, GPIO.FALLING, callback=callback_method(),bouncetime=300)
