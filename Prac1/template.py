@@ -38,35 +38,43 @@ def buttonOneHandler (pin):
     global status
     global count
     count=count+1
-    print ("handling button1 event ",count)
+    if count==8:   
+        count = 0
+    #bincount=(bin(count)).format(3)
+    bincount = '{0:03b}'.format(count)
+    print ("handling button1 event ","count ",count,"bincount ", bincount)
 
     # turn the green LED off
-    if status:
-        GPIO.output(40,GPIO.LOW)
-        GPIO.output(38,GPIO.LOW)
-        GPIO.output(36,GPIO.LOW)
-        status = False
+    #if status:
+    #    GPIO.output(40,GPIO.LOW)
+    #    GPIO.output(38,GPIO.LOW)
+    #    GPIO.output(36,GPIO.LOW)
+    #    status = False
     # turn the green LED on
-    else:
-        GPIO.output(40,GPIO.HIGH)
-        GPIO.output(38,GPIO.HIGH)
-        GPIO.output(36,GPIO.HIGH)
-        status = True
+    #else:
+    #    GPIO.output(40,GPIO.HIGH)
+    #    GPIO.output(38,GPIO.HIGH)
+    #    GPIO.output(36,GPIO.HIGH)
+    #    status = True
 
 def buttonTwoHandler (pin):     
     global status
     global count
     count=count-1
-    print ("handling button2 event ", count)      
+    if count==-1:
+        count = 7
+    #bincount=(bin(count)[2:]).format(3)
+    bincount = '{0:03b}'.format(count)
+    print ("handling button2 event ","count ",count,"bincount ", bincount)      
     
     # turn the green LED off     
-    if status:         
-        GPIO.output(40,GPIO.LOW)         
-        status = False     
+    #if status:         
+    #    GPIO.output(40,GPIO.LOW)         
+    #    status = False     
     # turn the green LED on     
-    else:         
-        GPIO.output(40,GPIO.HIGH)         
-        status = True
+    #else:         
+    #    GPIO.output(40,GPIO.HIGH)         
+    #    status = True
 
 # Only run the functions if 
 if __name__ == "__main__":
