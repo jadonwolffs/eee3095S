@@ -28,3 +28,4 @@ rem set /p file="Enter file to compile: "
 @echo on
 arm-linux-gnueabihf-g++ -ggdb test.c Timer.cpp -o output -mfp16-format=ieee -mfpu=vfpv3xd-fp16
 pscp -pw <password> output pi@10.3.141.1:
+pause
