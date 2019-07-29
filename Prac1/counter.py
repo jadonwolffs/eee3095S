@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+ #!/usr/bin/python3
 """
 Python Practical Template
 Keegan Crankshaw
@@ -33,7 +33,7 @@ def main():
 
 def buttonOneHandler (pin):                                                     #function which handles the first button being pressed (increment)
     global count                                                                #force the function to us the global count variable
-    count=count+1                                                               #increment the count variable
+    count+=1                                                               #increment the count variable
     if count==8:                                                                #make sure it is not incremented past 7
         count = 0
     bincount = '{0:03b}'.format(count)                                          #convert the count to a binary number and format it into 3 digits (leading 0s)
@@ -42,7 +42,7 @@ def buttonOneHandler (pin):                                                     
 
 def buttonTwoHandler (pin):                                                     #function which handles the second button being pressed (decrement)
     global count                                                                #force the function to us the global count variable
-    count=count-1                                                               #decrement the count variable
+    count-=1                                                               #decrement the count variable
     if count==-1:                                                               #make sure it is not decremented past 0
         count = 7
     bincount = '{0:03b}'.format(count)                                          #convert the count to a binary number and format it into 3 digits (leading 0s)
