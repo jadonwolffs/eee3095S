@@ -13,9 +13,9 @@ import RPi.GPIO as GPIO                                                         
 
 def main():         
     GPIO.setmode(GPIO.BOARD)         
-    GPIO.setup(40, GPIO.OUT)                                                    #setup pins 40, 38 and 36 to output for the LEDs
-    GPIO.setup(38, GPIO.OUT)
-    GPIO.setup(36, GPIO.OUT)
+    GPIO.setup(40, GPIO.OUT, initial=GPIO.LOW)                                  #setup pins 40, 38 and 36 to output for the LEDs
+    GPIO.setup(38, GPIO.OUT, initial=GPIO.LOW)
+    GPIO.setup(36, GPIO.OUT, initial=GPIO.LOW)
     
     GPIO.setup(5, GPIO.IN)                                                      #set pin 5 to input for the first pushbutton        
     GPIO.add_event_detect(5, GPIO.RISING, bouncetime=300)                       #add an interrupt to pin 5 for the first button, detects the rising edge and is debounced in a threshold of 300ms
@@ -28,25 +28,32 @@ def main():
     GPIO.output(40,GPIO.LOW)                                                    #set the starting position of the led pins to off
     GPIO.output(38,GPIO.LOW)
     GPIO.output(36,GPIO.LOW)
+
     while True:                                                                 #a busy wait loop that gets interrupted on a button press
         pass                                                                    #anything that needed to happen in the constant running of the programme would happen here
 
-def buttonOneHandler (pin):                                                     #function which handles the first button being pressed (increment)
+def buttonOneHandler (pin_num):                                                 #function which handles the first button being pressed (increment)
     global count                                                                #force the function to us the global count variable
-    count+=1                                                               #increment the count variable
-    if count==8:                                                                #make sure it is not incremented past 7
+    
+    if count==7:                                                                #make sure it is not incremented past 7
         count = 0
+    else:
+	    count+=1                                                               	#increment the count variable
+    
     bincount = '{0:03b}'.format(count)                                          #convert the count to a binary number and format it into 3 digits (leading 0s)
-    print ("handling button1 event ","count ",count,"bincount ", bincount)      #print trace statement
+    print ("incrementing ","count to ",count," with binary value ", bincount)   #print trace statement
     update_leds()                                                               #call the update function to update the leds based on the new count
 
-def buttonTwoHandler (pin):                                                     #function which handles the second button being pressed (decrement)
+def buttonTwoHandler (pin_num):                                                 #function which handles the second button being pressed (decrement)
     global count                                                                #force the function to us the global count variable
-    count-=1                                                               #decrement the count variable
-    if count==-1:                                                               #make sure it is not decremented past 0
+    
+    if count==0:                                                               	#make sure it is not decremented past 0
         count = 7
+    else:
+	    count-=1                                                               	#decrement the count variable
+    
     bincount = '{0:03b}'.format(count)                                          #convert the count to a binary number and format it into 3 digits (leading 0s)
-    print ("handling button2 event ","count ",count,"bincount ", bincount)      #print trace statement
+    print ("decrementing ","count to ",count," with binary value ", bincount)   #print trace statement
     update_leds()                                                               #call the update function to update the leds based on the new count
 
 def update_leds():
