@@ -9,15 +9,22 @@ Adapted from Paul McGuire's answer on Stack Overflow
 https://stackoverflow.com/questions/1557571/how-do-i-get-time-of-a-python-programs-execution/12344609#12344609
 """
 
-import atexit
 from time import time, strftime, localtime
 from datetime import timedelta
+
+start = ''
 
 def secondsToStr(elapsed=None):
     if elapsed is None:
         return strftime("%Y-%m-%d %H:%M:%S", localtime())
     else:
         return str(timedelta(seconds=elapsed))
+
+def startlog():
+    global start
+    start = time()
+    log("Starting log")
+
 
 def log(s, elapsed=None):
     line = "="*40
@@ -28,10 +35,8 @@ def log(s, elapsed=None):
     print(line)
 
 def endlog():
+    global start
     end = time()
     elapsed = end-start
     log("End Program", secondsToStr(elapsed))
 
-start = time()
-atexit.register(endlog)
-log("Start Program")
