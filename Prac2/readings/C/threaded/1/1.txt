@@ -1,0 +1,8 @@
+arm-linux-gnueabihf-g++ -ITools -lm -lrt -c src/Prac2_threaded.c -o obj/Prac2_threaded.o
+arm-linux-gnueabihf-g++ -ITools -lm -lrt -c Tools/Timer.cpp -o obj/Timer.o
+arm-linux-gnueabihf-g++ -o bin/Prac2_threaded obj/Prac2_threaded.o obj/Timer.o -lm -lrt -pthread
+bin/Prac2_threaded
+Clock resolution: 1 ns
+Threads created :-)
+All threads have quit
+Time taken for threads to run = 5.36712 ms

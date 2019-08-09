@@ -1,0 +1,5 @@
+bin/Prac2_threaded
+Clock resolution: 1 ns
+Threads created :-)
+All threads have quit
+Time taken for threads to run = 3.09233 ms

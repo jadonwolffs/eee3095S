@@ -17,11 +17,17 @@ threaded:
     $(CC) $(INCLUDE) $(CFLAGS) -c Tools/Timer.cpp -o obj/Timer.o
     $(CC) -o bin/Prac2_threaded obj/Prac2_threaded.o obj/Timer.o $(CFLAGS) -pthread
 
-run:
+run: default
     bin/Prac2
 
 run_threaded:
     bin/Prac2_threaded
 
 clean: 
-    rm -rf $(PROG) $(OBJS) 
+    rm -rf $(PROG) $(OBJS)
+
+test: clean run
+
+test_thread: clean run_threaded
+
+recompile: clean threaded

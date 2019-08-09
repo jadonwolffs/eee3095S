@@ -1,0 +1,10 @@
+rm -rf bin/* obj/*
+arm-linux-gnueabihf-g++ -ITools -lm -lrt -c src/Prac2.c -o obj/Prac2.o
+arm-linux-gnueabihf-g++ -ITools -lm -lrt -c Tools/Timer.cpp -o obj/Timer.o
+arm-linux-gnueabihf-g++ -o bin/Prac2 obj/Prac2.o obj/Timer.o -lm -lrt
+bin/Prac2
+Running Unthreaded Test
+Precision sizeof 4
+Clock resolution: 1 ns
+Time: 3.291680 ms
+End Unthreaded Test

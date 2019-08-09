@@ -5,3 +5,5 @@ PracSource/
 *~
 .*.swo
 Prac1/*~*
+__pycache__
+readings_bak
