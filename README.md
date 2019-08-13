@@ -18,3 +18,13 @@ The fourth practical introduces **I2C** and **PWM**, as well as some more useful
 
 ## [Prac 5](https://github.com/jadonwolffs/eee3095S/tree/master/Prac5)
 Practical 5 isn't directly related to the Raspberrry Pi, but introduces low level knowledge of processors by requiring you to **design an ALU**.
+
+## Prac 3
+The third practical introduces I2C and PWM, as well as some more usefule Raspberry Pi concepts. In this practical, you will be making a binary clock that runs as soon as the Raspberry Pi boots.
+
+## Prac 4
+Practical 4 will introduce SPI and threading, in order to play some sampled audio on a DAC.
+
+## Prac 5
+Practical 5 isn't directly related to the Raspberrry Pi, but introduces low level knowledge of processors by requiring you to design an ALU.
+
