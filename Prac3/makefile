@@ -5,13 +5,15 @@ CFLAGS = -Wall -lm -lrt -lwiringPi
 PROG = bin/*
 OBJS = obj/*
 
-default:
+bin/Clock:
     mkdir -p bin obj
     $(CC) $(CFLAGS) -c src/BinClock.c -o obj/BinClock
     $(CC) $(CFLAGS) -c src/CurrentTime.c -o obj/CurrentTime
     $(CC) $(CFLAGS) obj/BinClock obj/CurrentTime -o bin/Clock
 
-run:
+default:bin/Clock
+
+run: bin/Clock
     sudo ./bin/Clock
 
 clean:

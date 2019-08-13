@@ -4,14 +4,15 @@
  * Modified for EEE3095S/3096S by Keegan Crankshaw
  * August 2019
  * 
- * <STUDNUM_1> <STUDNUM_2>
- * Date
+ * WLFJAD001 ARNJAM004
+ * Date 13/08/2019
 */
 
 #include <wiringPi.h>
 #include <wiringPiI2C.h>
-#include <stdio.h> //For printf functions
+#include <stdio.h> // For printf functions
 #include <stdlib.h> // For system functions
+#include <signal.h> // For catching interrupt and aborts
 
 #include "BinClock.h"
 #include "CurrentTime.h"
@@ -23,6 +24,16 @@ int RTC; //Holds the RTC instance
 
 int HH,MM,SS;
 
+void ctrlc(int signal){
+	printf("Caught interrupt, exiting gracefully\n");
+	exit(0);
+}
+
+void catch_abort(int signal){
+	printf("Caught abort, exiting gracefully\n");
+	exit(1);
+}
+
 void initGPIO(void){
 	/* 
 	 * Sets GPIO using wiringPi pins. see pinout.xyz for specific wiringPi pins
@@ -30,6 +41,8 @@ void initGPIO(void){
 	 * Note: wiringPi does not use GPIO or board pin numbers (unless specifically set to that mode)
 	 */
 	printf("Setting up\n");
+	signal(SIGINT, ctrlc);
+	signal(SIGABRT,catch_abort);
 	wiringPiSetup(); //This is the default mode. If you want to change pinouts, be aware
 	
 	RTC = wiringPiI2CSetup(RTCAddr); //Set up the RTC
