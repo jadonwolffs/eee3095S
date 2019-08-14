@@ -80,9 +80,9 @@ int main(void){
 	signal(SIGABRT,catch_abort);
 	//Set random time (3:04PM)
 	//You can comment this file out later
-	wiringPiI2CWriteReg8(RTC, HOUR, 0x13+TIMEZONE);
-	wiringPiI2CWriteReg8(RTC, MIN, 0x4);
-	wiringPiI2CWriteReg8(RTC, SEC, 0x80);
+	//wiringPiI2CWriteReg8(RTC, HOUR, 0x10+TIMEZONE);
+	//wiringPiI2CWriteReg8(RTC, MIN, 0x30);
+	//wiringPiI2CWriteReg8(RTC, SEC, 0x80);
 	
 	//
 	toggleTime();
