@@ -41,6 +41,7 @@ void initGPIO(void){
 	
 	//Set Up the Seconds LED for PWM
 	//Write your logic here
+	//secPWM
 	
 	printf("LEDS done\n");
 	
@@ -123,6 +124,7 @@ void lightMins(int units){
  */
 void secPWM(int units){
 	// Write your logic here
+	// TODO
 }
 
 /*
