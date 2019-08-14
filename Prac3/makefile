@@ -20,6 +20,6 @@ clean:
     rm $(PROG) $(OBJS)
 
 gpio:
-    gpio load i2c
-    gpio readall
     gpio i2cdetect
+    gpio readall
+#    gpio load i2c

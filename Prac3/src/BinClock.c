@@ -41,8 +41,6 @@ void initGPIO(void){
 	 * Note: wiringPi does not use GPIO or board pin numbers (unless specifically set to that mode)
 	 */
 	printf("Setting up\n");
-	signal(SIGINT, ctrlc);
-	signal(SIGABRT,catch_abort);
 	wiringPiSetup(); //This is the default mode. If you want to change pinouts, be aware
 	
 	RTC = wiringPiI2CSetup(RTCAddr); //Set up the RTC
@@ -78,17 +76,29 @@ void initGPIO(void){
  */
 int main(void){
 	initGPIO();
-
+	signal(SIGINT, ctrlc);         		//catch interupts
+	signal(SIGABRT,catch_abort);
 	//Set random time (3:04PM)
 	//You can comment this file out later
 	wiringPiI2CWriteReg8(RTC, HOUR, 0x13+TIMEZONE);
 	wiringPiI2CWriteReg8(RTC, MIN, 0x4);
-	wiringPiI2CWriteReg8(RTC, SEC, 0x00);
+	wiringPiI2CWriteReg8(RTC, SEC, 0x80);
 	
+	//
+	toggleTime();
 	// Repeat this until we shut down
 	for (;;){
+		//wiringPiI2CReadReg8(RTC,hours);
+		
+		secs = wiringPiI2CReadReg8(RTC,SEC);
+		mins = wiringPiI2CReadReg8(RTC,MIN);
+		hours = wiringPiI2CReadReg8(RTC,HOUR);
+		//secs = SS;
 		//Fetch the time from the RTC
+		
 		//Write your logic here
+		
+		//hours = RTC;
 		
 		//Function calls to toggle LEDs
 		//Write your logic here
