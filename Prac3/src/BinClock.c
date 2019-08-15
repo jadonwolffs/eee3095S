@@ -25,8 +25,10 @@ char* result;
 int HH,MM,SS;
 void cleanup(){
 	printf("Cleaning up LEDs\n");
-	for(int i; i < sizeof(LEDS)/sizeof(LEDS[0]); i++){
-		pinMode(LEDS[i], INPUT);
+	for(int i=0; i < sizeof(LEDS)/sizeof(LEDS[0]); i++){
+		digitalWrite(LEDS[i],0);
+		//printf("Turned off %d\n",i);
+		//pinMode(LEDS[i], INPUT);
 	}
 	//TODO add PWM cleanup
 	printf("Cleaning up buttons\n");
@@ -41,21 +43,6 @@ void catch_abort(int signal){
 	printf("Caught abort, exiting gracefully\n");
 	cleanup();
 	exit(1);
-}
-
-char* Dec2RadixI(int decValue, int radValue, int maxLength){
-	result = ( char *) malloc((logI)*sizeof(char));
-	int n = decValue;
-	int x = 0;
-	char rem;
-	while(n!=0)
-	{
-		rem = n%radValue;
-		n = floor(n/radValue);
-		result[x] =(rem);
-		x++;
-	}
-	return result;
 }
 
 void initGPIO(void){
@@ -92,7 +79,10 @@ void initGPIO(void){
 	printf("BTNS done\n");
 	printf("Setup done\n");
 }
-
+void light(){
+lightHours(hours);
+lightMins(mins);
+}
 
 /*
  * The main function
@@ -129,7 +119,7 @@ int main(void){
 		
 		// Print out the time we have stored on our RTC
 		printf("The current time is: %x:%x:%x\n", hours, mins, secs);
-
+		light();
 		//using a delay to make our program "less CPU hungry"
 		delay(1000); //milliseconds
 	}
@@ -155,11 +145,17 @@ int hFormat(int hours){
  */
 void lightHours(int units){
 	// Write your logic to light up the hour LEDs here	
-	if(units%2){void digitalWrite (LEDS[0],1);units--;}
-	else{void digitalWrite (LEDS[0],0);}
+	if(units%2){digitalWrite(LEDS[0],1);units--;}
+	else{digitalWrite(LEDS[0],0);}
 
-	if(units%4){void digitalWrite (LEDS[0],1);units--;}         
-	else{void digitalWrite (LEDS[1],0);}
+	if(units%4){digitalWrite(LEDS[1],1);units-=units%4;}         
+	else{digitalWrite(LEDS[1],0);}
+	
+	if(units%8){digitalWrite(LEDS[2],1);units-=units%8;}         
+	else{digitalWrite(LEDS[2],0);}
+
+	if(units%16){digitalWrite(LEDS[3],1);units-=units%16;}         
+	else{digitalWrite(LEDS[3],0);}
 }
 
 /*
@@ -167,6 +163,21 @@ void lightHours(int units){
  */
 void lightMins(int units){
 	//Write your logic to light up the minute LEDs here
+	 if(units%2){digitalWrite(LEDS[4],1);units--;}         
+	 else{digitalWrite(LEDS[4],0);}
+
+	 if(units%4){digitalWrite(LEDS[5],1);units-=units%4;}
+	 else{digitalWrite(LEDS[5],0);}
+
+	 if(units%8){digitalWrite(LEDS[6],1);units-=units%8;}          
+	 else{digitalWrite(LEDS[6],0);}
+
+	 if(units%16){digitalWrite(LEDS[7],1);units-=units%16;}          
+	 else{digitalWrite(LEDS[7],0);}
+
+	 if(units%32){digitalWrite(LEDS[8],1);units-=units%32;}          else{digitalWrite(LEDS[8],0);}
+
+	 if(units%64){digitalWrite(LEDS[9],1);units-=units%64;}          else{digitalWrite(LEDS[9],0);}
 }
 
 /*
