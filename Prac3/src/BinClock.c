@@ -45,7 +45,7 @@ void initGPIO(void)
 
 	//Set Up the Seconds LED for PWM
 	//Write your logic here
-	//secPWM
+	pinMode(SECS, PWM_OUTPUT);
 
 	printf("LEDS done\n");
 
@@ -66,6 +66,7 @@ void light()
 {
 	lightHours(hours);
 	lightMins(mins);
+	secPWM(secs);
 }
 
 /*
@@ -182,6 +183,7 @@ void lightMins(int units)
 void secPWM(int units)
 {
 	// Write your logic here
+	pwmWrite(SECS, 1024 / units);
 }
 
 /*
@@ -323,11 +325,11 @@ void cleanup()
 	printf("Cleaning up LEDs\n");
 	for (int i = 0; i < sizeof(LEDS) / sizeof(LEDS[0]); i++)
 	{
-		digitalWrite(LEDS[i], 0);
-		//printf("Turned off %d\n",i);
-		//pinMode(LEDS[i], INPUT);
+		// digitalWrite(LEDS[i], 0);
+		pinMode(LEDS[i], INPUT);
 	}
-	//TODO add PWM cleanup
+	// digitalWrite(SECS, 0);
+	pinMode(SECS, INPUT);
 	printf("Cleaning up buttons\n");
 }
 
