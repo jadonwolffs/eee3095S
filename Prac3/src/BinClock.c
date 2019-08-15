@@ -24,16 +24,7 @@ long lastInterruptTime = -201; //Used for button debounce
 int RTC; //Holds the RTC instance
 char* result;
 int HH,MM,SS;
-void cleanup(){
-	printf("Cleaning up LEDs\n");
-	for(int i=0; i < sizeof(LEDS)/sizeof(LEDS[0]); i++){
-		digitalWrite(LEDS[i],0);
-		//printf("Turned off %d\n",i);
-		//pinMode(LEDS[i], INPUT);
-	}
-	//TODO add PWM cleanup
-	printf("Cleaning up buttons\n");
-}
+
 void ctrlc(int signal){
 	printf("Caught interrupt, exiting gracefully\n");
 	cleanup();
@@ -172,23 +163,37 @@ void lightHours(int units){
 void lightMins(int units){
 	//Write your logic to light up the minute LEDs here
 	 units = hexCompensation(units);
-	 if(units%2){digitalWrite(LEDS[4],1);units--;}         
-	 else{digitalWrite(LEDS[4],0);}
+	 int factor = 0;
+	 for (int led = 4; led < 10; led++)
+	 {
+		 factor = pow(2, led + 1);
+		 if (units % factor)
+		 {
+			 digitalWrite(LEDS[led], 1);
+			 units -= units % factor;
+		 }
+		 else
+		 {
+			 digitalWrite(LEDS[led], 0);
+		 }
+	 }
+	 //  if(units%2){digitalWrite(LEDS[4],1);units--;}
+	 //  else{digitalWrite(LEDS[4],0);}
 
-	 if(units%4){digitalWrite(LEDS[5],1);units-=units%4;}
-	 else{digitalWrite(LEDS[5],0);}
+	 //  if(units%4){digitalWrite(LEDS[5],1);units-=units%4;}
+	 //  else{digitalWrite(LEDS[5],0);}
 
-	 if(units%8){digitalWrite(LEDS[6],1);units-=units%8;}          
-	 else{digitalWrite(LEDS[6],0);}
+	 //  if(units%8){digitalWrite(LEDS[6],1);units-=units%8;}
+	 //  else{digitalWrite(LEDS[6],0);}
 
-	 if(units%16){digitalWrite(LEDS[7],1);units-=units%16;}          
-	 else{digitalWrite(LEDS[7],0);}
+	 //  if(units%16){digitalWrite(LEDS[7],1);unitçs-=units%16;}
+	 //  else{digitalWrite(LEDS[7],0);}
 
-	 if(units%32){digitalWrite(LEDS[8],1);units-=units%32;}          
-	 else{digitalWrite(LEDS[8],0);}
+	 //  if(units%32){digitalWrite(LEDS[8],1);units-=units%32;}
+	 //  else{digitalWrite(LEDS[8],0);}
 
-	 if(units%64){digitalWrite(LEDS[9],1);units-=units%64;}          
-	 else{digitalWrite(LEDS[9],0);}
+	 //  if(units%64){digitalWrite(LEDS[9],1);units-=units%64;}
+	 //  else{digitalWrite(LEDS[9],0);}
 
 	 //printf("Leftover minutes: %d\n",units);
 }
@@ -320,4 +325,31 @@ void toggleTime(void){
 
 	}
 	lastInterruptTime = interruptTime;
+}
+
+void cleanup()
+{
+	printf("Cleaning up LEDs\n");
+	for (int i = 0; i < sizeof(LEDS) / sizeof(LEDS[0]); i++)
+	{
+		digitalWrite(LEDS[i], 0);
+		//printf("Turned off %d\n",i);
+		//pinMode(LEDS[i], INPUT);
+	}
+	//TODO add PWM cleanup
+	printf("Cleaning up buttons\n");
+}
+
+void ctrlc(int signal)
+{
+	printf("Caught interrupt, exiting gracefully\n");
+	cleanup();
+	exit(0);
+}
+
+void catch_abort(int signal)
+{
+	printf("Caught abort, exiting gracefully\n");
+	cleanup();
+	exit(1);
 }
