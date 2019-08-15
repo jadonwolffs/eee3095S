@@ -10,3 +10,5 @@ readings_bak
 /lectures
 /Prac2/Results.csv
 *.swp
+/Prac3/bin/
+/Prac3/obj/
