@@ -173,7 +173,7 @@ void lightMins(int units)
 			digitalWrite(LEDS[led + base], 0);
 		}
 	}
-	//digitalWrite(6, 1);
+	
 }
 
 /*
