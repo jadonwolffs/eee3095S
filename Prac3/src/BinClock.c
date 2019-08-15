@@ -152,17 +152,18 @@ void lightMins(int units){
 	//Write your logic to light up the minute LEDs here
 	 units = hexCompensation(units);
 	 int factor = 0;
-	 for (int led = 4; led < 10; led++)
+	 int base = 4;
+	 for (int led = 0; led < 6; led++)
 	 {
 		 factor = pow(2, led + 1);
 		 if (units % factor)
 		 {
-			 digitalWrite(LEDS[led], 1);
+			 digitalWrite(LEDS[led+base], 1);
 			 units -= units % factor;
 		 }
 		 else
 		 {
-			 digitalWrite(LEDS[led], 0);
+			 digitalWrite(LEDS[led+base], 0);
 		 }
 	 }
 	 //  if(units%2){digitalWrite(LEDS[4],1);units--;}
