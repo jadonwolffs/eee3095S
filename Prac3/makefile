@@ -26,3 +26,6 @@ gpio:
 
 edit:
     vim src/BinClock.c
+
+header:
+    vim src/BinClock.h
