@@ -24,6 +24,10 @@ long lastInterruptTime = -201; //Used for button debounce
 int RTC;					   //Holds the RTC instance
 char *result;
 int HH, MM, SS;
+void test()
+{
+	printf("Detected");
+}
 
 void initGPIO(void)
 {
@@ -44,7 +48,6 @@ void initGPIO(void)
 	}
 
 	//Set Up the Seconds LED for PWM
-	//Write your logic here
 	pinMode(SECS, PWM_OUTPUT);
 
 	printf("LEDS done\n");
@@ -58,6 +61,8 @@ void initGPIO(void)
 
 	//Attach interrupts to Buttons
 	//Write your logic here
+	wiringPiISR(5, INT_EDGE_RISING, test);
+	wiringPiISR(30, INT_EDGE_RISING, test);
 
 	printf("BTNS done\n");
 	printf("Setup done\n");
@@ -173,7 +178,6 @@ void lightMins(int units)
 			digitalWrite(LEDS[led + base], 0);
 		}
 	}
-	
 }
 
 /*
