@@ -19,19 +19,43 @@
 
 //Global variables
 int hours, mins, secs;
-long lastInterruptTime = 0; //Used for button debounce
+long lastInterruptTime = -201; //Used for button debounce
 int RTC; //Holds the RTC instance
-
+char* result;
 int HH,MM,SS;
-
+void cleanup(){
+	printf("Cleaning up LEDs\n");
+	for(int i; i < sizeof(LEDS)/sizeof(LEDS[0]); i++){
+		pinMode(LEDS[i], INPUT);
+	}
+	//TODO add PWM cleanup
+	printf("Cleaning up buttons\n");
+}
 void ctrlc(int signal){
 	printf("Caught interrupt, exiting gracefully\n");
+	cleanup();
 	exit(0);
 }
 
 void catch_abort(int signal){
 	printf("Caught abort, exiting gracefully\n");
+	cleanup();
 	exit(1);
+}
+
+char* Dec2RadixI(int decValue, int radValue, int maxLength){
+	result = ( char *) malloc((logI)*sizeof(char));
+	int n = decValue;
+	int x = 0;
+	char rem;
+	while(n!=0)
+	{
+		rem = n%radValue;
+		n = floor(n/radValue);
+		result[x] =(rem);
+		x++;
+	}
+	return result;
 }
 
 void initGPIO(void){
@@ -82,15 +106,15 @@ int main(void){
 	//You can comment this file out later
 	//wiringPiI2CWriteReg8(RTC, HOUR, 0x10+TIMEZONE);
 	//wiringPiI2CWriteReg8(RTC, MIN, 0x30);
-	//wiringPiI2CWriteReg8(RTC, SEC, 0x80);
+	//wiringPiI2CWriteReg8(RTC, SEC, 0b10000000);
 	
-	//
 	toggleTime();
 	// Repeat this until we shut down
 	for (;;){
+
 		//wiringPiI2CReadReg8(RTC,hours);
-		
-		secs = wiringPiI2CReadReg8(RTC,SEC);
+		//toggleTime();
+		secs = wiringPiI2CReadReg8(RTC,SEC)-0b10000000;
 		mins = wiringPiI2CReadReg8(RTC,MIN);
 		hours = wiringPiI2CReadReg8(RTC,HOUR);
 		//secs = SS;
@@ -131,6 +155,11 @@ int hFormat(int hours){
  */
 void lightHours(int units){
 	// Write your logic to light up the hour LEDs here	
+	if(units%2){void digitalWrite (LEDS[0],1);units--;}
+	else{void digitalWrite (LEDS[0],0);}
+
+	if(units%4){void digitalWrite (LEDS[0],1);units--;}         
+	else{void digitalWrite (LEDS[1],0);}
 }
 
 /*
@@ -147,7 +176,7 @@ void lightMins(int units){
  */
 void secPWM(int units){
 	// Write your logic here
-	// TODO
+	
 }
 
 /*
@@ -250,9 +279,11 @@ void toggleTime(void){
 
 	if (interruptTime - lastInterruptTime>200){
 		HH = getHours();
+		printf("hours: %d\n",HH);
 		MM = getMins();
+		printf("minutes: %d\n",MM);
 		SS = getSecs();
-
+		printf("seconds: %d\n",SS);
 		HH = hFormat(HH);
 		HH = decCompensation(HH);
 		wiringPiI2CWriteReg8(RTC, HOUR, HH);
