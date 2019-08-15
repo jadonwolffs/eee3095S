@@ -17,9 +17,12 @@ run: bin/Clock
     sudo ./bin/Clock
 
 clean:
-    rm $(PROG) $(OBJS)
+    rm -f $(PROG) $(OBJS)
 
 gpio:
     gpio i2cdetect
     gpio readall
 #    gpio load i2c
+
+edit:
+    vim src/BinClock.c
