@@ -25,18 +25,6 @@ int RTC; //Holds the RTC instance
 char* result;
 int HH,MM,SS;
 
-void ctrlc(int signal){
-	printf("Caught interrupt, exiting gracefully\n");
-	cleanup();
-	exit(0);
-}
-
-void catch_abort(int signal){
-	printf("Caught abort, exiting gracefully\n");
-	cleanup();
-	exit(1);
-}
-
 void initGPIO(void){
 	/* 
 	 * Sets GPIO using wiringPi pins. see pinout.xyz for specific wiringPi pins
@@ -186,7 +174,7 @@ void lightMins(int units){
 	 //  if(units%8){digitalWrite(LEDS[6],1);units-=units%8;}
 	 //  else{digitalWrite(LEDS[6],0);}
 
-	 //  if(units%16){digitalWrite(LEDS[7],1);unitçs-=units%16;}
+	 //  if(units%16){digitalWrite(LEDS[7],1);units-=units%16;}
 	 //  else{digitalWrite(LEDS[7],0);}
 
 	 //  if(units%32){digitalWrite(LEDS[8],1);units-=units%32;}
