@@ -17,6 +17,7 @@
 #include "BinClock.h"
 #include "CurrentTime.h"
 
+#include <math.h> // For pow function
 //Global variables
 int hours, mins, secs;
 long lastInterruptTime = -201; //Used for button debounce
@@ -145,17 +146,24 @@ int hFormat(int hours){
  */
 void lightHours(int units){
 	// Write your logic to light up the hour LEDs here	
-	if(units%2){digitalWrite(LEDS[0],1);units--;}
-	else{digitalWrite(LEDS[0],0);}
-
-	if(units%4){digitalWrite(LEDS[1],1);units-=units%4;}         
-	else{digitalWrite(LEDS[1],0);}
+	units = hexCompensation(units);
+	//printf("Start hours: %d\n",units);
+	int factor = 0;
+	for(int led=0;led<4;led++){
+		factor = pow(2,led+1);
+		if(units%factor){digitalWrite(LEDS[led],1);units-=units%factor;}
+		else{digitalWrite(LEDS[led],0);}
+	}
+	//if(local_units%4){digitalWrite(LEDS[2],1);local_units-=local_units%4;}         
+	//else{digitalWrite(LEDS[2],0);}
 	
-	if(units%8){digitalWrite(LEDS[2],1);units-=units%8;}         
-	else{digitalWrite(LEDS[2],0);}
+	//if(local_units%8){digitalWrite(LEDS[1],1);local_units-=local_units%8;}         
+	//else{digitalWrite(LEDS[1],0);}
 
-	if(units%16){digitalWrite(LEDS[3],1);units-=units%16;}         
-	else{digitalWrite(LEDS[3],0);}
+	//if(local_units%16){digitalWrite(LEDS[0],1);local_units-=local_units%16;}         
+	//else{digitalWrite(LEDS[0],0);}
+
+	//printf("Leftover hours: %d\n",local_units);
 }
 
 /*
@@ -163,6 +171,7 @@ void lightHours(int units){
  */
 void lightMins(int units){
 	//Write your logic to light up the minute LEDs here
+	 units = hexCompensation(units);
 	 if(units%2){digitalWrite(LEDS[4],1);units--;}         
 	 else{digitalWrite(LEDS[4],0);}
 
@@ -175,9 +184,13 @@ void lightMins(int units){
 	 if(units%16){digitalWrite(LEDS[7],1);units-=units%16;}          
 	 else{digitalWrite(LEDS[7],0);}
 
-	 if(units%32){digitalWrite(LEDS[8],1);units-=units%32;}          else{digitalWrite(LEDS[8],0);}
+	 if(units%32){digitalWrite(LEDS[8],1);units-=units%32;}          
+	 else{digitalWrite(LEDS[8],0);}
 
-	 if(units%64){digitalWrite(LEDS[9],1);units-=units%64;}          else{digitalWrite(LEDS[9],0);}
+	 if(units%64){digitalWrite(LEDS[9],1);units-=units%64;}          
+	 else{digitalWrite(LEDS[9],0);}
+
+	 //printf("Leftover minutes: %d\n",units);
 }
 
 /*
