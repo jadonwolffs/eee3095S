@@ -60,9 +60,9 @@ void initGPIO(void)
 	}
 
 	//Attach interrupts to Buttons
-	//Write your logic here
-	wiringPiISR(5, INT_EDGE_RISING, test);
-	wiringPiISR(30, INT_EDGE_RISING, test);
+	//Write your logic here	
+	wiringPiISR(BTNS[0], INT_EDGE_RISING, &minInc);
+	wiringPiISR(BTNS[1], INT_EDGE_RISING, &hourInc);
 
 	printf("BTNS done\n");
 	printf("Setup done\n");
@@ -290,10 +290,21 @@ void minInc(void)
 
 	if (interruptTime - lastInterruptTime > 200)
 	{
-		printf("Interrupt 2 triggered, %x\n", mins);
 		//Fetch RTC Time
+		mins = wiringPiI2CReadReg8(RTC, MIN);
 		//Increase minutes by 1, ensuring not to overflow
+		if(hexCompensation(mins)==59){
+			hours++;
+			mins=0;
+		}
+		else{
+			mins=decCompensation(mins+1);
+		}	
 		//Write minutes back to the RTC
+		wiringPiI2CWriteReg8(RTC, HOUR, hours);
+		wiringPiI2CWriteReg8(RTC, MIN, mins);
+
+		printf("Interrupt 2 triggered, %x\n", mins);
 	}
 	lastInterruptTime = interruptTime;
 }
