@@ -183,7 +183,6 @@ void lightMins(int units)
 void secPWM(int units)
 {
 	// Write your logic here
-
 	pwmWrite(SECS, round(units * 17.06));
 }
 
@@ -326,10 +325,10 @@ void cleanup()
 	printf("Cleaning up LEDs\n");
 	for (int i = 0; i < sizeof(LEDS) / sizeof(LEDS[0]); i++)
 	{
-		// digitalWrite(LEDS[i], 0);
+		digitalWrite(LEDS[i], 0);
 		pinMode(LEDS[i], INPUT);
 	}
-	// digitalWrite(SECS, 0);
+	pwmWrite(SECS, 0);
 	pinMode(SECS, INPUT);
 	printf("Cleaning up buttons\n");
 }
