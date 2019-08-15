@@ -38,7 +38,7 @@ void initGPIO(void)
 	RTC = wiringPiI2CSetup(RTCAddr); //Set up the RTC
 
 	//Set up the LEDS
-	for (int i; i < sizeof(LEDS) / sizeof(LEDS[0]); i++)
+	for (int i; i < 10; i++)
 	{
 		pinMode(LEDS[i], OUTPUT);
 	}
@@ -173,6 +173,7 @@ void lightMins(int units)
 			digitalWrite(LEDS[led + base], 0);
 		}
 	}
+	//digitalWrite(6, 1);
 }
 
 /*
