@@ -183,7 +183,8 @@ void lightMins(int units)
 void secPWM(int units)
 {
 	// Write your logic here
-	pwmWrite(SECS, 1024 / units);
+
+	pwmWrite(SECS, round(units * 17.06));
 }
 
 /*
