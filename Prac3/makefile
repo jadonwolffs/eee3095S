@@ -33,3 +33,6 @@ header:
     vim src/BinClock.h
 
 debug: gpio clean run
+
+screen:
+    screen -S prac3 make debug
