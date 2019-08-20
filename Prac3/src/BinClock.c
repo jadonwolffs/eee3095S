@@ -278,7 +278,7 @@ void hourInc(void)
 
 		//Write hours back to the RTC
 		wiringPiI2CWriteReg8(RTC, HOUR, decCompensation(hours));
-		printf("Interrupt 1 triggered, %x\n", hours);
+		printf("Interrupt 1 triggered, %x\n", decCompensation(hours));
 	}
 	lastInterruptTime = interruptTime;
 }
@@ -309,7 +309,7 @@ void minInc(void)
 		wiringPiI2CWriteReg8(RTC, HOUR, hours);
 		wiringPiI2CWriteReg8(RTC, MIN, decCompensation(mins));
 
-		printf("Interrupt 2 triggered, %x\n", mins);
+		printf("Interrupt 2 triggered, %x\n", decCompensation(mins));
 	}
 	lastInterruptTime = interruptTime;
 }
