@@ -20,8 +20,10 @@ clean:
     rm -f $(PROG) $(OBJS)
 
 gpio:
-    gpio i2cdetect
     gpio readall
+    @echo && echo =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+    @echo && gpio i2cdetect | grep 6
+    @echo && echo =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 #    gpio load i2c
 
 edit:
@@ -29,3 +31,5 @@ edit:
 
 header:
     vim src/BinClock.h
+
+debug: gpio clean run
