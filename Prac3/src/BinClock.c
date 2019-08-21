@@ -304,16 +304,15 @@ void minInc(void)
 		//Fetch RTC Time
 		mins = hexCompensation(wiringPiI2CReadReg8(RTC, MIN));
 		//Increase minutes by 1, ensuring not to overflow
-		if(mins>=59){// Prevents overflow
+		mins++;
+		if(mins>=60){// Prevents overflow
 			hours++;
 			mins=0;
 		}
-		else{
-			mins++;
-		}	
 		//Write minutes back to the RTC - has to write both hour and minute values in case of overflow
 		wiringPiI2CWriteReg8(RTC, HOUR, hours);
-		wiringPiI2CWriteReg8(RTC, MIN, decCompensation(mins));
+		mins = decCompensation(mins);
+		wiringPiI2CWriteReg8(RTC, MIN, mins);
 
 		printf("Interrupt 2 triggered, %x\n", decCompensation(mins));
 	}
