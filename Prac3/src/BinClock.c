@@ -24,10 +24,6 @@ long lastInterruptTime = -201; //Used for button debounce
 int RTC;					   //Holds the RTC instance
 char *result;
 int HH, MM, SS;
-void test()
-{
-	printf("Detected");
-}
 
 void initGPIO(void)
 {
@@ -60,13 +56,15 @@ void initGPIO(void)
 	}
 
 	//Attach interrupts to Buttons
-	//Write your logic here	
-	wiringPiISR(BTNS[0], INT_EDGE_RISING, &minInc);
-	wiringPiISR(BTNS[1], INT_EDGE_RISING, &hourInc);
+	wiringPiISR(BTNS[0], INT_EDGE_RISING, &minInc); //Add interrupt to minute incrementing button
+	wiringPiISR(BTNS[1], INT_EDGE_RISING, &hourInc); //Add interrupt to hour incrementing button
 
 	printf("BTNS done\n");
 	printf("Setup done\n");
 }
+/*
+ *	A function to call the various LED lighting functions each cycle
+ */
 void light()
 {
 	lightHours(hours);
@@ -81,39 +79,31 @@ void light()
 int main(void)
 {
 	initGPIO();
-	signal(SIGINT, ctrlc); //catch interupts
-	signal(SIGABRT, catch_abort);
+	signal(SIGINT, ctrlc); //catch keyboard interupts
+	signal(SIGABRT, catch_abort); //catch crashes to cleanup
 	//Set random time (3:04PM)
-	//You can comment this file out later
+	//You can comment this file out later - kept in for debugging
 	//wiringPiI2CWriteReg8(RTC, HOUR, 0x10+TIMEZONE);
 	//wiringPiI2CWriteReg8(RTC, MIN, 0x30);
-	//wiringPiI2CWriteReg8(RTC, SEC, 0b10000000);
+	//wiringPiI2CWriteReg8(RTC, SEC, 0b10000000); // Needs to enable st bit
 
-	toggleTime();
+	toggleTime(); // Updates the RTC stored time with the system time
 	// Repeat this until we shut down
 	for (;;)
 	{
-
-		//wiringPiI2CReadReg8(RTC,hours);
-		//toggleTime();
+		//Fetch the time from the RTC
 		secs = wiringPiI2CReadReg8(RTC, SEC) - 0b10000000;
 		mins = wiringPiI2CReadReg8(RTC, MIN);
 		hours = wiringPiI2CReadReg8(RTC, HOUR);
-		//secs = SS;
-		//Fetch the time from the RTC
-
-		//Write your logic here
-
-		//hours = RTC;
 
 		//Function calls to toggle LEDs
-		//Write your logic here
+		light(); 
 
 		// Print out the time we have stored on our RTC
 		printf("The current time is: %x:%x:%x\n", hours, mins, secs);
-		light();
+		
 		//using a delay to make our program "less CPU hungry"
-		delay(1000); //milliseconds
+		delay(1000); // 1000 milliseconds = 1 second
 	}
 	return 0;
 }
@@ -140,18 +130,25 @@ int hFormat(int hours)
  */
 void lightHours(int units)
 {
+	// Compensate for the way that the unit is stored in the RTC
 	units = hexCompensation(units);
 	int factor = 0;
+	// Loop through each of the 4 hour LEDs to check if it needs to be lit
 	for (int led = 0; led < 4; led++)
 	{
+		// Find the base(2) value of the current LED position
 		factor = pow(2, led + 1);
+
+		// Check if units is greater than the calculated factor
 		if (units % factor)
 		{
+			// Light the LED and remove the modded value from units to correctly calculate the next LED
 			digitalWrite(LEDS[led], 1);
 			units -= units % factor;
 		}
 		else
 		{
+			// Make sure the LED is unlit elsewise
 			digitalWrite(LEDS[led], 0);
 		}
 	}
@@ -162,19 +159,27 @@ void lightHours(int units)
  */
 void lightMins(int units)
 {
+	// Compensate for the way that the unit is stored in the RTC
 	units = hexCompensation(units);
 	int factor = 0;
+	// Start from a LED base of 4 to compensate for the hour LEDs
 	int base = 4;
+	// Loop through each of the 6 minute LEDs to check if it needs to be lit
 	for (int led = 0; led < 6; led++)
 	{
+		// Find the base(2) value of the current LED position
 		factor = pow(2, led + 1);
+
+		// Check if units is greater than the calculated factor
 		if (units % factor)
 		{
+			// Light the LED and remove the modded value from units to correctly calculate the next LED
 			digitalWrite(LEDS[led + base], 1);
 			units -= units % factor;
 		}
 		else
 		{
+			// Make sure the LED is unlit elsewise
 			digitalWrite(LEDS[led + base], 0);
 		}
 	}
@@ -187,8 +192,8 @@ void lightMins(int units)
  */
 void secPWM(int units)
 {
-	// Write your logic here
-	pwmWrite(SECS, round(units * 17.06));
+	// Write the value of the seconds to the PWM LED (multiplied by 17.0666 to achieve near 1024 steps)
+	pwmWrite(SECS, round(hexCompensation(units) * 17.0666);
 }
 
 /*
@@ -265,9 +270,9 @@ int decCompensation(int units)
  */
 void hourInc(void)
 {
-	//Debounce
 	long interruptTime = millis();
 
+	// This `if` along with the capturing of lastInterruptTime at the end of the method is what prevents bounced triggers (does the actual software debouncing)
 	if (interruptTime - lastInterruptTime > 200)
 	{
 		//Fetch RTC Time
@@ -293,19 +298,20 @@ void minInc(void)
 {
 	long interruptTime = millis();
 
+	// This `if` along with the capturing of lastInterruptTime at the end of the method is what prevents bounced triggers (does the actual software debouncing)
 	if (interruptTime - lastInterruptTime > 200)
 	{
 		//Fetch RTC Time
 		mins = hexCompensation(wiringPiI2CReadReg8(RTC, MIN));
 		//Increase minutes by 1, ensuring not to overflow
-		if(mins>=59){
+		if(mins>=59){// Prevents overflow
 			hours++;
 			mins=0;
 		}
 		else{
 			mins++;
 		}	
-		//Write minutes back to the RTC
+		//Write minutes back to the RTC - has to write both hour and minute values in case of overflow
 		wiringPiI2CWriteReg8(RTC, HOUR, hours);
 		wiringPiI2CWriteReg8(RTC, MIN, decCompensation(mins));
 
@@ -320,6 +326,7 @@ void toggleTime(void)
 {
 	long interruptTime = millis();
 
+	// This `if` along with the capturing of lastInterruptTime at the end of the method is what prevents bounced triggers (does the actual software debouncing)
 	if (interruptTime - lastInterruptTime > 200)
 	{
 		HH = getHours();
@@ -340,27 +347,36 @@ void toggleTime(void)
 	}
 	lastInterruptTime = interruptTime;
 }
-
+/*
+ * 	Cleans up the LEDs (writes 0 to them and sets them to inputs)
+ */
 void cleanup()
 {
 	printf("Cleaning up LEDs\n");
+
+	// Write 0 to the LEDs and set them to input
 	for (int i = 0; i < sizeof(LEDS) / sizeof(LEDS[0]); i++)
 	{
 		digitalWrite(LEDS[i], 0);
 		pinMode(LEDS[i], INPUT);
 	}
+	// PWM write 0 to the PWM LED and set it to input
 	pwmWrite(SECS, 0);
 	pinMode(SECS, INPUT);
 	printf("Cleaning up buttons\n");
 }
-
+/*
+ * 	Catch keyboard interrupts and call cleanup before exiting
+ */
 void ctrlc(int signal)
 {
 	printf("Caught interrupt, exiting gracefully\n");
 	cleanup();
 	exit(0);
 }
-
+/*
+ * 	Catch aborts and call cleanup before exiting
+ */
 void catch_abort(int signal)
 {
 	printf("Caught abort, exiting gracefully\n");
