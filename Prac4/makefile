@@ -4,14 +4,17 @@ CFLAGS = -Wall -lm -lrt -lwiringPi -lpthread
 
 PROG = bin/*
 OBJS = obj/*
+primary = Prac4
 
-default:
+/bin/$(primary):
     mkdir -p bin obj
-    $(CC) $(CFLAGS) -c src/Prac4.cpp -o obj/Prac4
-    $(CC) $(CFLAGS) obj/Prac4 -o bin/Prac4
+    $(CC) $(CFLAGS) -c src/$(primary).cpp -o obj/$(primary)
+    $(CC) $(CFLAGS) obj/$(primary) -o bin/$(primary)
 
-run:
-    sudo ./bin/Prac4
+run: /bin/$(primary)
+    sudo ./bin/$(primary)
+
+default = /bin/$(primary)
 
 clean:
     rm $(PROG) $(OBJS)
