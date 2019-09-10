@@ -52,7 +52,7 @@ void stop_isr(void){
     long current_time = millis();
     if(current_time-last_interrupt>200) //debounce
     {
-    ctrlc();
+    ctrlc(0);
     }
     last_interrupt=current_time;
 }
