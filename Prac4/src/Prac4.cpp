@@ -37,11 +37,11 @@ void play_pause_isr(void){
     {
         if(playing){
             playing=false;
-            printf("Pausing"+endl);
+            printf("Pausing\n");
         }
         else{
           playing=true;
-          printf("Playing"+endl);
+          printf("Playing\n");
         }
     }
     last_interrupt=current_time;
@@ -52,7 +52,7 @@ void stop_isr(void){
     long current_time = millis();
     if(current_time-last_interrupt>200) //debounce
     {
-        printf("Stopping"+endl);
+        printf("Stopping\n");
         ctrlc(0);
     }
     last_interrupt=current_time;
@@ -68,12 +68,12 @@ int setup_gpio(void){
     wiringPiSetup();
     //setting up the buttons
     //play pause
-    printf("Adding interrupt to play"+endl);
+    printf("Adding interrupt to play\n");
     pinMode(PLAY_BUTTON,INPUT);
     pullUpDnControl(PLAY_BUTTON,PUD_UP);
     wiringPiISR(PLAY_BUTTON, INT_EDGE_RISING, play_pause_isr);
     //stop
-    printf("Adding interrupt to stop"+endl);
+    printf("Adding interrupt to stop\n");
     pinMode(STOP_BUTTON,INPUT);
     pullUpDnControl(STOP_BUTTON,PUD_UP);
     wiringPiISR(STOP_BUTTON, INT_EDGE_RISING, stop_isr);
