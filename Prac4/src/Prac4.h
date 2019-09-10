@@ -36,8 +36,8 @@
 
 //SPI Settings
 #define SPI_CHAN 0
-//16000*(8/5)
-#define SPI_SPEED 256000
+//16000*(8/5)*8
+#define SPI_SPEED 204800
 
 //Filename
 #define FILENAME "src/sound_16k_8bit.raw"
