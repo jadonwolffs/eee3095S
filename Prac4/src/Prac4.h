@@ -29,13 +29,13 @@
 #include <iostream>
 
 //Define buttons
-#define PLAY_BUTTON // Write your value here
-#define STOP_BUTTON // Write your value here
+#define PLAY_BUTTON 21// TODO Write your value here
+#define STOP_BUTTON 22// TODO Write your value here
 #define BUFFER_SIZE 1000
 
 //SPI Settings
-#define SPI_CHAN // Write your value here
-#define SPI_SPEED // Write your value here
+#define SPI_CHAN 0 // TODO Write your value here
+#define SPI_SPEED 409600 // TODO Write your value here
 
 //Filename
 #define FILENAME "src/sound_16k_8bit.raw"
@@ -46,5 +46,7 @@ void stop_audio(void);
 int setup_gpio(void);
 int main(void);
 
-
+void cleanup();
+void catch_abort(int signal);
+void ctrlc(int signal);
 #endif
