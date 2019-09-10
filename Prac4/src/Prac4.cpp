@@ -37,11 +37,11 @@ void play_pause_isr(void){
     {
         if(playing){
             playing=false;
-            printf("pausing\n");
+            printf("Pausing"+endl);
         }
         else{
           playing=true;
-          printf("playing\n");
+          printf("Playing"+endl);
         }
     }
     last_interrupt=current_time;
@@ -52,7 +52,8 @@ void stop_isr(void){
     long current_time = millis();
     if(current_time-last_interrupt>200) //debounce
     {
-    ctrlc(0);
+        printf("Stopping"+endl);
+        ctrlc(0);
     }
     last_interrupt=current_time;
 }
