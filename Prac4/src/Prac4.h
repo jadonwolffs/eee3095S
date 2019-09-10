@@ -27,6 +27,7 @@
 #include <math.h>
 #include <pthread.h>
 #include <iostream>
+#include <signal.h> //added to handle keyboard interrupts and crashes
 
 //Define buttons
 #define PLAY_BUTTON 21// TODO Write your value here
