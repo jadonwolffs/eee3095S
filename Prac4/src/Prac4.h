@@ -36,7 +36,7 @@
 
 //SPI Settings
 #define SPI_CHAN 0 // TODO Write your value here
-#define SPI_SPEED 409600 // TODO Write your value here
+#define SPI_SPEED 16000 // TODO Write your value here
 
 //Filename
 #define FILENAME "src/sound_16k_8bit.raw"
