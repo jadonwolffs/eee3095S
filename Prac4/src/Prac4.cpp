@@ -43,8 +43,9 @@ void play_pause_isr(void){
           playing=true;
           printf("Playing\n");
         }
+        last_interrupt=current_time;
     }
-    last_interrupt=current_time;
+    
 }
 
 void stop_isr(void){
@@ -54,8 +55,9 @@ void stop_isr(void){
     {
         printf("Stopping\n");
         ctrlc(0);
+        last_interrupt=current_time;
     }
-    last_interrupt=current_time;
+    
 }
 
 /*

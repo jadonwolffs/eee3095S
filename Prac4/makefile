@@ -15,3 +15,5 @@ run:
 
 clean:
     rm $(PROG) $(OBJS)
+play:
+    play -t raw -r 16k -e unsigned -b 8 -c 1 src/sound_16k_8bit.raw
