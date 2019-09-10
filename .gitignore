@@ -12,3 +12,6 @@ readings_bak
 *.swp
 /Prac3/bin/
 /Prac3/obj/
+/Prac4/bin/
+/Prac4/obj/
+.vscode/
