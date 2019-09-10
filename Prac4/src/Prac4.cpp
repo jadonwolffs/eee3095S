@@ -62,19 +62,21 @@ void stop_isr(void){
  * Setup Function. Called once 
  */
 int setup_gpio(void){
-    //Set up wiring Pi
-    wiringPiSetup();
     signal(SIGINT, ctrlc); //catch keyboard interupts
 	signal(SIGABRT, catch_abort); //catch crashes to cleanup
+    //Set up wiring Pi
+    wiringPiSetup();
     //setting up the buttons
-        //play pause
-        pinMode(PLAY_BUTTON,INPUT);
-        pullUpDnControl(PLAY_BUTTON,PUD_UP);
-        wiringPiISR(PLAY_BUTTON, INT_EDGE_RISING, play_pause_isr);
-        //stop
-        pinMode(STOP_BUTTON,INPUT);
-        pullUpDnControl(STOP_BUTTON,PUD_UP);
-        wiringPiISR(STOP_BUTTON, INT_EDGE_RISING, stop_isr);
+    //play pause
+    printf("Adding interrupt to play"+endl);
+    pinMode(PLAY_BUTTON,INPUT);
+    pullUpDnControl(PLAY_BUTTON,PUD_UP);
+    wiringPiISR(PLAY_BUTTON, INT_EDGE_RISING, play_pause_isr);
+    //stop
+    printf("Adding interrupt to stop"+endl);
+    pinMode(STOP_BUTTON,INPUT);
+    pullUpDnControl(STOP_BUTTON,PUD_UP);
+    wiringPiISR(STOP_BUTTON, INT_EDGE_RISING, stop_isr);
     //setting up the SPI interface
     wiringPiSPISetup(SPI_CHAN,SPI_SPEED);
     return 0;
