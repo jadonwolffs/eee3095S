@@ -3,16 +3,16 @@ Prac 4 deals with low quality audio playback over SPI. Consult the lab manual fo
 
 ## Folder Contents
 
-bin/
-	binary files when built
-doc/
-	ignored prac report
-obj/
-	object files when built
-src/
-	Prac4.cpp - main driver of the program
-	Prac4.h - header for the program
-	sound_16k_8bit.raw - raw audio file for use by the program
+* bin/
+	- binary files when built
+* doc/
+	- ignored prac report
+* obj/
+	- object files when built
+* src/
+	- Prac4.cpp - main driver of the program
+	- Prac4.h - header for the program
+	- sound_16k_8bit.raw - raw audio file for use by the program
 
 ## Running the Prac
 All running of the C code is done through ```make``` commands. 
