@@ -24,7 +24,7 @@ bool playing = true; // should be set false when paused
 bool stopped = false; // If set to true, program should close
 unsigned char buffer[2][BUFFER_SIZE][2];
 int buffer_location = 0;
-bool bufferReading = 0; //using this to switch between column 0 and 1 - the first column
+bool buffer_reading = 0; //using this to switch between column 0 and 1 - the first column
 bool threadReady = false; //using this to finish writing the first column at the start of the song, before the column is played
 long last_interrupt = -201;
 
@@ -106,13 +106,13 @@ void *playThread(void *threadargs){
         }
         
         //Write the buffer out to SPI
-        wiringPiSPIDataRW(SPI_CHAN, buffer[bufferReading][buffer_location],2);
+        wiringPiSPIDataRW(SPI_CHAN, buffer[buffer_reading][buffer_location],2);
 		
         //Do some maths to check if you need to toggle buffers
         buffer_location++;
         if(buffer_location >= BUFFER_SIZE) {
             buffer_location = 0;
-            bufferReading = !bufferReading; // switches column one it finishes one column
+            buffer_reading = !buffer_reading; 
         }
     }
     
@@ -147,17 +147,17 @@ int main(){
      * You need to perform two operations for each character read from the file
      * You will require bit shifting
      * 
-     * buffer[bufferWriting][counter][0] needs to be set with the control bits
+     * buffer[buffer_writing][counter][0] needs to be set with the control bits
      * as well as the first few bits of audio
      * 
-     * buffer[bufferWriting][counter][1] needs to be set with the last audio bits
+     * buffer[buffer_writing][counter][1] needs to be set with the last audio bits
      * 
      * Don't forget to check if you have pause set or not when writing to the buffer
      * 
      */
      
     // Open the file
-    char ch;
+    char character;
     FILE *filePointer;
     printf("%s\n", FILENAME);
     filePointer = fopen(FILENAME, "r"); // read mode
@@ -168,18 +168,18 @@ int main(){
     }
 
     int counter = 0;
-    int bufferWriting = 0;
+    int buffer_writing = 0;
 
     // Have a loop to read from the file
-	 while((ch = fgetc(filePointer)) != EOF){
-        while(threadReady && bufferWriting==bufferReading && counter==0){
+	 while((character = fgetc(filePointer)) != EOF){
+        while(threadReady && buffer_writing==buffer_reading && counter==0){
             //waits in here after it has written to a side, and the thread is still reading from the other side
             continue;
         }
         //Set config bits for first 8 bit packet and OR with upper bits
-        buffer[bufferWriting][counter][0] = 0b01110000 | ch>>6; //TODO replace
+        buffer[buffer_writing][counter][0] = 0x70 | character>>6; 
         //Set next 8 bit packet
-        buffer[bufferWriting][counter][1] = ch<<2; //TODO replace
+        buffer[buffer_writing][counter][1] = character<<2; 
 
         counter++;
         if(counter >= BUFFER_SIZE+1){
@@ -188,14 +188,14 @@ int main(){
             }
 
             counter = 0;
-            bufferWriting = (bufferWriting+1)%2;
+            buffer_writing = (buffer_writing+1)%2;
         }
 
     }
      
     // Close the file
     fclose(filePointer);
-    printf("Complete reading"); 
+    printf("Completed reading"); 
 	 
     //Join and exit the playthread
 	pthread_join(thread_id, NULL); 
