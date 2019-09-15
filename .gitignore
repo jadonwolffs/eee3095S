@@ -15,3 +15,5 @@ readings_bak
 /Prac4/bin/
 /Prac4/obj/
 .vscode/
+/fritzing*
+/reports
