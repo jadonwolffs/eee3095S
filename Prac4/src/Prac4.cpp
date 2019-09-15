@@ -33,7 +33,7 @@ long last_interrupt = -201;
 void play_pause_isr(void){
     //Write your logic here
     long current_time = millis();
-    if(current_time-last_interrupt>150) //debounce
+    if(current_time-last_interrupt>150) //150ms debouncing on button press
     {
         if(playing){
             playing=false;
@@ -51,7 +51,7 @@ void play_pause_isr(void){
 void stop_isr(void){
     // Write your logic here
     long current_time = millis();
-    if(current_time-last_interrupt>200) //debounce
+    if(current_time-last_interrupt>150) //150ms debouncing on button press
     {
         printf("Stopping\n");
         ctrlc(0);
@@ -70,7 +70,7 @@ int setup_gpio(void){
     wiringPiSetup();
     //setting up the buttons
     //play pause
-    printf("Adding interrupt to play\n");
+    printf("Adding interrupt to play/pause\n");
     pinMode(PLAY_BUTTON,INPUT);
     pullUpDnControl(PLAY_BUTTON,PUD_UP);
     wiringPiISR(PLAY_BUTTON, INT_EDGE_RISING, play_pause_isr);
@@ -157,7 +157,7 @@ int main(){
      */
      
     // Open the file
-    char character;
+    char character; //renamed to avoid confusion
     FILE *filePointer;
     printf("%s\n", FILENAME);
     filePointer = fopen(FILENAME, "r"); // read mode
@@ -173,12 +173,9 @@ int main(){
     // Have a loop to read from the file
 	 while((character = fgetc(filePointer)) != EOF){
         while(threadReady && buffer_writing==buffer_reading && counter==0){
-            //waits in here after it has written to a side, and the thread is still reading from the other side
             continue;
         }
-        //Set config bits for first 8 bit packet and OR with upper bits
         buffer[buffer_writing][counter][0] = 0x70 | character>>6; 
-        //Set next 8 bit packet
         buffer[buffer_writing][counter][1] = character<<2; 
 
         counter++;
@@ -186,7 +183,6 @@ int main(){
             if(!threadReady){
                 threadReady = true;
             }
-
             counter = 0;
             buffer_writing = (buffer_writing+1)%2;
         }
@@ -209,8 +205,8 @@ int main(){
 void cleanup()
 {
 	printf("Cleaning up\n");
-
-    //TODO
+    pinMode(PLAY_BUTTON,INPUT);
+    pinMode(STOP_BUTTON,INPUT);
 }
 /*
  * 	Catch keyboard interrupts and call cleanup before exiting
