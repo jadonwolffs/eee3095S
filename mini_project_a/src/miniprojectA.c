@@ -40,10 +40,10 @@ int main(void)
 		float Light = channels[0];
 		float Humidity = channels[3] * 3.3 / 1023;
 		int DAC = (int)((Light / 1023) * Humidity * 1023 / 3.3);
-		unsigned char *DAC_16 = (unsigned char *)DAC;
+		unsigned char * DAC_16 = (unsigned char *)DAC;
 		unsigned char DAC_VAL[3] = {(DAC & 0b1100000000) >> 8, (DAC & 0b11110000) >> 4, DAC & 0b1111};
 		//uint16_t DAC_16 = DAC;
-		//printf("DAC: %d\n",DAC_VAL<<2);
+		printf("DAC_16: %d\n",DAC_16);
 		float DAC_VOLTAGE = DAC * 3.3 / 1023;
 		printf("DAC Voltage: %f\n", DAC_VOLTAGE);
 		printf("ADC_DAC Voltage: %0.1f\n", (channels[2] * 3.3) / 1023);
