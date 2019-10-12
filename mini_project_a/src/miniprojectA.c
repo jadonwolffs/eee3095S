@@ -36,7 +36,7 @@ hours = wiringPiI2CReadReg8(RTC, HOUR);
 float Light = channels[0];
 float Humidity = channels[3]*3.3/1023;
 int DAC = (int)((Light/1023)*Humidity*1023/3.3);
-uint16_t DAC_16 = (uint16_t)DAC;
+uint16_t * DAC_16 = (uint16_t)DAC;
 unsigned char DAC_VAL[3] = {(DAC&0b1100000000)>>8,(DAC&0b11110000)>>4,DAC&0b1111};
 //uint16_t DAC_16 = DAC;
 //printf("DAC: %d\n",DAC_VAL<<2);
