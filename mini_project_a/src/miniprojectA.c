@@ -21,15 +21,19 @@ int main(void)
 	toggleTime();
 	mcp3004Setup(BASE, SPI_CHAN);
 	int c;
-	// wiringPiI2CWriteReg8(RTC, HOUR, 0x10+TIMEZONE);
-	// wiringPiI2CWriteReg8(RTC, MIN, 0x30);
-	// wiringPiI2CWriteReg8(RTC, SEC, 0b10000000); // Needs to enable st bit
+
+	pthread_attr_t tattr;
+    pthread_t thread_id;
+    int newprio = 99;
+    sched_param param;
+    pthread_attr_init (&tattr);
+    pthread_attr_getschedparam (&tattr, &param);
+    param.sched_priority = newprio;
+    pthread_attr_setschedparam (&tattr, &param);
+    pthread_create(&thread_id, &tattr, read_adc, (void *)1);
+
 	for (;;)
 	{
-		for (c = 0; c < 8; ++c)
-		{
-			channels[c] = analogRead(BASE + c);
-		}
 		printf("Humidity: %0.1fV\n", channels[3] * 3.3 / 1023);
 		printf("Light Level: %d\n", channels[0]);
 		printf("Temperature: %0.0f\n", round(((channels[1] * 3.3 / 1023) - 0.5) / 0.01));
@@ -40,7 +44,7 @@ int main(void)
 		float hum = channels[3] * 3.3 / 1023;
 		int DAC = (int)((light / 1023) * hum * 1023 / 3.3);
 		unsigned char * dac_char_array = (unsigned char *)DAC;
-		dac_char_array = {0b1111,0b1111,0b1111};
+		dac_char_array = 1023;
 		unsigned char DAC_VAL[3] = {(DAC & 0b1100000000) >> 8, (DAC & 0b11110000) >> 4, DAC & 0b1111};
 		printf("dac_char_array: %d\n",dac_char_array);
 		float DAC_VOLTAGE = DAC * 3.3 / 1023;
@@ -49,18 +53,28 @@ int main(void)
 		printf("The current time is: %dh%dm%ds\n", hours, mins, secs);
 		printf("\n");
 		wiringPiSPIDataRW(SPI_CHAN_DAC, dac_char_array, 3);
-		delay(500);
+		delay(1000);
 	}
 	return 0;
 }
+void *read_adc(void *threadargs)
+{
+	while (true)
+	{
+		for (c = 0; c < 8; ++c)
+		{
+			channels[c] = analogRead(BASE + c);
+		}
+		delay(200);
+	}
+}
+
 
 void exiting(int x)
 {
-	printf("EXITING\n");
+	printf("Shutting down\n");
 	exit(0);
 }
-
-//START BinClock
 /*
  * Change the hour format to 12 hours
  */
