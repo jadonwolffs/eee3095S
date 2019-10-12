@@ -10,8 +10,8 @@ int hFormat(int hours);
 int hexCompensation(int units);
 int decCompensation(int units);
 void toggleTime(void);
-#define SPI_CHAN_DAC 1 //channel 0
-#define SPI_SPEED_DAC 25600 //sample freq
+#define SPI_CHAN_DAC 1
+#define SPI_SPEED_DAC 25600
 const char RTCAddr = 0x6f;
 const char SEC = 0x00; // see register table in datasheet
 const char MIN = 0x01;
