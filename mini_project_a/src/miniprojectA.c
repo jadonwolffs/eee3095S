@@ -11,9 +11,9 @@ int main(void)
 	toggleTime();
 	mcp3004Setup(BASE, SPI_CHAN);
 	
-	unsigned​ ​char​ ​buffer​[​2​][BUFFER_SIZE][​2​];
-	int​ buffer_location = ​0​;
-	bool​ buffer_reading = ​0​;
+	// unsigned​ ​char​ ​buffer​[​2​][BUFFER_SIZE][​2​];
+	// int​ buffer_location = ​0​;
+	// bool​ buffer_reading = ​0​;
 
 
 	pthread_attr_t tattr;
@@ -47,15 +47,15 @@ int main(void)
 		printf("ADC_DAC Voltage: %0.1f\n", (channels[2] * 3.3) / 1023);
 		printf("The current time is: %dh%dm%ds\n", hours, mins, secs);
 		printf("\n");
-		// wiringPiSPIDataRW(SPI_CHAN_DAC, dac_char_array, 3);
-		wiringPiSPIDataRW(SPI_CHAN_DAC, buffer[buffer_reading][buffer_location],2);
-		buffer_location++;
-        if(buffer_location >= BUFFER_SIZE) {
-            buffer_location = 0;
-            buffer_reading = !buffer_reading; 
-        }
-		buffer[buffer_writing][counter][0] = dac_char_array; 
-        buffer[buffer_writing][counter][1] = dac_char_array; 
+		wiringPiSPIDataRW(SPI_CHAN_DAC, dac_char_array, 1);
+		// wiringPiSPIDataRW(SPI_CHAN_DAC, buffer[buffer_reading][buffer_location],2);
+		// buffer_location++;
+        // if(buffer_location >= BUFFER_SIZE) {
+        //     buffer_location = 0;
+        //     buffer_reading = !buffer_reading; 
+        // }
+		// buffer[buffer_writing][counter][0] = dac_char_array; 
+        // buffer[buffer_writing][counter][1] = dac_char_array; 
 		delay(1000);
 	}
 	return 0;
