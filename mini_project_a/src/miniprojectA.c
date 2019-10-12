@@ -7,6 +7,7 @@
 #include <signal.h>
 #include <math.h>
 #include <wiringPiI2C.h>
+#include <stdint.h>
 #include "miniprojectA.h"
 #include "CurrentTime.h"
 int hours, mins, secs;
@@ -35,6 +36,7 @@ hours = wiringPiI2CReadReg8(RTC, HOUR);
 float Light = channels[0];
 float Humidity = channels[3]*3.3/1023;
 int DAC = (int)((Light/1023)*Humidity*1023/3.3);
+uint16_t DAC_16 = (uint16_t)DAC;
 unsigned char DAC_VAL[3] = {(DAC&0b1100000000)>>8,(DAC&0b11110000)>>4,DAC&0b1111};
 //uint16_t DAC_16 = DAC;
 //printf("DAC: %d\n",DAC_VAL<<2);
@@ -44,7 +46,7 @@ printf("ADC_DAC Voltage: %0.1f\n",(channels[2]*3.3)/1023);
 printf("The current time is: %x:%x:%x\n", hours, mins, secs);
 printf("\n");
 unsigned char c = 0b1111;
-wiringPiSPIDataRW(SPI_CHAN_DAC,DAC_VAL,2);
+wiringPiSPIDataRW(SPI_CHAN_DAC,DAC_16,2);
 delay(1000);
 }
 return 0;
