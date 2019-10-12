@@ -45,7 +45,7 @@ int main(void)
 		float DAC_VOLTAGE = DAC * 3.3 / 1023;
 		printf("DAC Voltage: %f\n", DAC_VOLTAGE);
 		printf("ADC_DAC Voltage: %0.1f\n", (channels[2] * 3.3) / 1023);
-		printf("The current time is: %d:%d:%d\n", decCompensation(hours), decCompensation(mins), decCompensation(secs));
+		printf("The current time is: %d:%d:%d\n", decCompensation(hours), (mins), (secs));
 		printf("\n");
 		wiringPiSPIDataRW(SPI_CHAN_DAC, DAC_CHAR_ARRAY, 3);
 		delay(500);
