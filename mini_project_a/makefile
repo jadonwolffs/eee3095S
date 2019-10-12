@@ -20,4 +20,4 @@ run: /bin/$(primary)
 default = /bin/$(primary)
 
 clean:
-    rm $(PROG)/* $(OBJS)/*
+    rm -fr $(PROG)/* $(OBJS)/*
