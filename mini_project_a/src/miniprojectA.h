@@ -26,6 +26,9 @@ void *read_adc(void *threadargs);
 void toggleTime(void);
 #define SPI_CHAN_DAC 1
 #define SPI_SPEED_DAC 25600
+#define BUFFER_SIZE 1000
+
+
 const char RTCAddr = 0x6f;
 const char SEC = 0x00; // see register table in datasheet
 const char MIN = 0x01;

@@ -10,6 +10,11 @@ int main(void)
 	RTC = wiringPiI2CSetup(RTCAddr);
 	toggleTime();
 	mcp3004Setup(BASE, SPI_CHAN);
+	
+	unsigned​ ​char​ ​buffer​[​2​][BUFFER_SIZE][​2​];
+	int​ buffer_location = ​0​;
+	bool​ buffer_reading = ​0​;
+
 
 	pthread_attr_t tattr;
     pthread_t thread_id;
@@ -33,6 +38,7 @@ int main(void)
 		float hum = channels[3] * 3.3 / 1023;
 		int DAC = (int)((light / 1023) * hum * 1023 / 3.3);
 		unsigned char * dac_char_array = (unsigned char *)DAC;
+		
 		// dac_char_array = 1023;
 		unsigned char DAC_VAL[3] = {(DAC & 0b1100000000) >> 8, (DAC & 0b11110000) >> 4, DAC & 0b1111};
 		printf("dac_char_array: %d\n",dac_char_array);
@@ -41,7 +47,15 @@ int main(void)
 		printf("ADC_DAC Voltage: %0.1f\n", (channels[2] * 3.3) / 1023);
 		printf("The current time is: %dh%dm%ds\n", hours, mins, secs);
 		printf("\n");
-		wiringPiSPIDataRW(SPI_CHAN_DAC, dac_char_array, 3);
+		// wiringPiSPIDataRW(SPI_CHAN_DAC, dac_char_array, 3);
+		wiringPiSPIDataRW(SPI_CHAN_DAC, buffer[buffer_reading][buffer_location],2);
+		buffer_location++;
+        if(buffer_location >= BUFFER_SIZE) {
+            buffer_location = 0;
+            buffer_reading = !buffer_reading; 
+        }
+		buffer[buffer_writing][counter][0] = dac_char_array; 
+        buffer[buffer_writing][counter][1] = dac_char_array; 
 		delay(1000);
 	}
 	return 0;
