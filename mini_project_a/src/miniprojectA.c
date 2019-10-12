@@ -46,7 +46,7 @@ printf("ADC_DAC Voltage: %0.1f\n",(channels[2]*3.3)/1023);
 printf("The current time is: %x:%x:%x\n", hours, mins, secs);
 printf("\n");
 unsigned char c = 0b1111;
-wiringPiSPIDataRW(SPI_CHAN_DAC,0b1111111111,1);
+wiringPiSPIDataRW(SPI_CHAN_DAC,DAC_VAL,2);
 delay(1000);
 }
 return 0;
