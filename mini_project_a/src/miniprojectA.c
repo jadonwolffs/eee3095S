@@ -12,7 +12,6 @@
 #include "CurrentTime.h"
 int hours, mins, secs;
 int RTC; //Holds the RTC instance
-// int HH,MM,SS;
 int main(void)
 {
 	signal(SIGINT, exiting);
@@ -37,21 +36,19 @@ int main(void)
 		secs = wiringPiI2CReadReg8(RTC, SEC) - 0b10000000;
 		mins = wiringPiI2CReadReg8(RTC, MIN);
 		hours = wiringPiI2CReadReg8(RTC, HOUR);
-		float Light = channels[0];
-		float Humidity = channels[3] * 3.3 / 1023;
-		int DAC = (int)((Light / 1023) * Humidity * 1023 / 3.3);
-		unsigned char * DAC_16 = (unsigned char *)DAC;
+		float light = channels[0];
+		float hum = channels[3] * 3.3 / 1023;
+		int DAC = (int)((light / 1023) * hum * 1023 / 3.3);
+		unsigned char * DAC_CHAR_ARRAY = (unsigned char *)DAC;
 		unsigned char DAC_VAL[3] = {(DAC & 0b1100000000) >> 8, (DAC & 0b11110000) >> 4, DAC & 0b1111};
-		//uint16_t DAC_16 = DAC;
-		printf("DAC_16: %d\n",DAC_16);
+		printf("DAC_CHAR_ARRAY: %d\n",DAC_CHAR_ARRAY);
 		float DAC_VOLTAGE = DAC * 3.3 / 1023;
 		printf("DAC Voltage: %f\n", DAC_VOLTAGE);
 		printf("ADC_DAC Voltage: %0.1f\n", (channels[2] * 3.3) / 1023);
 		printf("The current time is: %x:%x:%x\n", hours, mins, secs);
 		printf("\n");
-		unsigned char c = 0b1111;
-		wiringPiSPIDataRW(SPI_CHAN_DAC, DAC_16, 3);
-		delay(1000);
+		wiringPiSPIDataRW(SPI_CHAN_DAC, DAC_CHAR_ARRAY, 3);
+		delay(500);
 	}
 	return 0;
 }
@@ -147,8 +144,11 @@ void toggleTime(void)
 
 	//if (interruptTime - lastInterruptTime>200){
 	HH = getHours();
+	printf("Hour: %d\n",HH);
 	MM = getMins();
+	printf("Minutes: %d\n",MM);
 	SS = getSecs();
+	printf("Seconds: %d\n",SS);
 
 	HH = hFormat(HH);
 	HH = decCompensation(HH);
