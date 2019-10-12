@@ -22,6 +22,7 @@ void exiting(int signal);
 int hFormat(int hours);
 int hexCompensation(int units);
 int decCompensation(int units);
+void *read_adc(void *threadargs);
 void toggleTime(void);
 #define SPI_CHAN_DAC 1
 #define SPI_SPEED_DAC 25600
