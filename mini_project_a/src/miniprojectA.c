@@ -21,9 +21,9 @@ int main(void)
 	toggleTime();
 	mcp3004Setup(BASE, SPI_CHAN);
 	int c;
-	wiringPiI2CWriteReg8(RTC, HOUR, 0x10+TIMEZONE);
-	wiringPiI2CWriteReg8(RTC, MIN, 0x30);
-	wiringPiI2CWriteReg8(RTC, SEC, 0b10000000); // Needs to enable st bit
+	// wiringPiI2CWriteReg8(RTC, HOUR, 0x10+TIMEZONE);
+	// wiringPiI2CWriteReg8(RTC, MIN, 0x30);
+	// wiringPiI2CWriteReg8(RTC, SEC, 0b10000000); // Needs to enable st bit
 	for (;;)
 	{
 		for (c = 0; c < 8; ++c)
@@ -45,7 +45,7 @@ int main(void)
 		float DAC_VOLTAGE = DAC * 3.3 / 1023;
 		printf("DAC Voltage: %f\n", DAC_VOLTAGE);
 		printf("ADC_DAC Voltage: %0.1f\n", (channels[2] * 3.3) / 1023);
-		printf("The current time is: %x:%x:%x\n", hours, mins, secs);
+		printf("The current time is: %d:%d:%d\n", hours, mins, secs);
 		printf("\n");
 		wiringPiSPIDataRW(SPI_CHAN_DAC, DAC_CHAR_ARRAY, 3);
 		delay(500);
