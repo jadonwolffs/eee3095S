@@ -19,4 +19,5 @@ const char HOUR = 0x02;
 const char TIMEZONE = 2; // +02H00 (RSA)
 unsigned char DAC_VAL;
 float DAC_VOLTAGE;
+extern int HH,MM,SS;
 #endif
