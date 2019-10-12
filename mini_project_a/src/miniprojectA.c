@@ -1,6 +1,4 @@
 //Mini Project A
-//SHRETH001
-//ZCKDAN001
 #include <wiringPi.h>
 #include <wiringPiSPI.h>
 #include <mcp3004.h>
@@ -13,7 +11,7 @@
 #include "CurrentTime.h"
 int hours, mins, secs;
 int RTC; //Holds the RTC instance
-int HH,MM,SS;
+// int HH,MM,SS;
 int main(void){
 signal(SIGINT, exiting);
 wiringPiSetup();
