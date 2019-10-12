@@ -1,18 +1,23 @@
 .RECIPEPREFIX +=
-CC = gcc
-CFLAGS = -Wall -lm -lrt -lwiringPi
+CC = g++
+CFLAGS = -Wall -lm -lrt -lwiringPi -lpthread
 
-PROG = bin/*
-OBJS = obj/*
+PROG = bin
+OBJS = obj
+primary = miniprojectA
+secondary = CurrentTime
+exe = project
 
-default:
+/bin/$(primary):
     mkdir -p bin obj
-    $(CC) $(CFLAGS) -c src/miniprojectA.c -o obj/miniprojectA
-    $(CC) $(CFLAGS) -c src/CurrentTime.c -o obj/CurrentTime
-    $(CC) $(CFLAGS) obj/miniprojectA obj/CurrentTime -o bin/ADC
+    $(CC) $(CFLAGS) -c src/$(primary).c -o obj/$(primary)
+    $(CC) $(CFLAGS) -c src/$(secondary).c -o obj/$(secondary)
+    $(CC) $(CFLAGS) obj/$(primary) obj/$(secondary) -o bin/$(exe)
 
-run:
-    sudo ./bin/ADC
+run: /bin/$(primary)
+    ./$(PROG)/$(exe)
+
+default = /bin/$(primary)
 
 clean:
-    rm $(PROG) $(OBJS)
+    rm $(PROG)/* $(OBJS)/*
