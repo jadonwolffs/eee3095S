@@ -20,7 +20,6 @@ int main(void)
 	RTC = wiringPiI2CSetup(RTCAddr);
 	toggleTime();
 	mcp3004Setup(BASE, SPI_CHAN);
-	int c;
 
 	pthread_attr_t tattr;
     pthread_t thread_id;
@@ -61,9 +60,9 @@ void *read_adc(void *threadargs)
 {
 	while (true)
 	{
-		for (c = 0; c < 8; ++c)
+		for (int chan = 0; chan < 8; ++chan)
 		{
-			channels[c] = analogRead(BASE + c);
+			channels[chan] = analogRead(BASE + chan);
 		}
 		delay(200);
 	}
