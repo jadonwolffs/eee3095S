@@ -1,6 +1,19 @@
 #ifndef MINIPROJECTA_H
 #define MINIPROJECTA_H
 
+#include <wiringPi.h>
+#include <wiringPiI2C.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <wiringPiSPI.h>
+#include <mcp3004.h>
+#include <signal.h>
+#include <math.h>
+#include <wiringPiI2C.h>
+#include <stdint.h>
+#include "CurrentTime.h"
+#include <pthread.h>
+
 #define BASE 100
 #define SPI_CHAN 0
 void exiting(int signal);

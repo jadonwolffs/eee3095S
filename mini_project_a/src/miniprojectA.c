@@ -1,15 +1,5 @@
 //Mini Project A
-#include <wiringPi.h>
-#include <wiringPiSPI.h>
-#include <mcp3004.h>
-#include <stdio.h>  //For printf functions
-#include <stdlib.h> // For system functions
-#include <signal.h>
-#include <math.h>
-#include <wiringPiI2C.h>
-#include <stdint.h>
 #include "miniprojectA.h"
-#include "CurrentTime.h"
 int hours, mins, secs;
 int RTC; //Holds the RTC instance
 int main(void)
