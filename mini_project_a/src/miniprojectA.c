@@ -33,7 +33,7 @@ int main(void)
 		float hum = channels[3] * 3.3 / 1023;
 		int DAC = (int)((light / 1023) * hum * 1023 / 3.3);
 		unsigned char * dac_char_array = (unsigned char *)DAC;
-		dac_char_array = 1023;
+		// dac_char_array = 1023;
 		unsigned char DAC_VAL[3] = {(DAC & 0b1100000000) >> 8, (DAC & 0b11110000) >> 4, DAC & 0b1111};
 		printf("dac_char_array: %d\n",dac_char_array);
 		float DAC_VOLTAGE = DAC * 3.3 / 1023;
