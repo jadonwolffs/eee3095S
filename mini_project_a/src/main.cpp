@@ -42,10 +42,16 @@ void setup()
       char temp_char[255];
       fp = fopen("temp.txt", "r");
       fscanf(fp, "%s", temp_char);
-      // printf("1 : %s\n", temp_char );
       fclose(fp);
-      temp = atoi(temp_char);
       Blynk.virtualWrite(V1, temp);
+
+      char alarm_char[255];
+      fp = fopen("alarm.txt", "r");
+      fscanf(fp, "%s", alarm_char);
+      fclose(fp);
+      alarm_value = atoi(alarm_char);
+      Blynk.virtualWrite(V1, alarm_value);
+      
     });
 }
 

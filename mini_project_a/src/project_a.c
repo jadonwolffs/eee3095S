@@ -58,6 +58,20 @@ int main(void)
 		fprintf(fp, "%d",temp);
 		fclose(fp);
 		int * temp_ptr = &temp;
+
+		fp = fopen("src/alarm.txt", "w+");
+		if (alarm_triggered)
+		{
+			fprintf(fp, "%d",1);
+		}
+		else
+		{
+			fprintf(fp, "%d",0);
+		}
+		
+		
+		
+		fclose(fp);
 		
 		float light = (float)channels[0];
 		secs = hexCompensation(wiringPiI2CReadReg8(RTC, SEC) - 0b10000000);
