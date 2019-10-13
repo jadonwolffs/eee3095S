@@ -80,6 +80,10 @@ int main(void)
 		fp = fopen("src/light.txt", "w+");
 		fprintf(fp, "%d",(int)light);
 		fclose(fp);
+
+		fp = fopen("src/vout.txt", "w+");
+		fprintf(fp, "%f",dac_out_voltage);
+		fclose(fp);
 		
 		secs = hexCompensation(wiringPiI2CReadReg8(RTC, SEC) - 0b10000000);
 		mins = hexCompensation(wiringPiI2CReadReg8(RTC, MIN));

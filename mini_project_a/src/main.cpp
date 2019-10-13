@@ -69,7 +69,13 @@ void setup()
       int light_value = atoi(light_char);
       Blynk.virtualWrite(V4, light_value);
 
-      Blynk.virtualWrite(V5, 2.5);
+
+      char vout_char[255];
+      fp = fopen("vout.txt", "r");
+      fscanf(fp, "%s", vout_char);
+      fclose(fp);
+      float vout = atof(vout_char);
+      Blynk.virtualWrite(V5, vout);
       
     });
 }
