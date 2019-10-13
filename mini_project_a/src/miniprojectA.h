@@ -35,6 +35,7 @@ void *read_adc(void *threadargs);
 void toggleTime(void);
 void dismiss_alarm(void);
 void reset_sys_time(void);
+void cleanup(void);
 #define SPI_CHAN_DAC 1
 #define SPI_SPEED_DAC 25600
 #define BUFFER_SIZE 1000
