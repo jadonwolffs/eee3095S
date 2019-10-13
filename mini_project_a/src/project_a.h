@@ -11,7 +11,7 @@
 #include <math.h>
 #include <wiringPiI2C.h>
 #include <stdint.h>
-#include "CurrentTime.h"
+#include "RTC.h"
 #include <pthread.h>
 
 #define BASE 100

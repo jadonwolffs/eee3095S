@@ -1,4 +1,4 @@
-#include "CurrentTime.h"
+#include "RTC.h"
 #include <time.h>
 
 int HH,MM,SS;
