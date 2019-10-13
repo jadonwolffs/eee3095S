@@ -102,6 +102,7 @@ void trigger_alarm(void){
 	{
 		if (dac_out_voltage>=2.65 || dac_out_voltage<=0.5)
 		{
+			printf("alarm %f",dac_out_voltage);
 			alarm_triggered = true;
 		}
 	}
