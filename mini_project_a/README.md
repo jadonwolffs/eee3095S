@@ -1,24 +1,8 @@
-# Linux Quick Start Guide (Ubuntu, Raspberry Pi, ...)
+# Mini Project A
+## WLFJAD001 and ARNJAM004
 
-0. Connect your Raspberry Pi to the internet and open it's console. ^_^
+This project is an enviroment logger which uses a Raspberry Pi 3B+ to interface with some enviroment readers to display and track various attributes of an environment.
+It is built in C and C++ and makes use of WiringPi for interfacing with sensors and Blynk to transmit data to a mobile app.
 
-1. Install WiringPi:
-    http://wiringpi.com/download-and-install/
-
-2. Download and build Blynk:
-    ```bash
-    $ git clone https://github.com/blynkkk/blynk-library.git
-    $ cd blynk-library/linux
-    $ make clean all target=raspberry
-    ```
-
-3. Run Blynk:
-    ```bash
-    $ sudo ./blynk --token=YourAuthToken
-    ```
-
-We have also provided a build script, you can try just running (inside of the "linux" directory):
-
-```bash
-$ ./build.sh raspberry
-```
+To run the logger run `make clean run` from the home directory and to run the Blynk server navigate into the src directory and run `./build.sh raspberry` and then `./run.sh`
+These commands need to be run from different terminals or at least different virtual terminals (through something like the `screen` program)

@@ -91,7 +91,7 @@ int main(void)
 		
 		
 		unsigned char * dac_char_array;
-		dac_char_array = (unsigned char *)(0b0111<<12 | ((int)dac_out)<<2 | 0b00);//|0b00 isn't strictly necessary
+		dac_char_array = (unsigned char *)(0b0111<<12 | ((int)dac_out)<<2 | 0b00);
 		if (DEBUG)
 		{
 			printf("temp ");
@@ -112,7 +112,10 @@ int main(void)
 }
 void trigger_alarm(void){
 	long current_time = millis();
-	printf("current time:%d",current_time-last_alarm);
+	if (DEBUG)
+	{
+		printf("current time:%d",current_time-last_alarm);
+	}
 	if (current_time-last_alarm > (3000*60))
 	{
 		if (dac_out_voltage>=2.65 || (dac_out_voltage<=0.65&&dac_out_voltage>0.0))
