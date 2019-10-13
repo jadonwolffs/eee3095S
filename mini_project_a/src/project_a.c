@@ -52,9 +52,9 @@ int main(void)
 	delay(500);
 	for (;;)
 	{
-		*temp = round(((channels[1] * 3.3 / 1023) - 0.7) / 0.01);
+		&temp = round(((channels[1] * 3.3 / 1023) - 0.7) / 0.01);
 		printf("temp ");
-		printf("%d\n",(&temp));
+		printf("%d\n",(*temp));
 		// 7 0 2 3
 		// pwmWrite(1,temp);
 		float light = (float)channels[0];
