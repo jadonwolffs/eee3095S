@@ -53,7 +53,7 @@ int main(void)
 		// printf("Humidity: %0.1fV\n", channels[3] * 3.3 / 1023);
 		// printf("Light Level: %d\n", 1023-channels[0]);
 		int temp = round(((channels[1] * 3.3 / 1023) - 0.7) / 0.01);
-		int light = (int)channels[0];
+		float light = (float)channels[0];
 		// printf("Temperature: %0.0f\n", temp);
 		secs = hexCompensation(wiringPiI2CReadReg8(RTC, SEC) - 0b10000000);
 		mins = hexCompensation(wiringPiI2CReadReg8(RTC, MIN));
@@ -80,7 +80,7 @@ int main(void)
 		// 10:17:15 	00:00:00 	0.5 V 		25 C 	595 	0.29V 	*
 		if (monitoring)
 		{
-			printf("| %d:%d:%d \t| %d \t\t| %f \t| %d \t| %d \t| %f \t| %s \t\t|\n",hours, mins, secs,(millis()-reset_time)/1000,hum,temp,light,DAC_VOLTAGE,alarm);
+			printf("| %d:%d:%d \t| %d \t\t| %f \t| %d \t| %d \t| %f \t| %s \t\t|\n",hours, mins, secs,(millis()-reset_time)/1000,hum,temp,(int)light,DAC_VOLTAGE,alarm);
 		}
 		
 		
