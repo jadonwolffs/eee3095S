@@ -54,8 +54,7 @@ long last_alarm = -3001;
 float dac_out_voltage = 0.0;
 
 
-extern int temp = 10;
-extern int * temp_ptr= &temp;
+extern int temp = 0;
 
 #define DEBUG false
 #define BASE 100

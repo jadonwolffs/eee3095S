@@ -61,7 +61,6 @@ int main(void)
 		fp = fopen("src/temp.txt", "w+");
 		fprintf(fp, "%d",temp);
 		fclose(fp);
-		int * temp_ptr = &temp;
 
 		fp = fopen("src/alarm.txt", "w+");
 		if (alarm_triggered)
