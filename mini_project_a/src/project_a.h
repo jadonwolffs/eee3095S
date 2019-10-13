@@ -57,6 +57,6 @@ float dac_out_voltage = 0.0;
 #define BASE 100
 #define SPI_CHAN 0
 #define SPI_CHAN_DAC 1
-#define SPI_SPEED_DAC freq
+#define SPI_SPEED_DAC 1000
 
 #endif
