@@ -28,6 +28,8 @@ int main(void)
 
 	for (;;)
 	{
+		uptime = (millis() / 1000);
+  		Blynk.virtualWrite(V1, uptime);
 		printf("Humidity: %0.1fV\n", channels[3] * 3.3 / 1023);
 		printf("Light Level: %d\n", 1023-channels[0]);
 		printf("Temperature: %0.0f\n", round(((channels[1] * 3.3 / 1023) - 0.7) / 0.01));
@@ -37,7 +39,7 @@ int main(void)
 		float light = channels[0];
 		float hum = channels[3] * 3.3 / 1023;
 		int DAC = (int)((light / 1023) * hum * 1023 / 3.3);
-		unsigned char * dac_char_array = (unsigned char *) (0b0111<<12 | DAC<<2 | 0b00);
+		unsigned char * dac_char_array = (unsigned char *) (0b0111<<12 | DAC<<2 | 0b00);//|0b00 isn't strictly necessary
 		
 		// dac_char_array = 1023;
 		unsigned char DAC_VAL[3] = {(DAC & 0b1100000000) >> 8, (DAC & 0b11110000) >> 4, DAC & 0b1111};

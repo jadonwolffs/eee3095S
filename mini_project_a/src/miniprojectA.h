@@ -13,6 +13,15 @@
 #include <stdint.h>
 #include "CurrentTime.h"
 #include <pthread.h>
+#include <BlynkApiWiringPi.h>
+#include <BlynkSocket.h>
+#include <BlynkOptionsParser.h>
+
+static BlynkTransportSocket _blynkTransport;
+BlynkSocket Blynk(_blynkTransport);
+
+#include <BlynkWidgets.h>
+
 
 #define BASE 100
 #define SPI_CHAN 0
@@ -28,6 +37,9 @@ void toggleTime(void);
 #define SPI_SPEED_DAC 25600
 #define BUFFER_SIZE 1000
 
+unsigned int uptime;      		// 1 second intervals
+unsigned int pinStatus;   		// status of BCM 17
+unsigned int lastpinStatus = 0; // to toggle
 
 const char RTCAddr = 0x6f;
 const char SEC = 0x00; // see register table in datasheet
