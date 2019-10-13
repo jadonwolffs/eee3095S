@@ -66,6 +66,7 @@ int main(void)
 		// unsigned char DAC_VAL[3] = {(DAC & 0b1100000000) >> 8, (DAC & 0b11110000) >> 4, DAC & 0b1111};
 		// printf("dac_char_array: %d\n",dac_char_array);
 		float DAC_VOLTAGE = DAC * 3.3 / 1023;
+		printf("%f %d",DAC_VOLTAGE);
 
 		// printf("DAC Voltage: %f\n", DAC_VOLTAGE);
 		// printf("ADC_DAC Voltage: %0.1f\n", (channels[2] * 3.3) / 1023);
@@ -78,7 +79,7 @@ int main(void)
 		// 10:17:15 	00:00:00 	0.5 V 		25 C 	595 	0.29V 	*
 		if (monitoring)
 		{
-			printf("| %dh %dm %ds \t| %d \t\t| %f \t| %d \t| %d \t| %f \t| %s \t\t|\n",hours, mins, secs,(millis()-reset_time)/1000,hum,temp,light,DAC_VOLTAGE,alarm);
+			printf("| %d:%d:%d \t| %d \t\t| %f \t| %d \t| %d \t| %f \t| %s \t\t|\n",hours, mins, secs,(millis()-reset_time)/1000,hum,temp,light,DAC_VOLTAGE,alarm);
 		}
 		
 		
@@ -133,19 +134,15 @@ void dismiss_alarm(void)//attach to button as interrupt
 {
 	long current_time = millis();
 	if(current_time-last_interrupt>150){
-		if (DEBUG)
-		{
-			if (alarm_triggered)
-			{
+		if (DEBUG){
+			if (alarm_triggered){
 				alarm_triggered = false;
 			}
-			else
-			{
+			else{
 				alarm_triggered = true;
 			}	
 		}
-		else
-		{
+		else{
 			alarm_triggered = false;
 		}	
 	}
