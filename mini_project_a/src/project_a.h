@@ -53,10 +53,10 @@ long last_interrupt = -201;
 long last_alarm = -3001;
 float dac_out_voltage = 0.0;
 
-#define DEBUG false
+#define DEBUG true
 #define BASE 100
 #define SPI_CHAN 0
 #define SPI_CHAN_DAC 1
-#define SPI_SPEED_DAC 1000
+#define SPI_SPEED_DAC freq
 
 #endif
