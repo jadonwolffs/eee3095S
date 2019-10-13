@@ -14,6 +14,7 @@ int main(void)
 
 	//SETUP GPIO PINS
 	pinMode (26, PWM_OUTPUT);
+	pinMode (1, PWM_OUTPUT);
 
 	pinMode (22, INPUT);
 	pullUpDnControl(22,PUD_UP);
@@ -52,6 +53,8 @@ int main(void)
 	for (;;)
 	{
 		int temp = round(((channels[1] * 3.3 / 1023) - 0.7) / 0.01);
+		// 7 0 2 3
+		pwmWrite(1,temp);
 		float light = (float)channels[0];
 		secs = hexCompensation(wiringPiI2CReadReg8(RTC, SEC) - 0b10000000);
 		mins = hexCompensation(wiringPiI2CReadReg8(RTC, MIN));
@@ -228,6 +231,8 @@ void cleanup(void){
 	pwmWrite(26,0);
 	pinMode (26, INPUT);
 	printf(".");
+	pwmWrite(1,0);
+	pinMode (1, INPUT);
 	delay(100);
 	printf(".");
 	printf("\n");
