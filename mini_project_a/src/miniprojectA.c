@@ -117,12 +117,12 @@ void *alarm_led(void *threadargs){
 			for (size_t i = 0; i < 1024; i++)
 			{
 				pwmWrite(26,i);
-				delay(10);
+				delay(1);
 			}
 			for (size_t i = 1023; i > 0; i--)
 			{
 				pwmWrite(26,i);
-				delay(10);
+				delay(1);
 			}
 			
 			// pwmWrite(26,200);			delay(300);
@@ -133,6 +133,7 @@ void *alarm_led(void *threadargs){
 			// pwmWrite(26,600);
 		}
 		else{
+			pwmWrite(26,0);
 			alarm = " ";
 		}
 		delay(100);
