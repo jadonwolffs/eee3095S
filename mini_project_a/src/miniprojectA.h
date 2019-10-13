@@ -46,7 +46,7 @@ void cleanup(void);
 // unsigned int pinStatus;   		// status of BCM 17
 // unsigned int lastpinStatus = 0; // to toggle
 char * alarm;
-bool alarm_triggered = false;
+volatile bool alarm_triggered = false;
 
 const char RTCAddr = 0x6f;
 const char SEC = 0x00; // see register table in datasheet
