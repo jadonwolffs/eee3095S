@@ -16,6 +16,7 @@
 #endif
 #include <BlynkSocket.h>
 #include <BlynkOptionsParser.h>
+#include "project_a.h"
 
 static BlynkTransportSocket _blynkTransport;
 BlynkSocket Blynk(_blynkTransport);
@@ -37,6 +38,14 @@ void setup()
     Blynk.begin(auth, serv, port);
     tmr.setInterval(1000, [](){
       Blynk.virtualWrite(V0, BlynkMillis()/1000);
+      FILE *fp;
+      char temp_char[255];
+      fp = fopen("temp.txt", "r");
+      fscanf(fp, "%s", temp_char);
+      printf("1 : %s\n", butemp_charff );
+      fclose(fp);
+      temp = (int) temp_char;
+      Blynk.virtualWrite(V1, temp);
     });
 }
 
