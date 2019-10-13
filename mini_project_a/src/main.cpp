@@ -41,8 +41,8 @@ void setup()
       FILE *fp;
       char temp_char[255];
       fp = fopen("temp.txt", "r");
-      fscanf(fp, "%s", temp_char);
-      printf("1 : %s\n", temp_char );
+      fscanf(fp, "%s", (char *)temp_char);
+      // printf("1 : %s\n", temp_char );
       fclose(fp);
       temp = atoi(temp_char);
       Blynk.virtualWrite(V1, temp);
