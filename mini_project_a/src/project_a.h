@@ -53,7 +53,7 @@ long last_alarm = -3001;
 float dac_out_voltage = 0.0;
 
 
-extern volatile int temp = 10;
+extern int temp = 10;
 extern int * temp_ptr= &temp;
 
 #define DEBUG false
