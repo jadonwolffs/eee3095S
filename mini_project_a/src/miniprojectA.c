@@ -163,6 +163,8 @@ void reset(void){
 }
 void dismiss_alarm(void)//attach to button as interrupt
 {
+	
+	printf("dismiss called");
 	long current_time = millis();
 	if(current_time-last_interrupt>150){
 		if (DEBUG){
