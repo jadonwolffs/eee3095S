@@ -14,6 +14,8 @@
 #include "RTC.h"
 #include <pthread.h>
 
+#define DEBUG false
+
 #define BASE 100
 #define SPI_CHAN 0
 
@@ -39,15 +41,11 @@ void cycle_freq(void);
 
 void cleanup(void);
 #define SPI_CHAN_DAC 1
-#define SPI_SPEED_DAC 25600
+#define SPI_SPEED_DAC freq
 #define BUFFER_SIZE 1000
 
-// unsigned int uptime;      		// 1 second intervals
-// unsigned int pinStatus;   		// status of BCM 17
-// unsigned int lastpinStatus = 0; // to toggle
 char * alarm;
 volatile bool alarm_triggered = false;
-
 const char RTCAddr = 0x6f;
 const char SEC = 0x00; // see register table in datasheet
 const char MIN = 0x01;

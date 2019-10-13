@@ -1,10 +1,8 @@
-//Mini Project A
+//EEE3095/96S Project A
+//WLFJAD001 ARNJAM004
 #include "project_a.h"
 #pragma GCC push_options
 #pragma GCC optimize ("O0")
-
-#define DEBUG false
-
 int hours, mins, secs;
 int RTC; //Holds the RTC instance
 int reset_time=0;
@@ -53,11 +51,8 @@ int main(void)
 	delay(500);
 	for (;;)
 	{
-		// printf("Humidity: %0.1fV\n", channels[3] * 3.3 / 1023);
-		// printf("Light Level: %d\n", 1023-channels[0]);
 		int temp = round(((channels[1] * 3.3 / 1023) - 0.7) / 0.01);
 		float light = (float)channels[0];
-		// printf("Temperature: %0.0f\n", temp);
 		secs = hexCompensation(wiringPiI2CReadReg8(RTC, SEC) - 0b10000000);
 		mins = hexCompensation(wiringPiI2CReadReg8(RTC, MIN));
 		hours = hexCompensation(wiringPiI2CReadReg8(RTC, HOUR));
@@ -70,16 +65,7 @@ int main(void)
 			printf("%f %f %d\n",light,hum,dac_out);
 		}
 		unsigned char * dac_char_array = (unsigned char *) (0b0111<<12 | ((int)dac_out)<<2 | 0b00);//|0b00 isn't strictly necessary
-
-		// unsigned char DAC_VAL[3] = {(DAC & 0b1100000000) >> 8, (DAC & 0b11110000) >> 4, DAC & 0b1111};
-		// printf("dac_char_array: %d\n",dac_char_array);
-		// float DAC_VOLTAGE = DAC * 3.3 / 1023;
-		// printf("%f %d\n",DAC_VOLTAGE,DAC_VOLTAGE);
-
-		// printf("DAC Voltage: %f\n", DAC_VOLTAGE);
-		// printf("ADC_DAC Voltage: %0.1f\n", (channels[2] * 3.3) / 1023);
-		// printf("The current time is: %dh%dm%ds\n", hours, mins, secs);
-		// printf("\n");
+		printf("%s",dac_char_array);
 		wiringPiSPIDataRW(SPI_CHAN_DAC, dac_char_array, 1);
 		// RTC Time 	Sys Timer 	Humidity 	Temp 	Light 	DAC out Alarm
 		// 10:17:15 	00:00:00 	0.5 V 		25 C 	595 	0.29V 	*
