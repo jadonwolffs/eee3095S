@@ -19,3 +19,5 @@ readings_bak
 /reports
 Prac5/logisim/
 *.o
+mini*/src*/blynk-*
+mini*/src*/blynk
