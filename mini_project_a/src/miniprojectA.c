@@ -135,6 +135,7 @@ void *alarm_led(void *threadargs){
 		else{
 			alarm = " ";
 		}
+		delay(100);
 	}
 }
 void *read_adc(void *threadargs)
@@ -162,10 +163,8 @@ void reset(void){
 	}
 	last_interrupt=current_time;
 }
-void dismiss_alarm(void)//attach to button as interrupt
+void dismiss_alarm(void)
 {
-	
-	
 	long current_time = millis();
 	if(current_time-last_interrupt>150){
 		printf("dismiss called\n");
