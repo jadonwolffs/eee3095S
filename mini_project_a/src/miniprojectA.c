@@ -15,9 +15,18 @@ int main(void)
 	pinMode (22, INPUT);
 	pullUpDnControl(22,PUD_UP);
     wiringPiISR(22, INT_EDGE_RISING, reset);
+
 	pinMode (23, INPUT);
+	pullUpDnControl(23,PUD_UP);
+    wiringPiISR(23, INT_EDGE_RISING, cycle_freq);
+
 	pinMode (24, INPUT);
+	pullUpDnControl(24,PUD_UP);
+    wiringPiISR(24, INT_EDGE_RISING, stop_start);
+
 	pinMode (25, INPUT);
+	pullUpDnControl(25,PUD_UP);
+    wiringPiISR(25, INT_EDGE_RISING, dismiss_alarm);
 
 	RTC = wiringPiI2CSetup(RTCAddr);
 	toggleTime();
@@ -135,38 +144,46 @@ void reset_sys_time(void)
 }
 
 void cycle_freq(void){
-	switch (freq)
-	{
-	case 1000:
-		freq=2000;
-		break;
-	case 2000:
-		freq=5000;
-		break;
-	case 5000:
-		freq=1000;
-		break;
-	default:
-	printf("error cycle");
-		freq=1000;
-		break;
+	long current_time = millis();
+	if(current_time-last_interrupt>150){
+		switch (freq)
+		{
+		case 1000:
+			freq=2000;
+			break;
+		case 2000:
+			freq=5000;
+			break;
+		case 5000:
+			freq=1000;
+			break;
+		default:
+		printf("error cycle");
+			freq=1000;
+			break;
+		}
 	}
+	last_interrupt=current_time;
 }
 
 void stop_start(void)
 {
-	switch (monitoring)
-	{
-	case true:
-		monitoring = false;
-		break;
-	case false:
-		monitoring = true;
-		break;
-	default:
-	printf("error start stop");
-		break;
+	long current_time = millis();
+	if(current_time-last_interrupt>150){
+		switch (monitoring)
+		{
+		case true:
+			monitoring = false;
+			break;
+		case false:
+			monitoring = true;
+			break;
+		default:
+		printf("error start stop");
+			break;
+		}
 	}
+	last_interrupt=current_time;
 	
 }
 
