@@ -55,7 +55,7 @@ int main(void)
 		int temp = (round(((channels[1] * 3.3 / 1023) - 0.7) / 0.01));
 		FILE *fp;
 		fp = fopen("temp.txt", "w+");
-		fprintf(fp, (char *)temp);
+		fprintf(fp, "%d",temp);
 		fclose(fp);
 		int * temp_ptr = &temp;
 		
