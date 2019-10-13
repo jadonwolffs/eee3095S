@@ -102,7 +102,9 @@ void trigger_alarm(void){
 	{
 		if (dac_out_voltage>=2.65 || (dac_out_voltage<=0.5&&dac_out_voltage>0.0))
 		{
-			printf("alarm %f\n",dac_out_voltage);
+			if (DEBUG){
+				printf("alarm %f\n",dac_out_voltage);
+			}
 			alarm_triggered = true;
 		}
 	}
@@ -168,8 +170,9 @@ void dismiss_alarm(void)
 {
 	long current_time = millis();
 	if(current_time-last_interrupt>150){
-		printf("dismiss called\n");
+		
 		if (DEBUG){
+			printf("dismiss called\n");
 			if (alarm_triggered){
 				alarm_triggered = false;
 			}
