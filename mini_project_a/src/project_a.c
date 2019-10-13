@@ -53,11 +53,8 @@ int main(void)
 	for (;;)
 	{
 		int temp = (round(((channels[1] * 3.3 / 1023) - 0.7) / 0.01));
-		printf("temp ");
-		printf("%d\n",(temp));
+		
 		temp_ptr = &temp;
-		// 7 0 2 3
-		// pwmWrite(1,temp);
 		float light = (float)channels[0];
 		secs = hexCompensation(wiringPiI2CReadReg8(RTC, SEC) - 0b10000000);
 		mins = hexCompensation(wiringPiI2CReadReg8(RTC, MIN));
@@ -70,6 +67,8 @@ int main(void)
 		dac_char_array = (unsigned char *)(0b0111<<12 | ((int)dac_out)<<2 | 0b00);//|0b00 isn't strictly necessary
 		if (DEBUG)
 		{
+			printf("temp ");
+			printf("%d\n",(temp));
 			printf("%f %f %d\n",light,hum,dac_out);
 			printf("%d\n",dac_char_array);
 		}
