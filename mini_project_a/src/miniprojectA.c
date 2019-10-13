@@ -48,6 +48,7 @@ int main(void)
 	pthread_create(&thread_id, &tattr, alarm_led, (void *)1);
 	printf("_________________________________________________________________________________________________\n");
 	printf("| RTC Time \t| Sys Timer \t| Humidity \t| Temp \t| Light | DAC out \t| Alarm \t|\n");
+	delay(500);
 	for (;;)
 	{
 		// printf("Humidity: %0.1fV\n", channels[3] * 3.3 / 1023);
@@ -60,7 +61,7 @@ int main(void)
 		hours = hexCompensation(wiringPiI2CReadReg8(RTC, HOUR));
 		
 		float hum = channels[3] * 3.3 / 1023;
-		float dac_out_voltage = (light / 1023) * hum;
+		dac_out_voltage = (light / 1023) * hum;
 		int dac_out = round((dac_out_voltage/3.3)*1023);
 		if (DEBUG)
 		{
@@ -96,17 +97,39 @@ int main(void)
 	}
 	return 0;
 }
+void trigger_alarm(void){
+	if (millis()-last_alarm > 0)
+	{
+		if (dac_out_voltage>=2.65 || dac_out_voltage<=0.5)
+		{
+			alarm_triggered = true;
+		}
+	}
+	
+	
+}
 void *alarm_led(void *threadargs){
 	while (true)
 	{
 		if (alarm_triggered){
 			alarm = "*";
-			pwmWrite(26,200);			delay(300);
-			pwmWrite(26,400);			delay(300);
-			pwmWrite(26,600);			delay(300);
-			pwmWrite(26,800);			delay(300);
-			pwmWrite(26,1000);			delay(300);
-			pwmWrite(26,600);
+			for (size_t i = 0; i < 1024; i++)
+			{
+				pwmWrite(26,i);
+				delay(10);
+			}
+			for (size_t i = 1023; i > 0; i--)
+			{
+				pwmWrite(26,i);
+				delay(10);
+			}
+			
+			// pwmWrite(26,200);			delay(300);
+			// pwmWrite(26,400);			delay(300);
+			// pwmWrite(26,600);			delay(300);
+			// pwmWrite(26,800);			delay(300);
+			// pwmWrite(26,1000);			delay(300);
+			// pwmWrite(26,600);
 		}
 		else{
 			alarm = " ";
@@ -123,6 +146,7 @@ void *read_adc(void *threadargs)
 			{
 				channels[chan] = analogRead(BASE + chan);
 			}
+			trigger_alarm(void);
 		}
 		delay(freq);
 	}

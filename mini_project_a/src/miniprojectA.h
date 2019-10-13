@@ -27,6 +27,7 @@ void *alarm_led(void *threadargs);
 void toggleTime(void);
 
 void dismiss_alarm(void);
+void trigger_alarm(void);
 
 void reset(void);
 void clear_console(void);
@@ -58,4 +59,6 @@ extern int HH,MM,SS;
 short freq = 1000;
 bool monitoring = true;
 long last_interrupt = -201;
+long last_alarm = -3001;
+float dac_out_voltage = 0.0;
 #endif
