@@ -75,7 +75,7 @@ int main(void)
 		fclose(fp);
 		
 		fp = fopen("src/humidity.txt", "w+");
-		fprintf(fp, "%d",hum);
+		fprintf(fp, "%f",hum);
 		fclose(fp);
 
 		fp = fopen("src/light.txt", "w+");
