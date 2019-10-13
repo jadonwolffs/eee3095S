@@ -75,7 +75,7 @@ int main(void)
 		// 10:17:15 	00:00:00 	0.5 V 		25 C 	595 	0.29V 	*
 		if (monitoring)
 		{
-			printf("| %d:%d:%d \t| %d \t\t| %f \t| %d \t| %d \t| %f(%d) | %s \t\t|\n",hours, mins, secs,(millis()-reset_time)/1000,hum,temp,(int)light,dac_out_voltage,dac_out,alarm_value);
+			printf("| %d:%d:%d \t| %d \t\t| %f \t| %d \t| %d \t| %f(%d) | %s \t\t|\n",hours, mins, secs,(millis()-reset_time)/1000,hum,*temp,(int)light,dac_out_voltage,dac_out,alarm_value);
 		}
 		delay(freq);
 	}
