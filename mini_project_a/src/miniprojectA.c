@@ -32,13 +32,14 @@ int main(void)
 		// uptime = (millis() / 1000);
   		// Blynk.virtualWrite(V1, uptime);
 		// printf("Humidity: %0.1fV\n", channels[3] * 3.3 / 1023);
-		// printf("Light Level: %d\n", 1023-channels[0]);
+		printf("Light Level: %d\n", 1023-channels[0]);
 		int temp = round(((channels[1] * 3.3 / 1023) - 0.7) / 0.01);
+		int light = 1023-channels[0];
 		// printf("Temperature: %0.0f\n", temp);
 		secs = hexCompensation(wiringPiI2CReadReg8(RTC, SEC) - 0b10000000);
 		mins = hexCompensation(wiringPiI2CReadReg8(RTC, MIN));
 		hours = decCompensation(wiringPiI2CReadReg8(RTC, HOUR));
-		float light = channels[0];
+		
 		float hum = channels[3] * 3.3 / 1023;
 		int DAC = (int)((light / 1023) * hum * 1023 / 3.3);
 		unsigned char * dac_char_array = (unsigned char *) (0b0111<<12 | DAC<<2 | 0b00);//|0b00 isn't strictly necessary
@@ -55,11 +56,7 @@ int main(void)
 		wiringPiSPIDataRW(SPI_CHAN_DAC, dac_char_array, 1);
 		// RTC Time Sys Timer Humidity Temp Light DAC out Alarm
 		// 10:17:15 00:00:00 0.5 V 25 C 595 0.29V *
-		// 10:17:20 00:00:05 1.5 V 25 C 595 0.87V *
-		// 10:17:25 00:00:10 1.7 V 25 C 595 0.98V
-		// 10:17:30 00:00:15 2.2 V 25 C 782 1.68V
-		// 10:17:35 00:00:20 3.3 V 25 C 998 3.22V
-		printf("| %dh%dm%ds \t| %d \t\t| %f \t| %d \t| %d \t| %f \t| %c \t\t|\n",hours, mins, secs,millis()/1000,hum,temp,light,DAC_VOLTAGE,alarm);
+		printf("| %dh%dm%ds \t| %d \t\t| %f \t| %d \t| %d \t| %d \t| %c \t\t|\n",hours, mins, secs,millis()/1000,hum,temp,light,DAC_VOLTAGE,alarm);
 
 
 		delay(1000);
