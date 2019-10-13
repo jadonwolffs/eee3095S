@@ -26,15 +26,15 @@ int main(void)
     pthread_attr_setschedparam (&tattr, &param);
     pthread_create(&thread_id, &tattr, read_adc, (void *)1);
 	printf("____________________________________________________________________\n");
-	printf("| RTC Time | Sys Timer | Humidity | Temp | Light | DAC out | Alarm |\n");
+	printf("| RTC Time \t| Sys Timer \t| Humidity \t| Temp \t| Light \t| DAC out \t| Alarm \t|\n");
 	for (;;)
 	{
 		// uptime = (millis() / 1000);
   		// Blynk.virtualWrite(V1, uptime);
-		printf("Humidity: %0.1fV\n", channels[3] * 3.3 / 1023);
-		printf("Light Level: %d\n", 1023-channels[0]);
+		// printf("Humidity: %0.1fV\n", channels[3] * 3.3 / 1023);
+		// printf("Light Level: %d\n", 1023-channels[0]);
 		int temp = round(((channels[1] * 3.3 / 1023) - 0.7) / 0.01);
-		printf("Temperature: %0.0f\n", temp);
+		// printf("Temperature: %0.0f\n", temp);
 		secs = hexCompensation(wiringPiI2CReadReg8(RTC, SEC) - 0b10000000);
 		mins = hexCompensation(wiringPiI2CReadReg8(RTC, MIN));
 		hours = decCompensation(wiringPiI2CReadReg8(RTC, HOUR));
@@ -45,12 +45,12 @@ int main(void)
 		
 		// dac_char_array = 1023;
 		unsigned char DAC_VAL[3] = {(DAC & 0b1100000000) >> 8, (DAC & 0b11110000) >> 4, DAC & 0b1111};
-		printf("dac_char_array: %d\n",dac_char_array);
+		// printf("dac_char_array: %d\n",dac_char_array);
 		float DAC_VOLTAGE = DAC * 3.3 / 1023;
-		printf("DAC Voltage: %f\n", DAC_VOLTAGE);
-		printf("ADC_DAC Voltage: %0.1f\n", (channels[2] * 3.3) / 1023);
-		printf("The current time is: %dh%dm%ds\n", hours, mins, secs);
-		printf("\n");
+		// printf("DAC Voltage: %f\n", DAC_VOLTAGE);
+		// printf("ADC_DAC Voltage: %0.1f\n", (channels[2] * 3.3) / 1023);
+		// printf("The current time is: %dh%dm%ds\n", hours, mins, secs);
+		// printf("\n");
 		char * alarm = "*";
 		wiringPiSPIDataRW(SPI_CHAN_DAC, dac_char_array, 1);
 		// RTC Time Sys Timer Humidity Temp Light DAC out Alarm
@@ -59,7 +59,7 @@ int main(void)
 		// 10:17:25 00:00:10 1.7 V 25 C 595 0.98V
 		// 10:17:30 00:00:15 2.2 V 25 C 782 1.68V
 		// 10:17:35 00:00:20 3.3 V 25 C 998 3.22V
-		printf("| %dh%dm%ds | %d | %f | %d | %d | %f | %c |\n",hours, mins, secs,millis()/1000,hum,temp,light,DAC_VOLTAGE,alarm);
+		printf("| %dh%dm%ds \t| %d \t| %f \t| %d \t| %d \t| %f \t| %c \t|\n",hours, mins, secs,millis()/1000,hum,temp,light,DAC_VOLTAGE,alarm);
 
 
 		delay(1000);
