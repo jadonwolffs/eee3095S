@@ -57,4 +57,5 @@ float DAC_VOLTAGE;
 extern int HH,MM,SS;
 short freq = 1000;
 bool monitoring = true;
+long last_interrupt = -201;
 #endif

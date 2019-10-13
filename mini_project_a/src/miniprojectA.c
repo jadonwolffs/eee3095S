@@ -108,9 +108,14 @@ void *read_adc(void *threadargs)
 	}
 }
 void reset(void){
-	dismiss_alarm();
-	clear_console();
-	printf("reset");
+	long current_time = millis();
+	if(current_time-last_interrupt>150){
+		dismiss_alarm();
+		clear_console();
+		printf("_________________________________________________________________________________________________\n");
+		printf("| RTC Time \t| Sys Timer \t| Humidity \t| Temp \t| Light | DAC out \t| Alarm \t|\n");
+	}
+	last_interrupt=current_time;
 }
 void dismiss_alarm(void)//attach to button as interrupt
 {
