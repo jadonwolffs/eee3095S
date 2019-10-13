@@ -60,9 +60,10 @@ int main(void)
 		hours = hexCompensation(wiringPiI2CReadReg8(RTC, HOUR));
 		
 		float hum = channels[3] * 3.3 / 1023;
-		float DAC = (light / 1023) * hum;
-		printf("%f %f %f\n",light,hum,DAC);
-		unsigned char * dac_char_array = (unsigned char *) (0b0111<<12 | ((int)DAC)<<2 | 0b00);//|0b00 isn't strictly necessary
+		float dac_out_voltage = (light / 1023) * hum;
+		int dac_out = (int) (dac_out_voltage/3.3)*1023;
+		printf("%f %f %d\n",light,hum,dac_out);
+		unsigned char * dac_char_array = (unsigned char *) (0b0111<<12 | ((int)dac_out)<<2 | 0b00);//|0b00 isn't strictly necessary
 
 		// unsigned char DAC_VAL[3] = {(DAC & 0b1100000000) >> 8, (DAC & 0b11110000) >> 4, DAC & 0b1111};
 		// printf("dac_char_array: %d\n",dac_char_array);
@@ -80,7 +81,7 @@ int main(void)
 		// 10:17:15 	00:00:00 	0.5 V 		25 C 	595 	0.29V 	*
 		if (monitoring)
 		{
-			printf("| %d:%d:%d \t| %d \t\t| %f \t| %d \t| %d \t| %f \t| %s \t\t|\n",hours, mins, secs,(millis()-reset_time)/1000,hum,temp,(int)light,DAC,alarm);
+			printf("| %d:%d:%d \t| %d \t\t| %f \t| %d \t| %d \t| %f \t| %s \t\t|\n",hours, mins, secs,(millis()-reset_time)/1000,hum,temp,(int)light,dac_out_voltage,alarm);
 		}
 		
 		
