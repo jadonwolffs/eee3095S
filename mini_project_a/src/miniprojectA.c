@@ -110,7 +110,7 @@ void *read_adc(void *threadargs)
 void reset(void){
 	long current_time = millis();
 	if(current_time-last_interrupt>150){
-		reset_sys_time(void);
+		reset_sys_time();
 		clear_console();
 		printf("_________________________________________________________________________________________________\n");
 		printf("| RTC Time \t| Sys Timer \t| Humidity \t| Temp \t| Light | DAC out \t| Alarm \t|\n");
