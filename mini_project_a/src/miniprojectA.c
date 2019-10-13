@@ -25,7 +25,7 @@ int main(void)
     param.sched_priority = newprio;
     pthread_attr_setschedparam (&tattr, &param);
     pthread_create(&thread_id, &tattr, read_adc, (void *)1);
-	printf("____________________________________________________________________\n");
+	printf("______________________________________________________________________________________________\n");
 	printf("| RTC Time \t| Sys Timer \t| Humidity \t| Temp \t| Light | DAC out \t| Alarm \t|\n");
 	for (;;)
 	{
@@ -52,7 +52,7 @@ int main(void)
 		{
 			DAC_VOLTAGE=0;
 		}
-		
+
 		// printf("DAC Voltage: %f\n", DAC_VOLTAGE);
 		// printf("ADC_DAC Voltage: %0.1f\n", (channels[2] * 3.3) / 1023);
 		// printf("The current time is: %dh%dm%ds\n", hours, mins, secs);
@@ -61,7 +61,7 @@ int main(void)
 		wiringPiSPIDataRW(SPI_CHAN_DAC, dac_char_array, 1);
 		// RTC Time Sys Timer Humidity Temp Light DAC out Alarm
 		// 10:17:15 00:00:00 0.5 V 25 C 595 0.29V *
-		printf("| %dh%dm%ds \t| %d \t\t| %f \t| %d \t| %d \t| %f \t| %c \t\t|\n",hours, mins, secs,millis()/1000,hum,temp,light,DAC_VOLTAGE,alarm);
+		printf("| %dh%dm%ds \t| %d \t\t| %f \t| %d \t| %d \t| %f \t| %s \t\t|\n",hours, mins, secs,millis()/1000,hum,temp,light,DAC_VOLTAGE,alarm);
 
 
 		delay(1000);
