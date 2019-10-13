@@ -2,6 +2,9 @@
 #include "miniprojectA.h"
 #pragma GCC push_options
 #pragma GCC optimize ("O0")
+
+#define DEBUG true
+
 int hours, mins, secs;
 int RTC; //Holds the RTC instance
 int reset_time=0;
@@ -130,7 +133,21 @@ void dismiss_alarm(void)//attach to button as interrupt
 {
 	long current_time = millis();
 	if(current_time-last_interrupt>150){
-		alarm_triggered = false;
+		if (DEBUG)
+		{
+			if (alarm_triggered)
+			{
+				alarm_triggered = false;
+			}
+			else
+			{
+				alarm_triggered = true;
+			}	
+		}
+		else
+		{
+			alarm_triggered = false;
+		}	
 	}
 	last_interrupt=current_time;
 }
