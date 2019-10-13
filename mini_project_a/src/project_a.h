@@ -45,8 +45,6 @@ const char SEC = 0x00; // see register table in datasheet
 const char MIN = 0x01;
 const char HOUR = 0x02;
 const char TIMEZONE = 2; // +02H00 (RSA)
-unsigned char DAC_VAL;
-float DAC_VOLTAGE;
 extern int HH,MM,SS;
 short freq = 1000;
 bool monitoring = true;
@@ -54,8 +52,9 @@ long last_interrupt = -201;
 long last_alarm = -3001;
 float dac_out_voltage = 0.0;
 
-int temp = 10;
-int * temp_ptr= &temp;
+
+volatile int temp = 10;
+volatile int * temp_ptr= &temp;
 
 #define DEBUG false
 #define BASE 100
