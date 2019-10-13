@@ -54,7 +54,7 @@ long last_interrupt = -201;
 long last_alarm = -3001;
 float dac_out_voltage = 0.0;
 
-int temp = 0;
+int temp = 10;
 int * temp_ptr= &temp;
 
 #define DEBUG false
