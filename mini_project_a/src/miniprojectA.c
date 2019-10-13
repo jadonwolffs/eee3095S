@@ -29,7 +29,7 @@ int main(void)
 	for (;;)
 	{
 		printf("Humidity: %0.1fV\n", channels[3] * 3.3 / 1023);
-		printf("Light Level: %d\n", channels[0]);
+		printf("Light Level: %d\n", 1023-channels[0]);
 		printf("Temperature: %0.0f\n", round(((channels[1] * 3.3 / 1023) - 0.7) / 0.01));
 		secs = hexCompensation(wiringPiI2CReadReg8(RTC, SEC) - 0b10000000);
 		mins = hexCompensation(wiringPiI2CReadReg8(RTC, MIN));
