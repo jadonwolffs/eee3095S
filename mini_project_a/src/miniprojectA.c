@@ -61,7 +61,7 @@ int main(void)
 		
 		float hum = channels[3] * 3.3 / 1023;
 		float dac_out_voltage = (light / 1023) * hum;
-		int dac_out = round(dac_out_voltage/3.3)*1023;
+		int dac_out = round((dac_out_voltage/3.3)*1023);
 		if (DEBUG)
 		{
 			printf("%f %f %d\n",light,hum,dac_out);
