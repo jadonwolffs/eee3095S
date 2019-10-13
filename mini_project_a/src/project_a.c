@@ -60,13 +60,13 @@ int main(void)
 		float hum = channels[3] * 3.3 / 1023;
 		dac_out_voltage = (light / 1023) * hum;
 		int dac_out = round((dac_out_voltage/3.3)*1023);
+		unsigned char * dac_char_array;
+		dac_char_array = (unsigned char *)(0b0111<<12 | ((int)dac_out)<<2 | 0b00);//|0b00 isn't strictly necessary
 		if (DEBUG)
 		{
 			printf("%f %f %d\n",light,hum,dac_out);
+			printf("%d\n",dac_char_array);
 		}
-		unsigned char * dac_char_array;
-		dac_char_array = (unsigned char *)(0b0111<<12 | ((int)dac_out)<<2 | 0b00);//|0b00 isn't strictly necessary
-		printf("%d",dac_char_array);
 		wiringPiSPIDataRW(SPI_CHAN_DAC, dac_char_array, 1);
 		// RTC Time 	Sys Timer 	Humidity 	Temp 	Light 	DAC out Alarm
 		// 10:17:15 	00:00:00 	0.5 V 		25 C 	595 	0.29V 	*
