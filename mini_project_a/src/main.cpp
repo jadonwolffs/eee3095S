@@ -40,6 +40,7 @@ void setup()
     tmr.setInterval(1000, [](){
       Blynk.virtualWrite(V0, BlynkMillis()/1000);
       Blynk.virtualWrite(V1, *temp_ptr);
+      printf("wrote %d to v1",*temp_ptr);
     });
 }
 
