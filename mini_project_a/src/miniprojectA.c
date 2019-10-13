@@ -32,7 +32,7 @@ int main(void)
 		// uptime = (millis() / 1000);
   		// Blynk.virtualWrite(V1, uptime);
 		// printf("Humidity: %0.1fV\n", channels[3] * 3.3 / 1023);
-		printf("Light Level: %d\n", 1023-channels[0]);
+		// printf("Light Level: %d\n", 1023-channels[0]);
 		int temp = round(((channels[1] * 3.3 / 1023) - 0.7) / 0.01);
 		int light = 1023-channels[0];
 		// printf("Temperature: %0.0f\n", temp);
