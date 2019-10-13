@@ -11,6 +11,14 @@ int main(void)
 	wiringPiSetup();
 	wiringPiSPISetup(SPI_CHAN_DAC, SPI_SPEED_DAC);
 	pinMode (26, PWM_OUTPUT);
+
+	pinMode (22, INPUT);
+	pullUpDnControl(22,PUD_UP);
+    wiringPiISR(22, INT_EDGE_RISING, reset);
+	pinMode (23, INPUT);
+	pinMode (24, INPUT);
+	pinMode (25, INPUT);
+
 	RTC = wiringPiI2CSetup(RTCAddr);
 	toggleTime();
 	mcp3004Setup(BASE, SPI_CHAN);
@@ -102,6 +110,7 @@ void *read_adc(void *threadargs)
 void reset(void){
 	dismiss_alarm();
 	clear_console();
+	printf("reset");
 }
 void dismiss_alarm(void)//attach to button as interrupt
 {
@@ -161,11 +170,11 @@ void shut_down(int x)
 }
 void cleanup(void){
 	printf("Cleaning up.");
-	delay(500);
+	delay(100);
 	pwmWrite(26,0);
 	pinMode (26, INPUT);
 	printf(".");
-	delay(500);
+	delay(100);
 	printf(".");
 	printf("\n");
 }
