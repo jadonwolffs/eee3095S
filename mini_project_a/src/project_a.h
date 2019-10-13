@@ -38,7 +38,7 @@ void cycle_freq(void);
 void cleanup(void);
 
 
-char * alarm;
+char * alarm_value;
 volatile bool alarm_triggered = false;
 const char RTCAddr = 0x6f;
 const char SEC = 0x00; // see register table in datasheet
