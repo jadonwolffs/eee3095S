@@ -60,7 +60,7 @@ int main(void)
 		hours = hexCompensation(wiringPiI2CReadReg8(RTC, HOUR));
 		
 		float hum = channels[3] * 3.3 / 1023;
-		float DAC = (light / 1023) * hum);
+		float DAC = (light / 1023) * hum;
 		printf("%f %f\n",light,hum);
 		unsigned char * dac_char_array = (unsigned char *) (0b0111<<12 | ((int)DAC)<<2 | 0b00);//|0b00 isn't strictly necessary
 
