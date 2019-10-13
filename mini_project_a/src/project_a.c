@@ -52,7 +52,7 @@ int main(void)
 	delay(500);
 	for (;;)
 	{
-		int temp = round(((channels[1] * 3.3 / 1023) - 0.7) / 0.01);
+		temp = round(((channels[1] * 3.3 / 1023) - 0.7) / 0.01);
 		// 7 0 2 3
 		// pwmWrite(1,temp);
 		Blynk.virtualWrite(V1, uptime);

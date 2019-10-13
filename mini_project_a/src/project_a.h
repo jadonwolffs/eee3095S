@@ -14,7 +14,6 @@
 #include "RTC.h"
 #include <pthread.h>
 
-#include <BlynkApiWiringPi.h>
 
 void shut_down(int signal);
 float channels[8] = {0,0,0,0,0,0,0,0};
@@ -54,6 +53,7 @@ bool monitoring = true;
 long last_interrupt = -201;
 long last_alarm = -3001;
 float dac_out_voltage = 0.0;
+int temp = 0;
 
 #define DEBUG false
 #define BASE 100

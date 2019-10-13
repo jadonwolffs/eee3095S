@@ -17,6 +17,8 @@
 #include <BlynkSocket.h>
 #include <BlynkOptionsParser.h>
 
+#include "project_a.h"
+
 static BlynkTransportSocket _blynkTransport;
 BlynkSocket Blynk(_blynkTransport);
 
@@ -37,6 +39,7 @@ void setup()
     Blynk.begin(auth, serv, port);
     tmr.setInterval(1000, [](){
       Blynk.virtualWrite(V0, BlynkMillis()/1000);
+      Blynk.virtualWrite(V1, temp);
     });
 }
 
