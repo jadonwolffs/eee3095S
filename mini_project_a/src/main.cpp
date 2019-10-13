@@ -52,6 +52,20 @@ void setup()
       // printf("%s\n",alarm_char);
       int alarm_led_val = atoi(alarm_char);
       Blynk.virtualWrite(V2, alarm_led_val);
+
+      char humidity_char[255];
+      fp = fopen("humidity.txt", "r");
+      fscanf(fp, "%s", humidity_char);
+      fclose(fp);
+      float humidity_value = atoi(humidity_char);
+      Blynk.virtualWrite(V3, humidity_value);
+
+      char light_char[255];
+      fp = fopen("light.txt", "r");
+      fscanf(fp, "%s", light_char);
+      fclose(fp);
+      int light_value = atoi(light_char);
+      Blynk.virtualWrite(V4, light_value);
       
     });
 }
