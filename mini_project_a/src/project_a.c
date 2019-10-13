@@ -52,9 +52,9 @@ int main(void)
 	delay(500);
 	for (;;)
 	{
-		temp = (round(((channels[1] * 3.3 / 1023) - 0.7) / 0.01));
+		int temp = (round(((channels[1] * 3.3 / 1023) - 0.7) / 0.01));
 		
-		temp_ptr = &temp;
+		int * temp_ptr = &temp;
 		
 		float light = (float)channels[0];
 		secs = hexCompensation(wiringPiI2CReadReg8(RTC, SEC) - 0b10000000);
