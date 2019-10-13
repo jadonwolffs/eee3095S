@@ -100,9 +100,9 @@ int main(void)
 void trigger_alarm(void){
 	if (millis()-last_alarm > 0)
 	{
-		if (dac_out_voltage>=2.65 || dac_out_voltage<=0.5)
+		if (dac_out_voltage>=2.65 || (dac_out_voltage<=0.5&&dac_out_voltage>0.0))
 		{
-			printf("alarm %f",dac_out_voltage);
+			printf("alarm %f\n",dac_out_voltage);
 			alarm_triggered = true;
 		}
 	}
@@ -165,9 +165,10 @@ void reset(void){
 void dismiss_alarm(void)//attach to button as interrupt
 {
 	
-	printf("dismiss called");
+	
 	long current_time = millis();
 	if(current_time-last_interrupt>150){
+		printf("dismiss called\n");
 		if (DEBUG){
 			if (alarm_triggered){
 				alarm_triggered = false;
