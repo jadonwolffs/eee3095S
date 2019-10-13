@@ -18,7 +18,7 @@
 #define SPI_CHAN 0
 
 void shut_down(int signal);
-int channels[8] = {0,0,0,0,0,0,0,0};
+float channels[8] = {0,0,0,0,0,0,0,0};
 int hFormat(int hours);
 int hexCompensation(int units);
 int decCompensation(int units);
