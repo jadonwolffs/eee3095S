@@ -51,7 +51,7 @@ ifeq ($(target),raspberry)
 endif
 
 SOURCES=main.cpp \
-	project_a.c \
+	project_a.cpp \
 	../src/utility/BlynkDebug.cpp \
 	../src/utility/BlynkHandlers.cpp \
 	../src/utility/BlynkTimer.cpp
