@@ -52,7 +52,7 @@ int main(void)
 	delay(500);
 	for (;;)
 	{
-		int temp = (round(((channels[1] * 3.3 / 1023) - 0.7) / 0.01));
+		temp = (round(((channels[1] * 3.3 / 1023) - 0.7) / 0.01));
 		
 		temp_ptr = &temp;
 		float light = (float)channels[0];
