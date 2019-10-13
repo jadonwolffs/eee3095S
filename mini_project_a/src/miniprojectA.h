@@ -32,6 +32,7 @@ int hFormat(int hours);
 int hexCompensation(int units);
 int decCompensation(int units);
 void *read_adc(void *threadargs);
+void *alarm_led(void *threadargs);
 void toggleTime(void);
 void dismiss_alarm(void);
 void reset_sys_time(void);
@@ -43,6 +44,7 @@ void cleanup(void);
 // unsigned int uptime;      		// 1 second intervals
 // unsigned int pinStatus;   		// status of BCM 17
 // unsigned int lastpinStatus = 0; // to toggle
+char * alarm;
 bool alarm_triggered = true;
 
 const char RTCAddr = 0x6f;

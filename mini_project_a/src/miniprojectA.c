@@ -17,7 +17,7 @@ int main(void)
 
 	pthread_attr_t tattr;
     pthread_t thread_id;
-	char * alarm;
+	
     int newprio = 99;
     sched_param param;
     pthread_attr_init (&tattr);
