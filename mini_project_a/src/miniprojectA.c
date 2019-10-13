@@ -56,7 +56,7 @@ int main(void)
 		wiringPiSPIDataRW(SPI_CHAN_DAC, dac_char_array, 1);
 		// RTC Time Sys Timer Humidity Temp Light DAC out Alarm
 		// 10:17:15 00:00:00 0.5 V 25 C 595 0.29V *
-		printf("| %dh%dm%ds \t| %d \t\t| %f \t| %d \t| %d \t| %d \t| %c \t\t|\n",hours, mins, secs,millis()/1000,hum,temp,light,DAC_VOLTAGE,alarm);
+		printf("| %dh%dm%ds \t| %d \t\t| %f \t| %d | %d \t| %d \t| %c \t\t|\n",hours, mins, secs,millis()/1000,hum,temp,light,DAC_VOLTAGE,alarm);
 
 
 		delay(1000);
