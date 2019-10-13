@@ -55,7 +55,6 @@ int main(void)
 		temp = round(((channels[1] * 3.3 / 1023) - 0.7) / 0.01);
 		// 7 0 2 3
 		// pwmWrite(1,temp);
-		Blynk.virtualWrite(V1, uptime);
 		float light = (float)channels[0];
 		secs = hexCompensation(wiringPiI2CReadReg8(RTC, SEC) - 0b10000000);
 		mins = hexCompensation(wiringPiI2CReadReg8(RTC, MIN));
