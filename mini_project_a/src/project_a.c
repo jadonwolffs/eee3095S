@@ -52,9 +52,11 @@ int main(void)
 	delay(500);
 	for (;;)
 	{
-		temp = & round(((channels[1] * 3.3 / 1023) - 0.7) / 0.01);
+		int temp = (round(((channels[1] * 3.3 / 1023) - 0.7) / 0.01));
 		printf("temp ");
-		printf("%d\n",(*temp));
+		printf("%d\n",(temp));
+		ip = &var;
+		temp_ptr = &temp;
 		// 7 0 2 3
 		// pwmWrite(1,temp);
 		float light = (float)channels[0];
@@ -77,7 +79,7 @@ int main(void)
 		// 10:17:15 	00:00:00 	0.5 V 		25 C 	595 	0.29V 	*
 		if (monitoring)
 		{
-			printf("| %d:%d:%d \t| %d \t\t| %f \t| %dC \t| %d \t| %f(%d) | %s \t\t|\n",hours, mins, secs,(millis()-reset_time)/1000,hum,*temp,(int)light,dac_out_voltage,dac_out,alarm_value);
+			printf("| %d:%d:%d \t| %d \t\t| %f \t| %dC \t| %d \t| %f(%d) | %s \t\t|\n",hours, mins, secs,(millis()-reset_time)/1000,hum,temp,(int)light,dac_out_voltage,dac_out,alarm_value);
 		}
 		delay(freq);
 	}
