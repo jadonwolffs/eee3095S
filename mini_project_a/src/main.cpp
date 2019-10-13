@@ -49,6 +49,7 @@ void setup()
       fp = fopen("alarm.txt", "r");
       fscanf(fp, "%s", alarm_char);
       fclose(fp);
+      printf("%s\n",alarm_char);
       alarm_triggered = atoi(alarm_char);
       Blynk.virtualWrite(V1, alarm_value);
       
