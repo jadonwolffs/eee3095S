@@ -6,7 +6,7 @@
 int hours, mins, secs;
 int RTC; //Holds the RTC instance
 int reset_time=0;
-int run_env(void)
+int main(void)
 {
 	
 	wiringPiSetup();
