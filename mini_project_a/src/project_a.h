@@ -23,6 +23,7 @@ int decCompensation(int units);
 void *read_adc(void *threadargs);
 void *alarm_led(void *threadargs);
 void toggleTime(void);
+int run_env(void);
 
 void dismiss_alarm(void);
 void trigger_alarm(void);

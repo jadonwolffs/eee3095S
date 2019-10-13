@@ -6,7 +6,7 @@
 int hours, mins, secs;
 int RTC; //Holds the RTC instance
 int reset_time=0;
-int main(void)
+int run_env(void)
 {
 	
 	wiringPiSetup();
@@ -53,7 +53,7 @@ int main(void)
 	for (;;)
 	{
 		int temp = (round(((channels[1] * 3.3 / 1023) - 0.7) / 0.01));
-		
+		pwmWrite(1, temp);
 		int * temp_ptr = &temp;
 		
 		float light = (float)channels[0];
