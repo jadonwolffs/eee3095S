@@ -2,19 +2,16 @@
 #include "miniprojectA.h"
 int hours, mins, secs;
 int RTC; //Holds the RTC instance
+int reset_time=0;
 int main(void)
 {
 	signal(SIGINT, exiting);
 	wiringPiSetup();
 	wiringPiSPISetup(SPI_CHAN_DAC, SPI_SPEED_DAC);
+	pinMode (26, PWM_OUTPUT);
 	RTC = wiringPiI2CSetup(RTCAddr);
 	toggleTime();
 	mcp3004Setup(BASE, SPI_CHAN);
-	
-	// unsigned​ ​char​ ​buffer​[​2​][BUFFER_SIZE][​2​];
-	// int​ buffer_location = ​0​;
-	// bool​ buffer_reading = ​0​;
-
 
 	pthread_attr_t tattr;
     pthread_t thread_id;
@@ -29,8 +26,6 @@ int main(void)
 	printf("| RTC Time \t| Sys Timer \t| Humidity \t| Temp \t| Light | DAC out \t| Alarm \t|\n");
 	for (;;)
 	{
-		// uptime = (millis() / 1000);
-  		// Blynk.virtualWrite(V1, uptime);
 		// printf("Humidity: %0.1fV\n", channels[3] * 3.3 / 1023);
 		// printf("Light Level: %d\n", 1023-channels[0]);
 		int temp = round(((channels[1] * 3.3 / 1023) - 0.7) / 0.01);
@@ -45,21 +40,22 @@ int main(void)
 		unsigned char * dac_char_array = (unsigned char *) (0b0111<<12 | DAC<<2 | 0b00);//|0b00 isn't strictly necessary
 		
 		// dac_char_array = 1023;
-		unsigned char DAC_VAL[3] = {(DAC & 0b1100000000) >> 8, (DAC & 0b11110000) >> 4, DAC & 0b1111};
+		// unsigned char DAC_VAL[3] = {(DAC & 0b1100000000) >> 8, (DAC & 0b11110000) >> 4, DAC & 0b1111};
 		// printf("dac_char_array: %d\n",dac_char_array);
 		float DAC_VOLTAGE = DAC * 3.3 / 1023;
-		if (DAC_VOLTAGE>1023)
-		{
-			DAC_VOLTAGE=0;
-		}
+		// if (DAC_VOLTAGE>1023)
+		// {
+		// 	DAC_VOLTAGE=0;
+		// }
 
 		// printf("DAC Voltage: %f\n", DAC_VOLTAGE);
 		// printf("ADC_DAC Voltage: %0.1f\n", (channels[2] * 3.3) / 1023);
 		// printf("The current time is: %dh%dm%ds\n", hours, mins, secs);
 		// printf("\n");
 		char * alarm;
-		if (false){
+		if (alarm_triggered){
 			alarm = "*";
+			pwmWrite(26,1000);
 		}
 		else{
 			alarm = " ";
@@ -67,7 +63,7 @@ int main(void)
 		wiringPiSPIDataRW(SPI_CHAN_DAC, dac_char_array, 1);
 		// RTC Time 	Sys Timer 	Humidity 	Temp 	Light 	DAC out Alarm
 		// 10:17:15 	00:00:00 	0.5 V 		25 C 	595 	0.29V 	*
-		printf("| %dh %dm %ds \t| %d \t\t| %f \t| %d \t| %d \t| %f \t| %s \t\t|\n",hours, mins, secs,millis()/1000,hum,temp,light,DAC_VOLTAGE,alarm);
+		printf("| %dh %dm %ds \t| %d \t\t| %f \t| %d \t| %d \t| %f \t| %s \t\t|\n",hours, mins, secs,(millis()-reset_time)/1000,hum,temp,light,DAC_VOLTAGE,alarm);
 
 
 		delay(1000);
@@ -86,6 +82,15 @@ void *read_adc(void *threadargs)
 	}
 }
 
+void dismiss_alarm(void)//attach to button as interrupt
+{
+	alarm_trigerred = false;
+}
+
+void reset_sys_time(void)
+{
+	reset_time=millis();
+}
 
 void exiting(int x)
 {

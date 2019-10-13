@@ -33,13 +33,16 @@ int hexCompensation(int units);
 int decCompensation(int units);
 void *read_adc(void *threadargs);
 void toggleTime(void);
+void dismiss_alarm(void);
+void reset_sys_time(void);
 #define SPI_CHAN_DAC 1
 #define SPI_SPEED_DAC 25600
 #define BUFFER_SIZE 1000
 
-unsigned int uptime;      		// 1 second intervals
-unsigned int pinStatus;   		// status of BCM 17
-unsigned int lastpinStatus = 0; // to toggle
+// unsigned int uptime;      		// 1 second intervals
+// unsigned int pinStatus;   		// status of BCM 17
+// unsigned int lastpinStatus = 0; // to toggle
+bool alarm_triggered = true;
 
 const char RTCAddr = 0x6f;
 const char SEC = 0x00; // see register table in datasheet
