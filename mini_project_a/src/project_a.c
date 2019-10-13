@@ -66,8 +66,7 @@ int main(void)
 		}
 		unsigned char * dac_char_array;
 		dac_char_array = (0b0111<<12 | ((int)dac_out)<<2 | 0b00);//|0b00 isn't strictly necessary
-		dac_char_array[16]="\0";
-		printf("%s",dac_char_array);
+		printf("%d",dac_char_array);
 		wiringPiSPIDataRW(SPI_CHAN_DAC, dac_char_array, 1);
 		// RTC Time 	Sys Timer 	Humidity 	Temp 	Light 	DAC out Alarm
 		// 10:17:15 	00:00:00 	0.5 V 		25 C 	595 	0.29V 	*
