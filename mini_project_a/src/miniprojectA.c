@@ -59,7 +59,7 @@ int main(void)
 		// 10:17:25 00:00:10 1.7 V 25 C 595 0.98V
 		// 10:17:30 00:00:15 2.2 V 25 C 782 1.68V
 		// 10:17:35 00:00:20 3.3 V 25 C 998 3.22V
-		printf("| %dh%dm%ds \t| %d \t| %f \t| %d \t| %d \t| %f \t| %c \t|\n",hours, mins, secs,millis()/1000,hum,temp,light,DAC_VOLTAGE,alarm);
+		printf("| %dh%dm%ds \t| %d \t\t| %f \t| %d \t| %d \t| %f \t| %c \t\t|\n",hours, mins, secs,millis()/1000,hum,temp,light,DAC_VOLTAGE,alarm);
 
 
 		delay(1000);
