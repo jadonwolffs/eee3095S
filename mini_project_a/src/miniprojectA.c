@@ -30,7 +30,7 @@ int main(void)
 	{
 		printf("Humidity: %0.1fV\n", channels[3] * 3.3 / 1023);
 		printf("Light Level: %d\n", channels[0]);
-		printf("Temperature: %0.0f\n", round(((channels[1] * 3.3 / 1023) - 1) / 0.01));
+		printf("Temperature: %0.0f\n", round(((channels[1] * 3.3 / 1023) - 0.7) / 0.01));
 		secs = hexCompensation(wiringPiI2CReadReg8(RTC, SEC) - 0b10000000);
 		mins = hexCompensation(wiringPiI2CReadReg8(RTC, MIN));
 		hours = decCompensation(wiringPiI2CReadReg8(RTC, HOUR));
