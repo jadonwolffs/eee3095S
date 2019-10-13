@@ -94,13 +94,23 @@ void reset_sys_time(void)
 
 void exiting(int x)
 {
-	printf("Shutting down\n");
 	cleanup();
+	
+	printf("Shutting down\n");
 	exit(0);
 }
 void cleanup(void){
+	printf("Cleaning up.");
+	delay(200);
 	pwmWrite(26,0);
 	pinMode (26, INPUT);
+	printf(".");
+	delay(200);
+	printf(".");
+	delay(200);
+	printf(".");
+	delay(200);
+	printf(".");
 }
 /*
  * Change the hour format to 12 hours
