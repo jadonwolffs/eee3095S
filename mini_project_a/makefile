@@ -23,4 +23,7 @@ clean:
     rm -fr $(PROG)/* $(OBJS)/*
 
 blynk: 
-    cd src && ./build.sh raspberry && screen -S blynk ./run.sh
+    cd src && ./build.sh raspberry
+
+blynkrun: blynk
+    screen -S blynk ./run.sh
