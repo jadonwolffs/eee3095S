@@ -146,7 +146,7 @@ void *read_adc(void *threadargs)
 			{
 				channels[chan] = analogRead(BASE + chan);
 			}
-			trigger_alarm(void);
+			trigger_alarm();
 		}
 		delay(freq);
 	}
