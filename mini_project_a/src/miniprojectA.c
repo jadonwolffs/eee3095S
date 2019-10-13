@@ -38,7 +38,7 @@ int main(void)
 		// printf("Temperature: %0.0f\n", temp);
 		secs = hexCompensation(wiringPiI2CReadReg8(RTC, SEC) - 0b10000000);
 		mins = hexCompensation(wiringPiI2CReadReg8(RTC, MIN));
-		hours = decCompensation(wiringPiI2CReadReg8(RTC, HOUR));
+		hours = hexCompensation(wiringPiI2CReadReg8(RTC, HOUR));
 		
 		float hum = channels[3] * 3.3 / 1023;
 		int DAC = (int)((light / 1023) * hum * 1023 / 3.3);
