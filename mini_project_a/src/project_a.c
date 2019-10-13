@@ -111,9 +111,9 @@ int main(void)
 	return 0;
 }
 void trigger_alarm(void){
-	if (millis()-last_alarm > 0)
+	if (millis()-last_alarm > 3000*60)
 	{
-		if (dac_out_voltage>=2.65 || (dac_out_voltage<=0.5&&dac_out_voltage>0.0))
+		if (dac_out_voltage>=2.65 || (dac_out_voltage<=0.65&&dac_out_voltage>0.0))
 		{
 			if (DEBUG){
 				printf("alarm %f\n",dac_out_voltage);
@@ -121,6 +121,7 @@ void trigger_alarm(void){
 			alarm_triggered = true;
 		}
 	}
+	last_alarm = millis();
 	
 	
 }

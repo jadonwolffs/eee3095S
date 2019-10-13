@@ -50,7 +50,7 @@ extern int HH,MM,SS;
 short freq = 1000;
 bool monitoring = true;
 long last_interrupt = -201;
-long last_alarm = -3001;
+long last_alarm = -3001*60;
 float dac_out_voltage = 0.0;
 
 
