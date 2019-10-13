@@ -1,5 +1,7 @@
 //Mini Project A
 #include "miniprojectA.h"
+#pragma GCC push_options
+#pragma GCC optimize ("O0")
 int hours, mins, secs;
 int RTC; //Holds the RTC instance
 int reset_time=0;
@@ -15,6 +17,7 @@ int main(void)
 
 	pthread_attr_t tattr;
     pthread_t thread_id;
+	char * alarm;
     int newprio = 99;
     sched_param param;
     pthread_attr_init (&tattr);
@@ -22,6 +25,7 @@ int main(void)
     param.sched_priority = newprio;
     pthread_attr_setschedparam (&tattr, &param);
     pthread_create(&thread_id, &tattr, read_adc, (void *)1);
+	pthread_create(&thread_id, &tattr, alarm_led, (void *)1);
 	printf("_________________________________________________________________________________________________\n");
 	printf("| RTC Time \t| Sys Timer \t| Humidity \t| Temp \t| Light | DAC out \t| Alarm \t|\n");
 	for (;;)
@@ -38,28 +42,17 @@ int main(void)
 		float hum = channels[3] * 3.3 / 1023;
 		int DAC = (int)((light / 1023) * hum * 1023 / 3.3);
 		unsigned char * dac_char_array = (unsigned char *) (0b0111<<12 | DAC<<2 | 0b00);//|0b00 isn't strictly necessary
-		
-		// dac_char_array = 1023;
+
 		// unsigned char DAC_VAL[3] = {(DAC & 0b1100000000) >> 8, (DAC & 0b11110000) >> 4, DAC & 0b1111};
 		// printf("dac_char_array: %d\n",dac_char_array);
 		float DAC_VOLTAGE = DAC * 3.3 / 1023;
-		// if (DAC_VOLTAGE>1023)
-		// {
-		// 	DAC_VOLTAGE=0;
-		// }
 
 		// printf("DAC Voltage: %f\n", DAC_VOLTAGE);
 		// printf("ADC_DAC Voltage: %0.1f\n", (channels[2] * 3.3) / 1023);
 		// printf("The current time is: %dh%dm%ds\n", hours, mins, secs);
 		// printf("\n");
-		char * alarm;
-		if (alarm_triggered){
-			alarm = "*";
-			pwmWrite(26,1000);
-		}
-		else{
-			alarm = " ";
-		}
+		
+		
 		wiringPiSPIDataRW(SPI_CHAN_DAC, dac_char_array, 1);
 		// RTC Time 	Sys Timer 	Humidity 	Temp 	Light 	DAC out Alarm
 		// 10:17:15 	00:00:00 	0.5 V 		25 C 	595 	0.29V 	*
@@ -69,6 +62,31 @@ int main(void)
 		delay(1000);
 	}
 	return 0;
+}
+void *alarm_led(void *threadargs){
+	while (true)
+	{
+		if (alarm_triggered){
+			alarm = "*";
+			pwmWrite(26,200);
+			delay(300);
+			pwmWrite(26,400);
+			delay(300);
+			pwmWrite(26,600);
+			delay(300);
+			pwmWrite(26,800);
+			delay(300);
+			pwmWrite(26,1000);
+			delay(300);
+			pwmWrite(26,600);
+		}
+		else{
+			alarm = " ";
+		}
+		
+	}
+	
+	
 }
 void *read_adc(void *threadargs)
 {
@@ -104,10 +122,6 @@ void cleanup(void){
 	delay(500);
 	pwmWrite(26,0);
 	pinMode (26, INPUT);
-	printf(".");
-	delay(500);
-	printf(".");
-	delay(500);
 	printf(".");
 	delay(500);
 	printf(".");
@@ -216,3 +230,4 @@ void toggleTime(void)
 	//	}
 	//	lastInterruptTime = interruptTime;
 }
+#pragma GCC pop_options
