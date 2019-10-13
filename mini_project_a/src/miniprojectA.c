@@ -7,7 +7,7 @@ int RTC; //Holds the RTC instance
 int reset_time=0;
 int main(void)
 {
-	signal(SIGINT, exiting);
+	signal(SIGINT, shut_down);
 	wiringPiSetup();
 	wiringPiSPISetup(SPI_CHAN_DAC, SPI_SPEED_DAC);
 	pinMode (26, PWM_OUTPUT);
@@ -56,10 +56,15 @@ int main(void)
 		wiringPiSPIDataRW(SPI_CHAN_DAC, dac_char_array, 1);
 		// RTC Time 	Sys Timer 	Humidity 	Temp 	Light 	DAC out Alarm
 		// 10:17:15 	00:00:00 	0.5 V 		25 C 	595 	0.29V 	*
-		printf("| %dh %dm %ds \t| %d \t\t| %f \t| %d \t| %d \t| %f \t| %s \t\t|\n",hours, mins, secs,(millis()-reset_time)/1000,hum,temp,light,DAC_VOLTAGE,alarm);
+		if (monitoring)
+		{
+			printf("| %dh %dm %ds \t| %d \t\t| %f \t| %d \t| %d \t| %f \t| %s \t\t|\n",hours, mins, secs,(millis()-reset_time)/1000,hum,temp,light,DAC_VOLTAGE,alarm);
+		}
+		
+		
 
 
-		delay(1000);
+		delay(freq);
 	}
 	return 0;
 }
@@ -68,49 +73,86 @@ void *alarm_led(void *threadargs){
 	{
 		if (alarm_triggered){
 			alarm = "*";
-			pwmWrite(26,200);
-			delay(300);
-			pwmWrite(26,400);
-			delay(300);
-			pwmWrite(26,600);
-			delay(300);
-			pwmWrite(26,800);
-			delay(300);
-			pwmWrite(26,1000);
-			delay(300);
+			pwmWrite(26,200);			delay(300);
+			pwmWrite(26,400);			delay(300);
+			pwmWrite(26,600);			delay(300);
+			pwmWrite(26,800);			delay(300);
+			pwmWrite(26,1000);			delay(300);
 			pwmWrite(26,600);
 		}
 		else{
 			alarm = " ";
 		}
-		
 	}
-	
-	
 }
 void *read_adc(void *threadargs)
 {
 	while (true)
 	{
-		for (int chan = 0; chan < 8; ++chan)
+		if (monitoring)
 		{
-			channels[chan] = analogRead(BASE + chan);
+			for (int chan = 0; chan < 8; ++chan)
+			{
+				channels[chan] = analogRead(BASE + chan);
+			}
 		}
-		delay(200);
+		delay(freq);
 	}
 }
-
+void reset(void){
+	dismiss_alarm();
+	clear_console();
+}
 void dismiss_alarm(void)//attach to button as interrupt
 {
 	alarm_triggered = false;
 }
-
+void clear_console(void)
+{
+	system("clear");
+}
 void reset_sys_time(void)
 {
 	reset_time=millis();
 }
 
-void exiting(int x)
+void cycle_freq(void){
+	switch (freq)
+	{
+	case 1000:
+		freq=2000;
+		break;
+	case 2000:
+		freq=5000;
+		break;
+	case 5000:
+		freq=1000;
+		break;
+	default:
+	printf("error cycle");
+		freq=1000;
+		break;
+	}
+}
+
+void stop_start(void)
+{
+	switch (monitoring)
+	{
+	case true:
+		monitoring = false;
+		break;
+	case false:
+		monitoring = true;
+		break;
+	default:
+	printf("error start stop");
+		break;
+	}
+	
+}
+
+void shut_down(int x)
 {
 	cleanup();
 	
