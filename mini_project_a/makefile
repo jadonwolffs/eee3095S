@@ -21,3 +21,6 @@ default = /bin/$(primary)
 
 clean:
     rm -fr $(PROG)/* $(OBJS)/*
+
+blynk: 
+    cd src && ./build.sh raspberry && screen -S blynk ./run.sh
