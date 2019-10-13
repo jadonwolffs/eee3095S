@@ -57,7 +57,7 @@ void setup()
       fp = fopen("humidity.txt", "r");
       fscanf(fp, "%s", humidity_char);
       fclose(fp);
-      float humidity_value = atoi(humidity_char);
+      float humidity_value = atof(humidity_char);
       Blynk.virtualWrite(V3, humidity_value);
 
       char light_char[255];

@@ -53,6 +53,10 @@ int main(void)
 	for (;;)
 	{
 		int temp = (round(((channels[1] * 3.3 / 1023) - 0.7) / 0.01));
+		float hum = channels[3] * 3.3 / 1023;
+		float light = (float)channels[0];
+		dac_out_voltage = (light / 1023) * hum;
+		int dac_out = round((dac_out_voltage/3.3)*1023);
 		FILE *fp;
 		fp = fopen("src/temp.txt", "w+");
 		fprintf(fp, "%d",temp);
@@ -68,19 +72,21 @@ int main(void)
 		{
 			fprintf(fp, "%d",0);
 		}
-		
-		
-		
 		fclose(fp);
 		
-		float light = (float)channels[0];
+		fp = fopen("src/humidity.txt", "w+");
+		fprintf(fp, "%d",hum);
+		fclose(fp);
+
+		fp = fopen("src/light.txt", "w+");
+		fprintf(fp, "%d",(int)light);
+		fclose(fp);
+		
 		secs = hexCompensation(wiringPiI2CReadReg8(RTC, SEC) - 0b10000000);
 		mins = hexCompensation(wiringPiI2CReadReg8(RTC, MIN));
 		hours = hexCompensation(wiringPiI2CReadReg8(RTC, HOUR));
 		
-		float hum = channels[3] * 3.3 / 1023;
-		dac_out_voltage = (light / 1023) * hum;
-		int dac_out = round((dac_out_voltage/3.3)*1023);
+		
 		unsigned char * dac_char_array;
 		dac_char_array = (unsigned char *)(0b0111<<12 | ((int)dac_out)<<2 | 0b00);//|0b00 isn't strictly necessary
 		if (DEBUG)
