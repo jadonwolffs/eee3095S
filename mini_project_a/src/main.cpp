@@ -68,6 +68,8 @@ void setup()
       fclose(fp);
       int light_value = atoi(light_char);
       Blynk.virtualWrite(V4, light_value);
+
+      Blynk.virtualWrite(V5, 2.5);
       
     });
 }
