@@ -25,14 +25,16 @@ int main(void)
     param.sched_priority = newprio;
     pthread_attr_setschedparam (&tattr, &param);
     pthread_create(&thread_id, &tattr, read_adc, (void *)1);
-
+	printf("____________________________________________________________________\n");
+	printf("| RTC Time | Sys Timer | Humidity | Temp | Light | DAC out | Alarm |\n");
 	for (;;)
 	{
 		// uptime = (millis() / 1000);
   		// Blynk.virtualWrite(V1, uptime);
 		printf("Humidity: %0.1fV\n", channels[3] * 3.3 / 1023);
 		printf("Light Level: %d\n", 1023-channels[0]);
-		printf("Temperature: %0.0f\n", round(((channels[1] * 3.3 / 1023) - 0.7) / 0.01));
+		int temp = round(((channels[1] * 3.3 / 1023) - 0.7) / 0.01);
+		printf("Temperature: %0.0f\n", temp);
 		secs = hexCompensation(wiringPiI2CReadReg8(RTC, SEC) - 0b10000000);
 		mins = hexCompensation(wiringPiI2CReadReg8(RTC, MIN));
 		hours = decCompensation(wiringPiI2CReadReg8(RTC, HOUR));
@@ -49,15 +51,17 @@ int main(void)
 		printf("ADC_DAC Voltage: %0.1f\n", (channels[2] * 3.3) / 1023);
 		printf("The current time is: %dh%dm%ds\n", hours, mins, secs);
 		printf("\n");
+		char * alarm = "*";
 		wiringPiSPIDataRW(SPI_CHAN_DAC, dac_char_array, 1);
-		// wiringPiSPIDataRW(SPI_CHAN_DAC, buffer[buffer_reading][buffer_location],2);
-		// buffer_location++;
-        // if(buffer_location >= BUFFER_SIZE) {
-        //     buffer_location = 0;
-        //     buffer_reading = !buffer_reading; 
-        // }
-		// buffer[buffer_writing][counter][0] = dac_char_array; 
-        // buffer[buffer_writing][counter][1] = dac_char_array; 
+		// RTC Time Sys Timer Humidity Temp Light DAC out Alarm
+		// 10:17:15 00:00:00 0.5 V 25 C 595 0.29V *
+		// 10:17:20 00:00:05 1.5 V 25 C 595 0.87V *
+		// 10:17:25 00:00:10 1.7 V 25 C 595 0.98V
+		// 10:17:30 00:00:15 2.2 V 25 C 782 1.68V
+		// 10:17:35 00:00:20 3.3 V 25 C 998 3.22V
+		printf("| %dh%dm%ds | %d | %f | %d | %d | %f | %c |\n",hours, mins, secs,millis()/1000,hum,temp,light,DAC_VOLTAGE,alarm);
+
+
 		delay(1000);
 	}
 	return 0;
