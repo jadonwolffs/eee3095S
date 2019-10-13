@@ -14,6 +14,8 @@
 #include "RTC.h"
 #include <pthread.h>
 
+#include <BlynkApiWiringPi.h>
+
 void shut_down(int signal);
 float channels[8] = {0,0,0,0,0,0,0,0};
 int hFormat(int hours);

@@ -1,6 +1,6 @@
 .RECIPEPREFIX +=
 CC = g++
-CFLAGS = -Wall -lm -lrt -lwiringPi -lpthread
+CFLAGS = -Wall -lm -lrt -lwiringPi -lpthread -I .
 
 PROG = bin
 OBJS = obj
