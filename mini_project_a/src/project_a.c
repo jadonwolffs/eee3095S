@@ -1,5 +1,5 @@
 //Mini Project A
-#include "miniprojectA.h"
+#include "project_a.h"
 #pragma GCC push_options
 #pragma GCC optimize ("O0")
 
@@ -10,9 +10,11 @@ int RTC; //Holds the RTC instance
 int reset_time=0;
 int main(void)
 {
-	signal(SIGINT, shut_down);
+	
 	wiringPiSetup();
 	wiringPiSPISetup(SPI_CHAN_DAC, SPI_SPEED_DAC);
+
+	//SETUP GPIO PINS
 	pinMode (26, PWM_OUTPUT);
 
 	pinMode (22, INPUT);
@@ -30,6 +32,7 @@ int main(void)
 	pinMode (25, INPUT);
 	pullUpDnControl(25,PUD_UP);
     wiringPiISR(25, INT_EDGE_RISING, dismiss_alarm);
+	signal(SIGINT, shut_down);
 
 	RTC = wiringPiI2CSetup(RTCAddr);
 	toggleTime();
@@ -37,7 +40,6 @@ int main(void)
 
 	pthread_attr_t tattr;
     pthread_t thread_id;
-	
     int newprio = 99;
     sched_param param;
     pthread_attr_init (&tattr);
@@ -67,8 +69,6 @@ int main(void)
 		{
 			printf("%f %f %d\n",light,hum,dac_out);
 		}
-		
-		
 		unsigned char * dac_char_array = (unsigned char *) (0b0111<<12 | ((int)dac_out)<<2 | 0b00);//|0b00 isn't strictly necessary
 
 		// unsigned char DAC_VAL[3] = {(DAC & 0b1100000000) >> 8, (DAC & 0b11110000) >> 4, DAC & 0b1111};
@@ -80,8 +80,6 @@ int main(void)
 		// printf("ADC_DAC Voltage: %0.1f\n", (channels[2] * 3.3) / 1023);
 		// printf("The current time is: %dh%dm%ds\n", hours, mins, secs);
 		// printf("\n");
-		
-		
 		wiringPiSPIDataRW(SPI_CHAN_DAC, dac_char_array, 1);
 		// RTC Time 	Sys Timer 	Humidity 	Temp 	Light 	DAC out Alarm
 		// 10:17:15 	00:00:00 	0.5 V 		25 C 	595 	0.29V 	*
@@ -89,10 +87,6 @@ int main(void)
 		{
 			printf("| %d:%d:%d \t| %d \t\t| %f \t| %d \t| %d \t| %f(%d) | %s \t\t|\n",hours, mins, secs,(millis()-reset_time)/1000,hum,temp,(int)light,dac_out_voltage,dac_out,alarm);
 		}
-		
-		
-
-
 		delay(freq);
 	}
 	return 0;
@@ -121,18 +115,13 @@ void *alarm_led(void *threadargs){
 				pwmWrite(26,i);
 				delay(1);
 			}
+			delay(10);
 			for (size_t i = 1023; i > 0; i--)
 			{
 				pwmWrite(26,i);
 				delay(1);
 			}
-			
-			// pwmWrite(26,200);			delay(300);
-			// pwmWrite(26,400);			delay(300);
-			// pwmWrite(26,600);			delay(300);
-			// pwmWrite(26,800);			delay(300);
-			// pwmWrite(26,1000);			delay(300);
-			// pwmWrite(26,600);
+			delay(5);
 		}
 		else{
 			pwmWrite(26,0);

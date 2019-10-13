@@ -4,8 +4,8 @@ CFLAGS = -Wall -lm -lrt -lwiringPi -lpthread
 
 PROG = bin
 OBJS = obj
-primary = miniprojectA
-secondary = CurrentTime
+primary = project_a
+secondary = RTC
 exe = project
 
 /bin/$(primary):
