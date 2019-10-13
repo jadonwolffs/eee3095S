@@ -101,16 +101,17 @@ void exiting(int x)
 }
 void cleanup(void){
 	printf("Cleaning up.");
-	delay(200);
+	delay(500);
 	pwmWrite(26,0);
 	pinMode (26, INPUT);
 	printf(".");
-	delay(200);
+	delay(500);
 	printf(".");
-	delay(200);
+	delay(500);
 	printf(".");
-	delay(200);
+	delay(500);
 	printf(".");
+	printf("\n");
 }
 /*
  * Change the hour format to 12 hours
