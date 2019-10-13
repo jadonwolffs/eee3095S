@@ -50,8 +50,8 @@ void setup()
       fscanf(fp, "%s", alarm_char);
       fclose(fp);
       // printf("%s\n",alarm_char);
-      alarm_triggered = atoi(alarm_char);
-      Blynk.virtualWrite(V2, alarm_value);
+      int alarm_led_val = atoi(alarm_char);
+      Blynk.virtualWrite(V2, alarm_led_val);
       
     });
 }

@@ -62,7 +62,7 @@ int main(void)
 		fp = fopen("src/alarm.txt", "w+");
 		if (alarm_triggered)
 		{
-			fprintf(fp, "%d",1);
+			fprintf(fp, "%d",255);
 		}
 		else
 		{
