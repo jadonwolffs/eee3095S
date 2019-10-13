@@ -26,7 +26,7 @@ int main(void)
     pthread_attr_setschedparam (&tattr, &param);
     pthread_create(&thread_id, &tattr, read_adc, (void *)1);
 	printf("____________________________________________________________________\n");
-	printf("| RTC Time \t| Sys Timer \t| Humidity \t| Temp \t| Light \t| DAC out \t| Alarm \t|\n");
+	printf("| RTC Time \t| Sys Timer \t| Humidity \t| Temp \t| Light | DAC out \t| Alarm \t|\n");
 	for (;;)
 	{
 		// uptime = (millis() / 1000);
@@ -48,6 +48,11 @@ int main(void)
 		unsigned char DAC_VAL[3] = {(DAC & 0b1100000000) >> 8, (DAC & 0b11110000) >> 4, DAC & 0b1111};
 		// printf("dac_char_array: %d\n",dac_char_array);
 		float DAC_VOLTAGE = DAC * 3.3 / 1023;
+		if (DAC_VOLTAGE>1023)
+		{
+			DAC_VOLTAGE=0;
+		}
+		
 		// printf("DAC Voltage: %f\n", DAC_VOLTAGE);
 		// printf("ADC_DAC Voltage: %0.1f\n", (channels[2] * 3.3) / 1023);
 		// printf("The current time is: %dh%dm%ds\n", hours, mins, secs);
@@ -56,7 +61,7 @@ int main(void)
 		wiringPiSPIDataRW(SPI_CHAN_DAC, dac_char_array, 1);
 		// RTC Time Sys Timer Humidity Temp Light DAC out Alarm
 		// 10:17:15 00:00:00 0.5 V 25 C 595 0.29V *
-		printf("| %dh%dm%ds \t| %d \t\t| %f \t| %d | %d \t| %d \t| %c \t\t|\n",hours, mins, secs,millis()/1000,hum,temp,light,DAC_VOLTAGE,alarm);
+		printf("| %dh%dm%ds \t| %d \t\t| %f \t| %d \t| %d \t| %f \t| %c \t\t|\n",hours, mins, secs,millis()/1000,hum,temp,light,DAC_VOLTAGE,alarm);
 
 
 		delay(1000);
