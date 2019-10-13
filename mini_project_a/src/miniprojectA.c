@@ -61,8 +61,13 @@ int main(void)
 		
 		float hum = channels[3] * 3.3 / 1023;
 		float dac_out_voltage = (light / 1023) * hum;
-		int dac_out = (int) (dac_out_voltage/3.3)*1023;
-		printf("%f %f %d\n",light,hum,dac_out);
+		int dac_out = round(dac_out_voltage/3.3)*1023;
+		if (DEBUG)
+		{
+			printf("%f %f %d\n",light,hum,dac_out);
+		}
+		
+		
 		unsigned char * dac_char_array = (unsigned char *) (0b0111<<12 | ((int)dac_out)<<2 | 0b00);//|0b00 isn't strictly necessary
 
 		// unsigned char DAC_VAL[3] = {(DAC & 0b1100000000) >> 8, (DAC & 0b11110000) >> 4, DAC & 0b1111};
