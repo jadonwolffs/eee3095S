@@ -13,14 +13,14 @@
 #include <stdint.h>
 #include "CurrentTime.h"
 #include <pthread.h>
-#include <BlynkApiWiringPi.h>
-#include <BlynkSocket.h>
-#include <BlynkOptionsParser.h>
+#include "BlynkApiWiringPi.h"
+#include "BlynkSocket.h"
+#include "BlynkOptionsParser.h"
 
 static BlynkTransportSocket _blynkTransport;
 BlynkSocket Blynk(_blynkTransport);
 
-#include <BlynkWidgets.h>
+// #include <BlynkWidgets.h>
 
 
 #define BASE 100
