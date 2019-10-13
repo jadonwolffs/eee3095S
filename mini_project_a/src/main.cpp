@@ -18,6 +18,7 @@
 #include <BlynkOptionsParser.h>
 
 #include "project_a.h"
+#include "RTC.h"
 
 static BlynkTransportSocket _blynkTransport;
 BlynkSocket Blynk(_blynkTransport);
