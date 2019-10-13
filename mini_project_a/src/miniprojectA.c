@@ -84,7 +84,7 @@ void *read_adc(void *threadargs)
 
 void dismiss_alarm(void)//attach to button as interrupt
 {
-	alarm_trigerred = false;
+	alarm_triggered = false;
 }
 
 void reset_sys_time(void)
