@@ -14,11 +14,6 @@
 #include "RTC.h"
 #include <pthread.h>
 
-#define DEBUG false
-
-#define BASE 100
-#define SPI_CHAN 0
-
 void shut_down(int signal);
 float channels[8] = {0,0,0,0,0,0,0,0};
 int hFormat(int hours);
@@ -40,9 +35,7 @@ void stop_start(void);
 void cycle_freq(void);
 
 void cleanup(void);
-#define SPI_CHAN_DAC 1
-#define SPI_SPEED_DAC freq
-#define BUFFER_SIZE 1000
+
 
 char * alarm;
 volatile bool alarm_triggered = false;
@@ -59,4 +52,11 @@ bool monitoring = true;
 long last_interrupt = -201;
 long last_alarm = -3001;
 float dac_out_voltage = 0.0;
+
+#define DEBUG false
+#define BASE 100
+#define SPI_CHAN 0
+#define SPI_CHAN_DAC 1
+#define SPI_SPEED_DAC freq
+
 #endif
