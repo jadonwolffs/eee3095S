@@ -121,8 +121,9 @@ void trigger_alarm(void){
 				printf("alarm %f\n",dac_out_voltage);
 			}
 			alarm_triggered = true;
+			last_alarm = current_time;
 		}
-		last_alarm = current_time;
+		
 	}
 	
 	
