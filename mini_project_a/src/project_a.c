@@ -111,7 +111,8 @@ int main(void)
 	return 0;
 }
 void trigger_alarm(void){
-	if (millis()-last_alarm > 3000*60)
+	long current_time = millis();
+	if (current_time-last_alarm > (3000*60))
 	{
 		if (dac_out_voltage>=2.65 || (dac_out_voltage<=0.65&&dac_out_voltage>0.0))
 		{
@@ -121,7 +122,7 @@ void trigger_alarm(void){
 			alarm_triggered = true;
 		}
 	}
-	last_alarm = millis();
+	last_alarm = current_time;
 	
 	
 }
