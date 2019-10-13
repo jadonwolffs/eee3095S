@@ -44,7 +44,7 @@ void setup()
       fscanf(fp, "%s", temp_char);
       printf("1 : %s\n", temp_char );
       fclose(fp);
-      temp = (int) temp_char;
+      temp = atoi(temp_char);
       Blynk.virtualWrite(V1, temp);
     });
 }
