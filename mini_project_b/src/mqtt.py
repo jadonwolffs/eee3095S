@@ -568,7 +568,7 @@ if __name__ == "__main__":
         valuesUpdator.join()
         alarm.join()
         MQTT.join()
-        
+
         mqttc.loop_stop()
         mqttc.disconnect()
 
@@ -585,9 +585,9 @@ if __name__ == "__main__":
         # wait for threads
         valuesUpdator.join()
         alarm.join()
-	MQTT.join()
+        MQTT.join()
 
-	mqttc.loop_stop()
+        mqttc.loop_stop()
         mqttc.disconnect()
 
         # turn off GPIOs
