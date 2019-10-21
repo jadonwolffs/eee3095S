@@ -568,8 +568,7 @@ if __name__ == "__main__":
         valuesUpdator.join()
         alarm.join()
         MQTT.join()
-
-	mqttc.loop_stop()
+		mqttc.loop_stop()
         mqttc.disconnect()
 
         # turn off GPIOs
