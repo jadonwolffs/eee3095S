@@ -285,7 +285,7 @@ def mqttAlarmDismiss(client, userdata, message):
 	tmp = str(message.payload.decode("utf-8"))
 	if(tmp == "DismissButton" or tmp == "Dismiss"):
 		values["alarm"] = False
-        	Alarm.ChangeDutyCycle(0)
+            Alarm.ChangeDutyCycle(0)
         
 def mqttAlarmThresUpperChange(client, userdata, message):	
 	global dacVoltMax
