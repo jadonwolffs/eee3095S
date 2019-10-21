@@ -1,6 +1,6 @@
-//EEE3095/96S Project A
-//WLFJAD001 ARNJAM004
-#include "project_a.h"
+//EEE3095/96S Project B
+//WLFJAD001
+#include "project_b.h"
 #pragma GCC push_options
 #pragma GCC optimize ("O0")
 int hours, mins, secs;

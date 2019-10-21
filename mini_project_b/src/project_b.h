@@ -1,5 +1,5 @@
-#ifndef MINIPROJECTA_H
-#define MINIPROJECTA_H
+#ifndef MINIPROJECTB_H
+#define MINIPROJECTB_H
 
 #include <wiringPi.h>
 #include <wiringPiI2C.h>

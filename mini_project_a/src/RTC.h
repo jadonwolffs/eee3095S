@@ -1,5 +1,5 @@
-#ifndef CURRENTTIME_H
-#define CURRENTTIME_H
+#ifndef RTC_H
+#define RTC_H
 
 void getCurrentTime(void);
 
@@ -7,4 +7,4 @@ int getHours(void);
 int getMins(void);
 int getSecs(void);
 
-#endif /* CURRENTTIME_H */
+#endifs

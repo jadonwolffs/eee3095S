@@ -52,7 +52,7 @@ int main(void)
 	delay(500);
 	for (;;)
 	{
-		int temp = (round(((channels[1] * 3.3 / 1023) - 0.7) / 0.01));
+		int temp = (round(((channels[1] * 3.3 / 1023) - 0.5) / 0.01));
 		float hum = channels[3] * 3.3 / 1023;
 		float light = (float)channels[0];
 		dac_out_voltage = (light / 1023) * hum;
@@ -110,28 +110,6 @@ int main(void)
 	}
 	return 0;
 }
-void trigger_alarm(void){
-	long current_time = millis();
-	if (DEBUG)
-	{
-		printf("current time:%d",current_time-last_alarm);
-	}
-	if (current_time-last_alarm > (3000*60))
-	{
-		if (dac_out_voltage>=2.65 || (dac_out_voltage<=0.65&&dac_out_voltage>0.0))
-		{
-			if (DEBUG){
-				printf("alarm %f\n",dac_out_voltage);
-			}
-			alarm_triggered = true;
-			last_alarm = current_time;
-		}
-		
-	}
-	
-	
-	
-}
 void *alarm_led(void *threadargs){
 	while (true)
 	{
@@ -157,6 +135,29 @@ void *alarm_led(void *threadargs){
 		delay(100);
 	}
 }
+void trigger_alarm(void){
+	long current_time = millis();
+	if (DEBUG)
+	{
+		printf("current time:%d",current_time-last_alarm);
+	}
+	if (current_time-last_alarm > (3000*60))
+	{
+		if (dac_out_voltage>=2.65 || (dac_out_voltage<=0.65&&dac_out_voltage>0.0))
+		{
+			if (DEBUG){
+				printf("alarm %f\n",dac_out_voltage);
+			}
+			alarm_triggered = true;
+			last_alarm = current_time;
+		}
+		
+	}
+	
+	
+	
+}
+
 void *read_adc(void *threadargs)
 {
 	while (true)
@@ -172,6 +173,7 @@ void *read_adc(void *threadargs)
 		delay(freq);
 	}
 }
+
 void reset(void){
 	long current_time = millis();
 	if(current_time-last_interrupt>150){
