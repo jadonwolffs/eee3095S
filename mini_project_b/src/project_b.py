@@ -402,14 +402,14 @@ def displayLoggingInformation():
                 lastUpdated = systemTimer
                 loggingInformationLine = getCurrentLoggingInformation()
                 # print out current logging information line
-                print("{:<15}{:<15}{:<15}{:<15}{:<15}{:<15}{:<15}{:<15}".format(
-                    "| "+loggingInformationLine[0],
-                    "| "+loggingInformationLine[1],
-                    "| "+loggingInformationLine[2],
-                    "| "+loggingInformationLine[3],
-                    "| "+loggingInformationLine[4],
-                    "| "+loggingInformationLine[5],
-                    "| "+loggingInformationLine[6]
+                print("| {:<15}| {:<15}| {:<15}| {:<15}| {:<15}| {:<15}| {:<15}|".format(
+                    loggingInformationLine[0],
+                    loggingInformationLine[1],
+                    loggingInformationLine[2],
+                    loggingInformationLine[3],
+                    loggingInformationLine[4],
+                    loggingInformationLine[5],
+                    loggingInformationLine[6]
                 ))
         time.sleep(float(readingInterval) / 5.0)
 
