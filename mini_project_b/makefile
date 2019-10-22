@@ -33,5 +33,8 @@ default = run
 run:
     python3 src/project_b.py
 
+pull:
+    git pull
+
 clean:
 
