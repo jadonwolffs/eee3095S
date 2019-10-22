@@ -23,12 +23,10 @@ import time
 time.sleep(5)  # Sleep to allow wireless to connect before starting MQTT
 
 # Define Variables
-MQTT_BROKER = "192.168.1.8"
-MQTT_PORT = 1883
 MQTT_KEEPALIVE_INTERVAL = 60
 
 MQTT_BROKER = "farmer.cloudmqtt.com"
-MQTT_PORT = 15215
+MQTT_PORT = 14974
 
 # Define on_connect event Handler
 def on_connect(mosq, obj, rc):
@@ -37,7 +35,7 @@ def on_connect(mosq, obj, rc):
 
 # Define on_publish event Handler
 def on_publish(client, userdata, mid):
-    #print("Message Published...")
+    print("Message Published...")
     pass
 
 
@@ -107,19 +105,19 @@ RTC = I2C.get_i2c_device(RTCAddr)
 
 # Convert int to RTC BCD seconds
 def decCompensation(units):
-    unitsU = units % 10;
+    unitsU = units % 10
 
     if (units >= 50):
-        units = 0x50 + unitsU;
+        units = 0x50 + unitsU
     elif (units >= 40):
-        units = 0x40 + unitsU;
+        units = 0x40 + unitsU
     elif (units >= 30):
-        units = 0x30 + unitsU;
+        units = 0x30 + unitsU
     elif (units >= 20):
-        units = 0x20 + unitsU;
+        units = 0x20 + unitsU
     elif (units >= 10):
-        units = 0x10 + unitsU;
-    return units;
+        units = 0x10 + unitsU
+    return units
 
 
 # init RTC
@@ -147,7 +145,7 @@ lightSensor = 7
 lightSensor_MIN = 50.0  # when shining phone torch at light sensor
 lightSensor_MAX = 1023.0  # when holding finger over light sensor
 
-# Alarm constants
+# Alarm starts
 dacVoltMin = 0.65
 dacVoltMax = 2.65
 
@@ -180,7 +178,7 @@ GPIO.setup(CS, GPIO.OUT)
 # Setup PWM Alarm
 GPIO.setup(PWM0, GPIO.OUT)
 Alarm = GPIO.PWM(PWM0, 2)
-Alarm.start(0);
+Alarm.start(0)
 Alarm.ChangeDutyCycle(0)
 
 # Setup PWM DAC
@@ -236,7 +234,7 @@ def pressResetSystemTimerButton(arg):
         global startHour
         global resetLoggerLastUpdated
         global resetAlarmLastUpdated
-        systemTimer = 0;
+        systemTimer = 0
         rtcTime = values["rtcTime"]
         startMin, startSec = divmod(rtcTime, 60)
         startHour, startMin = divmod(startMin, 60)
