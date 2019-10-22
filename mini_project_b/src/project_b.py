@@ -394,6 +394,7 @@ def displayLoggingInformation():
         if (resetLoggerLastUpdated):
             resetLoggerLastUpdated = False
             lastUpdated = -5
+            print("_____________________________________________________________________________________________________________")
             print("| {:<15}| {:<15}| {:<15}| {:<15}| {:<15}| {:<15}| {:<15}|".format(
                 "RTC Time", "Sys Timer", "Humidity", "Temp", "Light", "DAC out", "Alarm"))
 
@@ -551,13 +552,12 @@ if __name__ == "__main__":
         mqttc.loop_start()
         mqttc.publish(topic_MonitoringEnabled, payload="true", retain=True)
         alarm.start()
-        print("Ready...")
 
         while True:
             main()
 
     except KeyboardInterrupt:
-
+        print("___________________________________________________________________________________________________________|")
         print("Cleaning up...")
         # release all resources
         programClosed = True
