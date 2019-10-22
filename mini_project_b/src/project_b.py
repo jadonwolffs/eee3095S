@@ -35,7 +35,7 @@ def on_connect(mosq, obj, rc):
 
 # Define on_publish event Handler
 def on_publish(client, userdata, mid):
-    print("Message Published...")
+    # print("Message Published...")
     pass
 
 
