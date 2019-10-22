@@ -184,7 +184,7 @@ Alarm.ChangeDutyCycle(0)
 # Setup PWM DAC
 GPIO.setup(PWM1, GPIO.OUT)
 DAC = GPIO.PWM(PWM1, 1000)
-DAC.start(0);
+DAC.start(0)
 DAC.ChangeDutyCycle(0)
 
 # DAC SPI
@@ -394,22 +394,22 @@ def displayLoggingInformation():
         if (resetLoggerLastUpdated):
             resetLoggerLastUpdated = False
             lastUpdated = -5
-            print("{:<15}{:<15}{:<15}{:<15}{:<15}{:<15}{:<15}".format(
-                "RTC Time", "Sys Timer", "Humidity", "Temp", "Light", "DAC out", "Alarm"))
+            print("{:<15}{:<15}{:<15}{:<15}{:<15}{:<15}{:<15}{:<15}".format(
+                "| RTC Time", "| Sys Timer", "| Humidity", "| Temp", "| Light", "| DAC out", "| Alarm","|"))
 
         if (monitoringEnabled):
             if (systemTimer - lastUpdated > readingInterval - 0.001):
                 lastUpdated = systemTimer
                 loggingInformationLine = getCurrentLoggingInformation()
                 # print out current logging information line
-                print("{:<15}{:<15}{:<15}{:<15}{:<15}{:<15}{:<15}".format(
-                    loggingInformationLine[0],
-                    loggingInformationLine[1],
-                    loggingInformationLine[2],
-                    loggingInformationLine[3],
-                    loggingInformationLine[4],
-                    loggingInformationLine[5],
-                    loggingInformationLine[6]
+                print("{:<15}{:<15}{:<15}{:<15}{:<15}{:<15}{:<15}{:<15}".format(
+                    "| "+loggingInformationLine[0],
+                    "| "+loggingInformationLine[1],
+                    "| "+loggingInformationLine[2],
+                    "| "+loggingInformationLine[3],
+                    "| "+loggingInformationLine[4],
+                    "| "+loggingInformationLine[5],
+                    "| "+loggingInformationLine[6]
                 ))
         time.sleep(float(readingInterval) / 5.0)
 
@@ -486,7 +486,7 @@ def convertLightSensor():
 # Convert from RTC BCD to int
 def convertRTCBCDtoInt(bcd):
     firstDigit = bcd & 0b00001111
-    secondDigit = (bcd & 0b01110000) >> 4;
+    secondDigit = (bcd & 0b01110000) >> 4
     return secondDigit * 10 + firstDigit
 
 
@@ -532,7 +532,7 @@ def main():
 
 # only run the functions if
 if __name__ == "__main__":
-    print("Creating threads...")
+    print("Starting logger")
     valuesUpdator = threading.Thread(target=updateValues)
     alarm = threading.Thread(target=updateAlarm)
     MQTT = threading.Thread(target=publishThread)
@@ -541,7 +541,7 @@ if __name__ == "__main__":
     try:
 
         # os.system('clear')
-        print("Starting threads...")
+        print("Splitting logger")
         MQTT.start()
         valuesUpdator.start()
 
@@ -558,7 +558,7 @@ if __name__ == "__main__":
 
     except KeyboardInterrupt:
 
-        print("Exiting gracefully")
+        print("Cleaning up...")
         # release all resources
         programClosed = True
 
