@@ -394,8 +394,8 @@ def displayLoggingInformation():
         if (resetLoggerLastUpdated):
             resetLoggerLastUpdated = False
             lastUpdated = -5
-            print("{:<15}{:<15}{:<15}{:<15}{:<15}{:<15}{:<15}{:<15}".format(
-                "| RTC Time", "| Sys Timer", "| Humidity", "| Temp", "| Light", "| DAC out", "| Alarm","|"))
+            print("| {:<15}| {:<15}| {:<15}| {:<15}| {:<15}| {:<15}| {:<15}|".format(
+                "RTC Time", "Sys Timer", "Humidity", "Temp", "Light", "DAC out", "Alarm"))
 
         if (monitoringEnabled):
             if (systemTimer - lastUpdated > readingInterval - 0.001):
