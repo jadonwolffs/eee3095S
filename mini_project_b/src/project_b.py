@@ -48,7 +48,7 @@ mqttc = mqtt.Client()
 mqttc.on_publish = on_publish
 mqttc.on_connect = on_connect
 
-mqttc.username_pw_set("lttcflex", "icuxLR9dz3hv")
+mqttc.username_pw_set("wyfcoych", "UD5eFzwwz-ex")
 
 # Connect with MQTT Broker
 mqttc.connect(MQTT_BROKER, MQTT_PORT, MQTT_KEEPALIVE_INTERVAL)
