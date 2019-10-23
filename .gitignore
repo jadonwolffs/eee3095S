@@ -21,3 +21,4 @@ Prac5/logisim/
 *.o
 mini*/src*/blynk-*
 *.code*
+/mini_project_b/src/settings.py

@@ -7,37 +7,32 @@ October 2019
 # import relevant libraries
 import RPi.GPIO as GPIO
 import Adafruit_MCP3008
-import datetime
-import threading
-import os
 import Adafruit_GPIO.I2C as I2C
 import spidev
 
-"""
-MQTT
-"""
-
-import paho.mqtt.client as mqtt
+import datetime
 import time
 
-time.sleep(5)  # Sleep to allow wireless to connect before starting MQTT
+import threading
+import os
 
-# Define Variables
-MQTT_KEEPALIVE_INTERVAL = 60
+import paho.mqtt.client as mqtt
 
-MQTT_BROKER = "farmer.cloudmqtt.com"
-MQTT_PORT = 14974
+try:
+    from .settings import *
+except ImportError:
+    pass
 
-# Define on_connect event Handler
 def on_connect(mosq, obj, rc):
+    """Define on_connect event Handler"""
     print("Connected to MQTT Broker")
 
 
 # Define on_publish event Handler
 def on_publish(client, userdata, mid):
+    """Define on_connect event Handler"""
     # print("Message Published...")
     pass
-
 
 lock = threading.RLock()
 
@@ -48,7 +43,7 @@ mqttc = mqtt.Client()
 mqttc.on_publish = on_publish
 mqttc.on_connect = on_connect
 
-mqttc.username_pw_set("wyfcoych", "UD5eFzwwz-ex")
+# //import
 
 # Connect with MQTT Broker
 mqttc.connect(MQTT_BROKER, MQTT_PORT, MQTT_KEEPALIVE_INTERVAL)
@@ -105,8 +100,8 @@ RTC = I2C.get_i2c_device(RTCAddr)
 
 # Convert int to RTC BCD seconds
 def decCompensation(units):
+    """decimal to hex compensation for time"""
     unitsU = units % 10
-
     if (units >= 50):
         units = 0x50 + unitsU
     elif (units >= 40):
@@ -210,23 +205,20 @@ values = {
 }
 valuesUpdatorIsReady = False
 
-
 def writeToDac(voltage):
+    """write to dac"""
     PWMVal = int((voltage / 3.3) * 100)
     DAC.ChangeDutyCycle(PWMVal)  # PWM DAC
-
     val = int((voltage / 3.3) * 1023)
-    lowByte = val << 2 & 0b11111100
-    highByte = ((val >> 6) & 0xff) | 0b0 << 7 | 0b0 << 6 | 0b1 << 5 | 0b1 << 4
-    # print("Volt = ", voltage)
-    # print("Highbyte = {0:8b}".format(highByte))
-    # print("Lowbyte =  {0:8b}".format(lowByte))
-    spi.xfer2([highByte, lowByte])
+    right = val << 2 & 0b11111100
+    left = ((val >> 6) & 0xff) | 0b0 << 7 | 0b0 << 6 | 0b1 << 5 | 0b1 << 4
+    spi.xfer2([left, right])
 
-
-# button functionality
-# this function resets the system timer on button press
 def pressResetSystemTimerButton(arg):
+    """
+    button functionality
+    this function resets the system timer on button press
+    """
     if (GPIO.input(arg) == GPIO.LOW):
         global systemTimer  # reset system timer
         global startSec
@@ -243,9 +235,8 @@ def pressResetSystemTimerButton(arg):
         resetLoggerLastUpdated = True
         #print("Reset button pressed - system timer has been reset.")  # print out confirmation message for test cases
 
-
-# this function changes the reading interval on button press
 def pressChangeReadingIntervalButton(arg):
+    """this function changes the reading interval on button press"""
     if (GPIO.input(arg) == GPIO.LOW):
         global readingInterval  # change reading interval
         if (readingInterval == 1):
@@ -258,9 +249,8 @@ def pressChangeReadingIntervalButton(arg):
         #print("Change reading interval button pressed - reading interval is now {}s.".format(
         #   readingInterval))  # print out confirmation message for test cases
 
-
-# this function stops / starts monitoring on button press without affecting the system timer
 def pressStopStartMonitoringButton(arg):
+    """this function stops / starts monitoring on button press without affecting the system timer"""
     if (GPIO.input(arg) == GPIO.LOW):
         global monitoringEnabled  # stop / start monitoring [The system timer is not affected by this functionality.]
         monitoringEnabled = not monitoringEnabled
@@ -272,26 +262,28 @@ def pressStopStartMonitoringButton(arg):
         #    print(
         #        "Stop / start monitoring button pressed - monitoring disabled.")  # print out confirmation message for test cases
 
-
-# this function stops / starts monitoring on button press without affecting the system timer
 def dismissAlarm(arg):
+    """dismiss"""
     if (GPIO.input(arg) == GPIO.LOW):
         values["alarm"] = False
         Alarm.ChangeDutyCycle(0)
 
 def mqttAlarmDismiss(client, userdata, message):
+    """dismiss via mqtt"""
 	tmp = str(message.payload.decode("utf-8"))
 	if(tmp == "DismissButton" or tmp == "Dismiss"):
 		values["alarm"] = False
 		Alarm.ChangeDutyCycle(0)
         
 def mqttAlarmThresUpperChange(client, userdata, message):	
+    """set upper"""
 	global dacVoltMax
 	lock.acquire()
 	dacVoltMax = float(str(message.payload.decode("utf-8")))
 	lock.release()
         
 def mqttAlarmThresLowerChange(client, userdata, message):
+    """set lower"""
 	global dacVoltMin
 	lock.acquire()
 	dacVoltMin = float(str(message.payload.decode("utf-8")))
@@ -299,6 +291,7 @@ def mqttAlarmThresLowerChange(client, userdata, message):
 	
 mqttLastUpdatedMonitoring = time.time()*1000
 def mqttSetMonitoring(client, userdata, message):
+    """set monitoring"""
 	global monitoringEnabled
 	global mqttLastUpdatedMonitoring
 	currentTime = time.time()*1000
@@ -334,6 +327,7 @@ GPIO.add_event_detect(dismissAlarmButton, GPIO.FALLING, callback=dismissAlarm,
 
 
 def updateValues():
+    """update values"""
     global systemTimer
     global valuesUpdatorIsReady
 
@@ -360,6 +354,7 @@ def updateValues():
 
 
 def updateAlarm():
+    """update alarm"""
     global systemTimer
     global resetAlarmLastUpdated
     lastSound = systemTimer
@@ -381,10 +376,11 @@ def updateAlarm():
                     mqttc.publish(topic_AlarmNotify, payload="Alarm Sounded!!", retain=True)
         time.sleep(float(readingInterval) / 10.0)
 
-
-# system timer functionality
-# this function displays the logging information
 def displayLoggingInformation():
+    """
+    system timer functionality
+    this function displays the logging information
+    """
     global systemTimer
     global resetLoggerLastUpdated
     resetLoggerLastUpdated = True
@@ -413,22 +409,15 @@ def displayLoggingInformation():
                     loggingInformationLine[6]
                 ))
         time.sleep(float(readingInterval) / 5.0)
-
-
-
-
-"""
-MQTT
-"""
-
 def publishThread():
+    """publish thread"""
     while (not programClosed):  # only continue if parent thread is running
         if (monitoringEnabled):
             publish()
         time.sleep(float(readingInterval))
 
 def publish():
-	
+    """publish"""	
     lock.acquire()
     RTCTime = str(formatTime(values["rtcTime"]))
     mqttc.publish(topic_RTCTime, payload=RTCTime, retain=True)
@@ -461,57 +450,51 @@ def publish():
         mqttc.publish(topic_Alarm, payload="OFF", retain=True)
 
 
-
-
-# ADC functionality
-# this function gets the ADC value from the ADC analog input pins (CH0-CH7)
 def getADCValue(ADCValue):
+    """
+    ADC functionality
+    this function gets the ADC value from the ADC analog input pins (CH0-CH7)
+    """
     return adc.read_adc(ADCValue)
 
-
-# this function converts the ADC value to a fraction of 3.3V
 def convertPotentiometer():
+    """this function converts the ADC value to a fraction of 3.3V"""
     return "{:.2f} V".format(values["humidity"])
 
-
-# this function converts the ADC value to degrees Celsius
 def convertTemperatureSensor():
+    """this function converts the ADC value to degrees Celsius"""
     return "{:.1f} C".format(values["temp"])
 
-
-# this function reports a value between 0 and 1023
 def convertLightSensor():
+    """this function reports a value between 0 and 1023"""
     return "{:.0f}".format(values["light"])
 
-
-# Convert from RTC BCD to int
 def convertRTCBCDtoInt(bcd):
+    """Convert from RTC BCD to int"""
     firstDigit = bcd & 0b00001111
     secondDigit = (bcd & 0b01110000) >> 4
     return secondDigit * 10 + firstDigit
 
-
-# Gets the time from RTC
 def formatTime(time):
+    """Gets the time from RTC"""
     min, sec = divmod(time, 60)
     hrs, min = divmod(min, 60)
     return "{:02.0f}:{:02.0f}:{:04.1f}".format(hrs, min, sec)
 
-
-# Gets the time from RTC
 def getDACOutValue():
+    """Gets the dac out value"""
     return "{:02.2f}".format(values["dacOut"])
 
-
-# Gets the time from RTC
 def getAlarmValue():
+    """Gets the alarm value"""
     if (values["alarm"]):
         return "*"
     return ""
 
 
-# this function gets the current logging information
+
 def getCurrentLoggingInformation():
+    """this function gets the current logging information"""
     RTCTime = formatTime(values["rtcTime"])
     systemTimerValue = formatTime(systemTimer)
 
@@ -524,10 +507,8 @@ def getCurrentLoggingInformation():
     return [RTCTime, systemTimerValue, potentiometerValue, temperatureSensorValue, lightSensorValue, dacOutValue,
             alarmValue]
 
-
-
-# main function - program logic
 def main():
+    """main function - program logic"""
     displayLoggingInformation()
 
 
